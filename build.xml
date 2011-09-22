@@ -1,0 +1,40 @@
+<project name="TrylogicFramework" default="compile" basedir=".">
+	<!-- set global properties for this build -->
+	<property file="build.properties" />
+
+	<property name="downloadedSDKPath" value="sdk" />
+	<property name="out" value="out" />
+
+
+	<target name="downloadSDK" if="${autoDownloadSDK}" description="Download Flex SDK and set properties FLEX_HOME to downloaded files">
+		<mkdir dir="${downloadedSDKPath}"/>
+
+		<get src="http://dl.dropbox.com/u/18819203/TrylogicFramework.zip" dest="${downloadedSDKPath}/Framework.zip"
+			 skipexisting="true" />
+		<unzip src="${downloadedSDKPath}/Framework.zip" dest="${downloadedSDKPath}" overwrite="true"/>
+
+		<propertyfile file="paths.properties">
+  			<entry  key="FLEX_HOME" value="${downloadedSDKPath}"/>
+		</propertyfile>
+
+	</target>
+
+	<target name="compile" depends="downloadSDK" description="compile the source">
+		<delete dir="${out}"/>
+		<mkdir dir="${out}"/>
+
+		<taskdef file="${FLEX_HOME}/ant/flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+
+		<!--<mxmlc file="${APP_ROOT}/src/DummyProject.as">
+					<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+					<load-config filename="${APP_ROOT}/compiler-config.xml" />
+				</mxmlc>
+			-->
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${out}" failonerror="no"/>
+		<delete dir="${downloadedSDKPath}" failonerror="no"/>
+	</target>
+</project>
