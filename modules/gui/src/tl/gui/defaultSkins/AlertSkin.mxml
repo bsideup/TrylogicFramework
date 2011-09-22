@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tl:Skin xmlns:e4xu="http://e4xu.googlecode.com/mxml"
+		 xmlns:tl="http://www.trylogic.ru/"
+		 width="255" height="166">
+	<!--States-->
+	<tl:states>
+		<e4xu:State name="defaultState"/>
+	</tl:states>
+
+	<!--Model-->
+	<e4xu:Declarations>
+		<e4xu:String id="headerText">''</e4xu:String>
+		<e4xu:String id="innerText">''</e4xu:String>
+		<e4xu:String id="buttons">3</e4xu:String>
+		<e4xu:Function id="okHandler"/>
+		<e4xu:Class id="bgImageClass"/>
+	</e4xu:Declarations>
+
+	<!--Visual childs-->
+
+</tl:Skin>

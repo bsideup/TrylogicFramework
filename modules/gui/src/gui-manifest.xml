@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!--
+
+    TrylogicGUI Components
+
+-->
+<componentPackage>
+	<component id="Skin" class="tl.gui.Skin"/>
+	<component id="Alert" class="tl.gui.components.Alert"/>
+	<component id="Button" class="tl.gui.components.Button"/>
+	<component id="Hints" class="tl.gui.components.Hints"/>
+	<component id="ScrollPanel" class="tl.gui.components.ScrollPanel"/>
+	<component id="Slider" class="tl.gui.components.Slider"/>
+	<component id="Text" class="tl.gui.components.Text"/>
+	<component id="Window" class="tl.gui.components.Window"/>
+	<component id="Notifications" class="tl.gui.components.Notifications"/>
+</componentPackage>

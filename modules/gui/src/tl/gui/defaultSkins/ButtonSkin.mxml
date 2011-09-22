@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<tl:Skin xmlns:e4xu="http://e4xu.googlecode.com/mxml"
+		 xmlns:tl="http://www.trylogic.ru/"
+		 width="{Math.max(text.length * 14, upImage.width)}" height="{Math.max(22, upImage.height)}" buttonMode="true"
+		 mouseChildren="false" mouseEnabled="{currentState != 'disabled'}">
+	<!--States-->
+	<tl:states>
+		<e4xu:State name="mouseOut"/>
+		<e4xu:State name="mouseOver"/>
+		<e4xu:State name="mouseDown"/>
+		<e4xu:State name="mouseUp"/>
+		<e4xu:State name="disabled"/>
+	</tl:states>
+
+	<!--Model-->
+	<e4xu:Declarations>
+		<e4xu:String id="text">''</e4xu:String>
+		<e4xu:String id="icon"/>
+		<e4xu:Class
+				id="upSkin">@Embed('button/up.png',			 scaleGridTop='10', scaleGridBottom='11', scaleGridLeft='15', scaleGridRight='16')</e4xu:Class>
+		<e4xu:Class
+				id="overSkin">@Embed('button/over.png',		 scaleGridTop='10', scaleGridBottom='11', scaleGridLeft='15', scaleGridRight='16')</e4xu:Class>
+		<e4xu:Class
+				id="downSkin">@Embed('button/down.png',		 scaleGridTop='10', scaleGridBottom='11', scaleGridLeft='15', scaleGridRight='16')</e4xu:Class>
+		<e4xu:Class
+				id="disabledSkin">@Embed('button/disabled.png', scaleGridTop='10', scaleGridBottom='11', scaleGridLeft='15', scaleGridRight='16')</e4xu:Class>
+	</e4xu:Declarations>
+
+	<!--Visual childs-->
+	<tl:Loader source="{upSkin}" includeIn="mouseOut" width="{width}" height="{height}" id="upImage"/>
+	<tl:Loader source="{overSkin}" includeIn="mouseOver, mouseUp" width="{width}" height="{height}"/>
+	<tl:Loader source="{downSkin}" includeIn="mouseDown" width="{width}" height="{height}"/>
+	<tl:Loader source="{disabledSkin}" includeIn="disabled" width="{width}" height="{height}"/>
+
+	<TextField xmlns="flash.text.*" id="myText" text="{text}" x="{(width - myText.textWidth) &gt;&gt; 1 }"
+			   textColor="0xFFFFFF" textColor.disabled="0x888888"
+			   autoSize="TextFieldAutoSize.CENTER"/>
+</tl:Skin>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+
+    Trylogic Components
+
+-->
+<componentPackage>
+	<component id="Application" class="tl.core.Application"/>
+	<component id="Loader" class="tl.core.Loader"/>
+	<component id="SWFLoader" class="tl.core.SWFLoader"/>
+	<component id="View" class="tl.view.View"/>
+</componentPackage>
