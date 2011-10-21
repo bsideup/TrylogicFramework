@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!--
+
+    IoC Components
+
+-->
+<componentPackage>
+
+	<component id="Associate" class="tl.ioc.Associate"/>
+
+</componentPackage>

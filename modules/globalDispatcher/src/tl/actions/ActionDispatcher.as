@@ -1,74 +1,181 @@
 package tl.actions
 {
+	import flash.events.Event;
+	import flash.events.IEventDispatcher;
+	import flash.events.TimerEvent;
 	import flash.utils.Dictionary;
-	import flash.utils.getTimer;
+	import flash.utils.Timer;
 
-	import tl.utils.getActionsInType;
+	import tl.ioc.ioc_internal;
+	import tl.utils.MemberDescription;
+	import tl.utils.describeTypeCached;
+	import tl.utils.getMembersInType;
 
-	public class ActionDispatcher
+	[Action]
+	/**
+	 * Global dispatcher implementation.
+	 *
+	 * @example
+	 * example of Action declaration:
+	 * <listing version="3.0">
+	 *     public namespace SOME_ACTION = "SOME_ACTION";</listing>
+	 *
+	 * example of action listener class:
+	 * <listing version="3.0">
+	 *     public class MyClass
+	 *     {
+	 *			public fuction MyClass()
+	 *			{
+	 *				ActionDispatcher.getInstance().addHandler(this);
+	 *			}
+	 *
+	 *			[Action]
+	 *			SOME_ACTION fuction myFunc(myParam : String, myAnotherParam : uint) : void
+	 *			{
+	 *				trace(myParam, myAnotherParam);
+	 *			}
+	 *		}</listing>
+	 *
+	 * example of action dispatching:
+	 * <listing version="3.0">
+	 *     ActionDispatcher.getInstance().dispatch(SOME_ACTION, ["Hello, World!", 42]);</listing>
+	 */
+	public class ActionDispatcher implements IActionDispatcher
 	{
-		public static var LOGGER_INSTANCE : IActionLogger;
+		private static var instance : ActionDispatcher;
 
+		private const callbacks : Array = new Array();
 
-		private static const callbacks : Array = new Array();
+		[Injection]
+		/**
+		 * <code>tl.actions.IActionLogger</code> instance
+		 */
+		public var logger : IActionLogger;
 
-		public static function addHandler(object : Object) : void
 		{
-			for each (var method : Object in getActionsInType(object))
+			if ( describeTypeCached( ActionDispatcher )..metadata.(@name == "Action").length() == 0 )
 			{
-				addActionListener(method.className, method.methodName, method.method);
+				throw new Error( "Please add -keep-as3-metadata+=Action to flex compiler arguments!" )
 			}
 		}
 
-		public static function removeHandler(object : Object) : void
+		ioc_internal static function getInstance() : IActionDispatcher
 		{
-			for each (var method : Object in getActionsInType(object))
+			if ( instance == null )
 			{
-				removeActionListener(method.className, method.methodName, method.method);
+				instance = new ActionDispatcher();
+			}
+
+			return instance;
+		}
+
+		ioc_internal static function getInstanceForInstance( instance : * ) : IActionDispatcher
+		{
+			var actionDispatcher : IActionDispatcher = ioc_internal::getInstance();
+
+			if ( instance != null ) actionDispatcher.addHandler( instance );
+
+			return actionDispatcher;
+		}
+
+		/**
+		 * Add action listeners, marked with [Action] Metatag, and declared in Action namespace
+		 *
+		 * @param object target for metatag scan
+		 */
+		public function addHandler( object : Object ) : void
+		{
+			var ns : Namespace;
+			var methodName : String;
+			for each ( var memberDescription : MemberDescription in getMembersInType( object, "Action" ) )
+			{
+				ns = new Namespace( null, memberDescription.uri );
+				methodName = memberDescription.memberName;
+				addActionListener( memberDescription.uri, object.ns::[methodName] );
 			}
 		}
 
-		public static function addActionListener(className : String, methodName : String, listener : Function) : void
+		/**
+		 * Remove action listeners, marked with [Action] Metatag, and declared in Action namespace
+		 *
+		 * @param object target for metatag scan
+		 */
+		public function removeHandler( object : Object ) : void
 		{
-			if (getActions(className, methodName)[listener] != null) return;
-			getActions(className, methodName)[listener] = listener;
-		}
-
-		public static function dispatch(className : String, methodName : String, params : Array) : void
-		{
-			if (LOGGER_INSTANCE) LOGGER_INSTANCE.log(getTimer().toString() + " : " + [className + "::" + methodName + "(" + params + ")"], 1);
-
-			for each(var f : Function in getActions(className, methodName))
+			var ns : Namespace;
+			var methodName : String;
+			for each ( var memberDescription : MemberDescription in getMembersInType( object, "Action" ) )
 			{
-				f.apply(null, params);
+				ns = new Namespace( null, memberDescription.uri );
+				methodName = memberDescription.memberName;
+				removeActionListener( memberDescription.uri, object.ns::[methodName] );
 			}
 		}
 
-		public static function dispatchAction(act : Action) : void
+		/**
+		 * Dispatch Action
+		 *
+		 * @param type		type of the Action to dispatch
+		 * @param params	parameters, passed to Action listener
+		 * @param async		if true, will be called later (after 1ms)
+		 */
+		public function dispatch( type : String, params : Array = null, async : Boolean = false ) : void
 		{
-			if (act == null) return;
-			dispatch(act.className, act.methodName, act.params);
-		}
+			logger.log( type, params );
 
-		public static function hasActionListener(className : String, methodName : String) : Boolean
-		{
-			return callbacks[className + "." + methodName] != null;
-		}
+			var timer : Timer;
 
-		public static function removeActionListener(className : String, methodName : String, listener : Function) : void
-		{
-			if (!hasActionListener(className, methodName)) return;
-
-			delete callbacks[className + "." + methodName][listener];
-		}
-
-		private static function getActions(className : String, methodName : String) : Dictionary
-		{
-			if (callbacks[className + "." + methodName] == null)
+			for each( var f : Function in getActions( type ) )
 			{
-				return callbacks[className + "." + methodName] = new Dictionary();
+				if ( async )
+				{
+					timer = new Timer( 1, 1 );
+					timer.addEventListener( TimerEvent.TIMER_COMPLETE, function( e : Event ) : void
+					{
+						IEventDispatcher( e.currentTarget ).removeEventListener( e.type, arguments.callee );
+						f.apply( null, params );
+					} );
+					timer.start();
+				}
+				else
+				{
+					f.apply( null, params );
+				}
 			}
-			return callbacks[className + "." + methodName];
+		}
+
+		/**
+		 * Check, if there're Action listeners for type
+		 *
+		 * @param type	type of the Action to check
+		 * @return		A <code>true</code> value means, that there is Action listeners for passed type
+		 */
+		public function hasActionListener( type : String ) : Boolean
+		{
+			return callbacks[type] != null;
+		}
+
+		private function addActionListener( type : String, listener : Function ) : void
+		{
+			if ( type == null || type == "" ) throw new ArgumentError( "Wrong type value! (" + type + ")" );
+			if ( getActions( type )[listener] != null ) return;
+			getActions( type )[listener] = listener;
+		}
+
+		private function removeActionListener( type : String, listener : Function ) : void
+		{
+			if ( !hasActionListener( type ) ) return;
+
+			delete callbacks[type][listener];
+		}
+
+		private function getActions( type : String ) : Dictionary
+		{
+			if ( callbacks[type] == null )
+			{
+				return callbacks[type] = new Dictionary();
+			}
+			return callbacks[type];
 		}
 	}
 

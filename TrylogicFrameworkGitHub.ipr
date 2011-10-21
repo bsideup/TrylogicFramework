@@ -11,6 +11,45 @@
       <properties />
     </buildFile>
   </component>
+  <component name="ClearCaseSharedConfig">
+    <option name="myUseUcmModel" value="true" />
+  </component>
+  <component name="CodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <ADDITIONAL_INDENT_OPTIONS fileType="java">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="jsp">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+        <ADDITIONAL_INDENT_OPTIONS fileType="xml">
+          <option name="INDENT_SIZE" value="4" />
+          <option name="CONTINUATION_INDENT_SIZE" value="8" />
+          <option name="TAB_SIZE" value="4" />
+          <option name="USE_TAB_CHARACTER" value="false" />
+          <option name="SMART_TABS" value="false" />
+          <option name="LABEL_INDENT_SIZE" value="0" />
+          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+          <option name="USE_RELATIVE_INDENTS" value="false" />
+        </ADDITIONAL_INDENT_OPTIONS>
+      </value>
+    </option>
+  </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
     <resourceExtensions />
@@ -38,6 +77,9 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
   <component name="IdProvider" IDEtalkID="9A1BF36FB01B6FF7E1E412F90685877E" />
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
@@ -179,16 +221,17 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/modules/bootloader/bootloader.iml" filepath="$PROJECT_DIR$/modules/bootloader/bootloader.iml" />
-      <module fileurl="file://$PROJECT_DIR$/modules/core/core.iml" filepath="$PROJECT_DIR$/modules/core/core.iml" />
-      <module fileurl="file://$PROJECT_DIR$/modules/globalDispatcher/globalDispatcher.iml" filepath="$PROJECT_DIR$/modules/globalDispatcher/globalDispatcher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/modules/gui/gui.iml" filepath="$PROJECT_DIR$/modules/gui/gui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/Bootloader/Bootloader.iml" filepath="$PROJECT_DIR$/modules/Bootloader/Bootloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/GlobalDispatcher/GlobalDispatcher.iml" filepath="$PROJECT_DIR$/modules/GlobalDispatcher/GlobalDispatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/IoCContainer/IoCContainer.iml" filepath="$PROJECT_DIR$/modules/IoCContainer/IoCContainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/TestApplication/TestApplication.iml" filepath="$PROJECT_DIR$/modules/TestApplication/TestApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/modules/TrylogicFramework/TrylogicFramework.iml" filepath="$PROJECT_DIR$/modules/TrylogicFramework/TrylogicFramework.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="trunk (player 10.2)" project-jdk-type="Flex SDK Type">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="4.5.1 (player 10.2)" project-jdk-type="Flex SDK Type">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="VcsDirectoryMappings">

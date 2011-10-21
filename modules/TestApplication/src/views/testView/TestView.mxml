@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<tl:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:local="*" implements="views.testView.ITestView">
+	<fx:Script>
+		<![CDATA[
+		import tl.utils.getChildByNameRecursiveOnTarget;
+
+		private var _yoButton : SimpleButton;
+
+		public function get myLabel() : TextField
+		{
+			return testViewFromSWF.myText as TextField;
+		}
+
+		public function get delegate() : ITestViewDelegate
+		{
+			return ITestViewDelegate(controller);
+		}
+
+		protected function get yoButton() : SimpleButton
+		{
+			if ( _yoButton == null )
+			{
+				_yoButton = getChildByNameRecursiveOnTarget( "yoButton", testViewFromSWF ) as SimpleButton;
+			}
+			return _yoButton;
+		}
+
+		private function onYoButtonMouseDown( e : MouseEvent ) : void
+		{
+			delegate.myButtonClicked();
+		}
+		]]>
+	</fx:Script>
+
+	<tl:addedToStage>
+		<![CDATA[
+			testViewFromSWF.myText.text = String( yoButton );
+			IEventDispatcher( yoButton ).addEventListener( MouseEvent.MOUSE_DOWN, onYoButtonMouseDown );
+		]]>
+	</tl:addedToStage>
+
+	<tl:removedFromStage>
+	<![CDATA[
+			_yoButton = null;
+			IEventDispatcher( yoButton ).removeEventListener( MouseEvent.MOUSE_DOWN, onYoButtonMouseDown );
+		]]>
+	</tl:removedFromStage>
+
+	<tl:View id="myContainer">
+		<local:TestViewAsset id="testViewFromSWF" />
+	</tl:View>
+</tl:View>

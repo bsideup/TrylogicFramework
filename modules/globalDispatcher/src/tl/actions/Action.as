@@ -1,34 +1,45 @@
 ﻿package tl.actions
 {
-	import flash.events.Event;
 	import flash.net.registerClassAlias;
 
+	registerClassAlias( "ru.trylogic.messages.MethodInvokeMessage", Action );
+
 	/**
-	 * ...
-	 * @author aSt
+	 * This is utility class, used for AMF-based protocol.
+	 * It's mapped to ru.trylogic.messages.MethodInvokeMessage Java-class
+	 *
 	 */
-	registerClassAlias("ru.trylogic.messages.MethodInvokeMessage", Action);
 	public class Action
 	{
-		public var className : String;
-		public var methodName : String;
+		/**
+		 * String-based action identifer
+		 */
+		public var type : String;
+
+		/**
+		 * Array with parameters, passed to action listener for this Action
+		 */
 		public var params : Array;
 
-		public function Action(className : String = null, methodName : String = null, params : Array = null)
+		/**
+		 *
+		 * @param type	String-based action identifer
+		 * @param params Array with parameters, passed to action listener for this Action
+		 */
+		public function Action( type : String = "", params : Array = null )
 		{
-			this.className = className;
-			this.methodName = methodName;
+			this.type = type;
 			this.params = params;
 		}
 
 		public function clone() : Action
 		{
-			return new Action(className, methodName, params);
+			return new Action( type, params );
 		}
 
 		public function toString() : String
 		{
-			return "Action[" + className + "::" + methodName + "(" + params + ")}";
+			return "Action[" + type + "(" + params + ")}";
 		}
 	}
 

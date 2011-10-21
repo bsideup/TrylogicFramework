@@ -1,0 +1,28 @@
+<project name="TrylogicFramework" default="compile" basedir=".">
+
+	<property name="out" value="${basedir}/out"/>
+	<property name="FLEX_HOME" value=""/>
+	<property name="GLOBAL_OUT" value=""/>
+
+	<target name="install">
+	</target>
+
+	<target name="compile" description="compile the source" depends="install">
+
+		<taskdef file="${FLEX_HOME}/ant/flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+
+		<mxmlc file="${basedir}/src/TestApplicationBootstrap.mxml" dir="${basedir}" fork="true">
+			<sysproperty key="user.language" value="en"/>
+			<sysproperty key="user.region" value="US"/>
+			<compiler.library-path dir="${GLOBAL_OUT}" append="true">
+				<include name="*.swc"/>
+			</compiler.library-path>
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<load-config filename="${basedir}/compiler-config.xml"/>
+		</mxmlc>
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${out}" failonerror="no"/>
+	</target>
+</project>

@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../override.css" type="text/css"><meta name="keywords" content="ActionDispatcher,tl.actions.ActionDispatcher,logger,params,type,addHandler,addHandler,clone,dispatch,dispatch,getInstanceForInstance,getInstance,hasActionListener,hasActionListener,log,removeHandler,removeHandler,toString"><title>tl.actions.ActionDispatcher</title><script src="../../AC_OETags.js" type="text/javascript"></script></head><body><script language="javascript" type="text/javascript" src="../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../help.js"></script><script language="javascript" type="text/javascript" src="../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'ActionDispatcher - API Documentation';
+				var baseRef = '../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">API Documentation</td><td class="titleTableTopNav" align="right"><a href="../../package-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../class-summary.html" onclick="loadClassListFrame('../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../all-index-A.html" onclick="loadClassListFrame('../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../index.html?tl/actions/ActionDispatcher.html&amp;tl/actions/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">ActionDispatcher</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#includeExamplesSummary">Examples</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("ActionDispatcher"); titleBar_setSubNav(false,true,false,false,false,false,false,false,true,true,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">tl.actions</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  ActionDispatcher</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">ActionDispatcher  <img src="../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> Object</td></tr><tr><td class="classHeaderTableLabel">Implements</td><td> <a href="../../tl/actions/IActionDispatcher.html">IActionDispatcher</a></td></tr></table><p></p><p></p><p></p>
+	 Global dispatcher implementation.
+	 
+	 <p></p><p><a href="#includeExamplesSummary">View the examples</a></p><br/><hr></div><a name="propertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Properties</div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#logger" class="signatureLink">logger</a> : <a href="../../tl/actions/IActionLogger.html">IActionLogger</a><div class="summaryTableDescription">
+		 tl.actions.IActionLogger instance
+		 </div></td><td class="summaryTableOwnerCol">ActionDispatcher</td></tr></table></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#addHandler()" class="signatureLink">addHandler</a>(object:Object):void</div><div class="summaryTableDescription">
+		 Add action listeners, marked with [Action] Metatag, and declared in Action namespace
+		 
+		 </div></td><td class="summaryTableOwnerCol">ActionDispatcher</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#dispatch()" class="signatureLink">dispatch</a>(type:String, params:Array = null, async:Boolean = false):void</div><div class="summaryTableDescription">
+		 Dispatch Action
+		 
+		 </div></td><td class="summaryTableOwnerCol">ActionDispatcher</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#hasActionListener()" class="signatureLink">hasActionListener</a>(type:String):Boolean</div><div class="summaryTableDescription">
+		 Check, if there're Action listeners for type
+		 
+		 </div></td><td class="summaryTableOwnerCol">ActionDispatcher</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#removeHandler()" class="signatureLink">removeHandler</a>(object:Object):void</div><div class="summaryTableDescription">
+		 Remove action listeners, marked with [Action] Metatag, and declared in Action namespace
+		 
+		 </div></td><td class="summaryTableOwnerCol">ActionDispatcher</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><div class="detailSectionHeader">Property Detail</div><a name="propertyDetail"></a><a name="logger"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">logger</td><td class="detailHeaderType">property</td></tr></table><div class="detailBody"><code>public var logger:<a href="../../tl/actions/IActionLogger.html">IActionLogger</a></code><p></p><p></p><p>
+		 <code>tl.actions.IActionLogger</code> instance
+		 </p></div><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="addHandler()"></a><a name="addHandler(Object)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">addHandler</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> public function addHandler(object:Object):void</code><p></p><p></p><p>
+		 Add action listeners, marked with [Action] Metatag, and declared in Action namespace
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">object</span>:Object</code> &mdash; target for metatag scan
+		 </td></tr></table></p></div><a name="dispatch()"></a><a name="dispatch(String,Array,Boolean)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">dispatch</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function dispatch(type:String, params:Array = null, async:Boolean = false):void</code><p></p><p></p><p>
+		 Dispatch Action
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">type</span>:String</code> &mdash; 	type of the Action to dispatch
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">params</span>:Array</code> (default = <code>null</code>)<code></code> &mdash; parameters, passed to Action listener
+		 </td></tr><tr><td class="paramSpacer">&nbsp;</td></tr><tr><td width="20px"></td><td><code><span class="label">async</span>:Boolean</code> (default = <code>false</code>)<code></code> &mdash; 	if true, will be called later (after 1ms)
+		 </td></tr></table></p></div><a name="getInstance()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> ioc_internal static function getInstance():<a href="../../tl/actions/IActionDispatcher.html">IActionDispatcher</a></code><p></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../tl/actions/IActionDispatcher.html">IActionDispatcher</a></code></td></tr></table></div><a name="getInstanceForInstance()"></a><a name="getInstanceForInstance(any)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">getInstanceForInstance</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> ioc_internal static function getInstanceForInstance(instance:*):<a href="../../tl/actions/IActionDispatcher.html">IActionDispatcher</a></code><p></p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">instance</span>:*</code></td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code><a href="../../tl/actions/IActionDispatcher.html">IActionDispatcher</a></code></td></tr></table></div><a name="hasActionListener()"></a><a name="hasActionListener(String)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">hasActionListener</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function hasActionListener(type:String):Boolean</code><p></p><p></p><p>
+		 Check, if there're Action listeners for type
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">type</span>:String</code> &mdash; type of the Action to check
+		 </td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code> &mdash; A <code>true</code> value means, that there is Action listeners for passed type
+		 </td></tr></table></div><a name="removeHandler()"></a><a name="removeHandler(Object)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">removeHandler</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> public function removeHandler(object:Object):void</code><p></p><p></p><p>
+		 Remove action listeners, marked with [Action] Metatag, and declared in Action namespace
+		 
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">object</span>:Object</code> &mdash; target for metatag scan
+		 </td></tr></table></p></div><a name="includeExamplesSummary"></a><div class="detailSectionHeader">Examples</div><div class="detailBody">
+	 example of Action declaration:
+	 <div class="listing" version="3.0"><pre>
+         public namespace SOME_ACTION = "SOME_ACTION";</pre></div>
+	 
+	 example of action listener class:
+	 <div class="listing" version="3.0"><pre>
+         public class MyClass
+         {
+             public fuction MyClass()
+             {
+                 ActionDispatcher.getInstance().addHandler(this);
+             }
+     
+             [Action]
+             SOME_ACTION fuction myFunc(myParam : String, myAnotherParam : uint) : void
+             {
+                 trace(myParam, myAnotherParam);
+             }
+         }</pre></div>
+	 
+	 example of action dispatching:
+	 <div class="listing" version="3.0"><pre>
+         ActionDispatcher.getInstance().dispatch(SOME_ACTION, ["Hello, World!", 42]);</pre></div>
+	 </div><br/><br/><hr><br/><p></p><center class="copyright"><footer></footer><br/>Fri Oct 21 2011, 06:26 PM +04:00  </center></div></body></html><!--<br/>Fri Oct 21 2011, 06:26 PM +04:00  -->

@@ -1,40 +1,99 @@
 <project name="TrylogicFramework" default="compile" basedir=".">
-	<!-- set global properties for this build -->
+
 	<property file="build.properties" />
+	
+	<property name="sdkPath" value="${basedir}/sdk" />
+	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.5/flex_sdk_4.5.1.21328_mpl.zip" />
+	<property name="out" value="${basedir}/out" />
+    <property name="modules" value="${basedir}/modules" />
 
-	<property name="downloadedSDKPath" value="sdk" />
-	<property name="out" value="out" />
+    <macrodef name="compileModule">
+        <attribute name="moduleName" />
+        <sequential>
+            <echo message="Compiling module @{moduleName}"/>
 
+            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="compile" inheritall="false">
+                <property name="FLEX_HOME" value="${sdkPath}" />
+                <property name="GLOBAL_OUT" value="${out}" />
+            </ant>
+
+            <copy todir="${out}" description="Copying output files">
+                <fileset dir="${modules}/@{moduleName}/out">
+                    <include name="**/**" />
+                    <exclude name="**/**.cache" />
+                </fileset>
+            </copy>
+
+        </sequential>
+    </macrodef>
+
+    <macrodef name="cleanModule">
+        <attribute name="moduleName" />
+        <sequential>
+            <echo message="Cleaning module @{moduleName}"/>
+            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="clean" inheritall="false" inheritrefs="false" />
+        </sequential>
+    </macrodef>
 
 	<target name="downloadSDK" if="${autoDownloadSDK}" description="Download Flex SDK and set properties FLEX_HOME to downloaded files">
-		<mkdir dir="${downloadedSDKPath}"/>
+		<mkdir dir="${sdkPath}"/>
 
-		<get src="http://dl.dropbox.com/u/18819203/TrylogicFramework.zip" dest="${downloadedSDKPath}/Framework.zip"
-			 skipexisting="true" />
-		<unzip src="${downloadedSDKPath}/Framework.zip" dest="${downloadedSDKPath}" overwrite="true"/>
+		<get src="${sdkURL}" dest="${sdkPath}/Framework.zip" skipexisting="true"/>
+		<unzip src="${sdkPath}/Framework.zip" dest="${sdkPath}" overwrite="false"/>
 
-		<propertyfile file="paths.properties">
-  			<entry  key="FLEX_HOME" value="${downloadedSDKPath}"/>
+		<propertyfile file="build.properties">
+			<entry  key="autoDownloadSDK" value="no"/>
 		</propertyfile>
 
+		<property file="build.properties" />
 	</target>
 
-	<target name="compile" depends="downloadSDK" description="compile the source">
-		<delete dir="${out}"/>
-		<mkdir dir="${out}"/>
+	<target name="compile" description="compile the source">
 
-		<taskdef file="${FLEX_HOME}/ant/flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+        <delete dir="${out}" />
+        <mkdir dir="${out}" />
 
-		<!--<mxmlc file="${APP_ROOT}/src/DummyProject.as">
-					<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
-					<load-config filename="${APP_ROOT}/compiler-config.xml" />
-				</mxmlc>
-			-->
+		<antcall target="downloadSDK" />
+
+		<antcall target="IOCContainer" />
+		<antcall target="Bootloader" />
+        <antcall target="GlobalDispatcher" />
+        <antcall target="TrylogicFramework" />
+		<antcall target="TestApplication" />
+
 	</target>
+
+	<target name="IOCContainer">
+		<compileModule moduleName="IOCContainer" />
+	</target>
+
+	<target name="Bootloader">
+		<compileModule moduleName="Bootloader" />
+	</target>
+
+	<target name="GlobalDispatcher">
+		<compileModule moduleName="GlobalDispatcher" />
+	</target>
+
+	<target name="TrylogicFramework">
+		<compileModule moduleName="TrylogicFramework" />
+	</target>
+
+	<target name="TestApplication">
+		<compileModule moduleName="TestApplication" />
+	</target>
+
+    <target name="install">
+        <antcall target="compile" />
+    </target>
 
 	<target name="clean" description="clean up">
-		<!-- Delete the ${build} and ${dist} directory trees -->
 		<delete dir="${out}" failonerror="no"/>
-		<delete dir="${downloadedSDKPath}" failonerror="no"/>
+
+		<cleanModule moduleName="IoCContainer" />
+		<cleanModule moduleName="Bootloader" />
+        <cleanModule moduleName="TrylogicFramework" />
+        <cleanModule moduleName="GlobalDispatcher" />
+		<cleanModule moduleName="TestApplication" />
 	</target>
 </project>

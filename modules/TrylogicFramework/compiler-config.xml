@@ -1,0 +1,37 @@
+<flex-config xmlns="http://www.adobe.com/2006/flex-config">
+
+	<include-sources append="true">
+		<path-element>./src</path-element>
+	</include-sources>
+
+	<compiler>
+
+		<incremental>true</incremental>
+
+		<external-library-path append="true">
+			<path-element>./libs</path-element>
+		</external-library-path>
+
+		<keep-generated-actionscript>false</keep-generated-actionscript>
+
+		<namespaces>
+			<namespace>
+				<uri>http://www.trylogic.ru/</uri>
+				<manifest>tl-manifest.xml</manifest>
+			</namespace>
+		</namespaces>
+
+		<keep-as3-metadata append="true">
+			<name>Outlet</name>
+			<name>ApplicationController</name>
+		</keep-as3-metadata>
+
+		<source-path append="true">
+			<path-element>./src</path-element>
+		</source-path>
+	</compiler>
+
+	<include-namespaces>
+		<uri>http://www.trylogic.ru/</uri>
+	</include-namespaces>
+</flex-config>
