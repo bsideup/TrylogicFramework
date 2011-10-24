@@ -1,5 +1,6 @@
 .DS_Store
 **/*.iws
 sdk/
+asdoc/
 out
 *.iws

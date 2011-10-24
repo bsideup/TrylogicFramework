@@ -2,8 +2,27 @@
 {
 	import flash.utils.*;
 
+	import tl.ioc.IoCHelper;
+
+	/**
+	 * MXML wrapper for embedded objects
+	 *
+	 * <listing  version="3.0">
+	 *	 &lt;addedToStage&gt;
+	 *		 trace(embeddedInstance.getChildAt(0));
+	 *		 trace(embeddedInstance.someInstanceID);
+	 *	 &lt;/addedToStage&gt;
+	 *
+	 *	 &lt;tl:Embed id="embeddedInstance" source="@Embed(source='myView.swf', symbol='MySymbol')" /&gt;
+	 * </listing>
+	 *
+	 */
 	public dynamic class Embed extends Proxy
 	{
+		/**
+		 * Instance from class, specified in source property
+		 *
+		 */
 		protected var _instance : Object;
 
 		internal function get instance() : Object
@@ -20,7 +39,7 @@
 				throw new ArgumentError( "You can't set source twice!" );
 			}
 
-			this._instance = new value();
+			this._instance = IoCHelper.makeInstance( value );
 		}
 
 		override flash_proxy function getProperty( name : * ) : *
@@ -50,8 +69,7 @@
 			{
 				delete instance[name];
 				return true;
-			}
-			else
+			} else
 			{
 				return false;
 			}

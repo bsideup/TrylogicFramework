@@ -34,7 +34,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/src/views/TestView.swc!/" />
+          <root url="jar://$MODULE_DIR$/src/view/testView/TestView.swc!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

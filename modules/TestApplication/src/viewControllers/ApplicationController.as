@@ -1,15 +1,13 @@
 package viewControllers
 {
-	import actions.MY_ACTION;
-
 	import tl.ioc.IoCHelper;
 	import tl.ioc.ioc_internal;
-	import tl.viewController.ContainerController;
 	import tl.viewController.IApplicationController;
+	import tl.viewController.ViewControllerContainer;
 
-	import views.testView.ITestViewController;
+	import view.testView.ITestViewController;
 
-	public class ApplicationController extends ContainerController implements IApplicationController
+	public class ApplicationController extends ViewControllerContainer implements IApplicationController
 	{
 		private static const instance : ApplicationController = new ApplicationController();
 
@@ -18,16 +16,10 @@ package viewControllers
 			return instance;
 		}
 
-		override public function viewLoaded() : void
+		override protected function viewLoaded() : void
 		{
 			super.viewLoaded();
 			addController( IoCHelper.resolve( ITestViewController ) );
-		}
-
-		[Event(name="addedToStage")]
-		public function viewAddedToStage() : void
-		{
-			actionDispatcher.dispatch( MY_ACTION );
 		}
 	}
 }

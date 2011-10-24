@@ -8,8 +8,19 @@ package tl.bootloader
 	import mx.core.IFlexModuleFactory;
 	import mx.core.RSLData;
 
+	/**
+	 * Basic ApplicationLoader. Create Preloader from "preloader" property of the Main class instance
+	 *
+	 * @See PreloaderBase
+	 */
 	public class ApplicationLoader extends MovieClip implements IFlexModuleFactory
 	{
+
+		/**
+		 * PreloaderBase instance. Each your preloader must extends PreloaderBase
+		 *
+		 * @see PreloaderBase
+		 */
 		protected var preloader : PreloaderBase;
 
 		public function ApplicationLoader()
@@ -23,7 +34,7 @@ package tl.bootloader
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
 		}
 
-		protected function enterFrameHandler( e : Event ) : void
+		private function enterFrameHandler( e : Event ) : void
 		{
 			if ( framesLoaded >= totalFrames )
 			{
@@ -36,11 +47,15 @@ package tl.bootloader
 			}
 		}
 
-
-		protected function loadApplication( e : Event = null ) : void
+		/**
+		 * By default, Application loader add new Main Class to stage.
+		 * You can override this method, but DO NOT FORGET to call nextFrame(); and removeChild( preloader ): !!!
+		 *
+		 */
+		protected function loadApplication() : void
 		{
 			nextFrame();
-			removeChild( DisplayObject( preloader ) );
+			removeChild( preloader );
 			addChild( create() as DisplayObject );
 		}
 

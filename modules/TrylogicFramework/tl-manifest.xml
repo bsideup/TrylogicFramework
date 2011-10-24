@@ -6,12 +6,12 @@
 -->
 <componentPackage>
 
-	<component id="Bootstrap" class="tl.core.Bootstrap"/>
+	<component id="Bootstrap" class="tl.core.Bootstrap" />
 
-	<component id="Embed" class="tl.view.Embed"/>
-	<component id="Loader" class="tl.core.Loader"/>
-	<component id="SWFLoader" class="tl.core.SWFLoader"/>
-	
-	<component id="View" class="tl.view.View"/>
+	<component id="Embed" class="tl.view.Embed" />
+	<component id="Loader" class="tl.core.Loader" />
+	<component id="SWFLoader" class="tl.core.SWFLoader" />
+
+	<component id="View" class="tl.view.View" />
 
 </componentPackage>

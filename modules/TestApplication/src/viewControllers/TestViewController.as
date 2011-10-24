@@ -5,25 +5,28 @@ package viewControllers
 	import controllers.ILogger;
 
 	import flash.text.TextField;
-	import flash.utils.getTimer;
 
 	import models.IMyModel;
 
 	import tl.viewController.ViewController;
 
-	import views.testView.ITestView;
-	import views.testView.ITestViewController;
+	import view.testView.ITestView;
+	import view.testView.ITestViewController;
 
 	public class TestViewController extends ViewController implements ITestViewController
 	{
 		[Outlet]
 		public var myLabel : TextField;
 
+		[Outlet]
+		public var myAnotherLabel : TextField;
+
 		[Injection]
 		public var myModel : IMyModel;
 
 		[Injection]
 		public var logger : ILogger;
+
 
 		override public function getViewInterface() : Class
 		{
@@ -33,24 +36,14 @@ package viewControllers
 		[Action]
 		MY_ACTION function myAction() : void
 		{
-			logger.log( "myLabel text is " + myLabel.text );
-		}
-
-		[Event(name="addedToStage")]
-		public function onAddedToStage() : void
-		{
-			logger.log( "TestViewController.onAddedToStage" );
+			myAnotherLabel.text = myLabel.text;
 		}
 
 		[Event(name="enterFrame")]
 		public function onEnterFrame() : void
 		{
-			myLabel.text = getTimer().toString();
-		}
-
-		override public function viewUnloaded() : void
-		{
-			super.viewUnloaded();
+			var date : Date = new Date();
+			myLabel.text = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "." + date.getMilliseconds();
 		}
 
 		public function myButtonClicked() : void

@@ -13,7 +13,7 @@ package tl.utils
 	public function getMembersInType( type : *, metatag : String, fromFactory : Boolean = false ) : Array
 	{
 		if ( type == null || type == "" ) return [];
-		if ( metatag == null || metatag == "") return [];
+		if ( metatag == null || metatag == "" ) return [];
 
 		var cacheArray : Dictionary = type is Class ? classCache : objectCache;
 
@@ -29,12 +29,12 @@ package tl.utils
 
 			if ( fromFactory )
 			{
-				desc.factory.method.(metadata.(@name == metatag).length()).(
+				desc.factory.method.(valueOf().metadata.(@name == metatag).length()).(
 						cachedMembersInType.push( new MemberDescription( String( @uri ), String( @name ), metadata.(@name == metatag) ) )
 						);
 			} else
 			{
-				desc.method.(metadata.(@name == metatag).length()).(
+				desc.method.(valueOf().metadata.(@name == metatag).length()).(
 						cachedMembersInType.push( new MemberDescription( String( @uri ), String( @name ), metadata.(@name == metatag) ) )
 						);
 

@@ -2,39 +2,40 @@ package tl.ioc
 {
 	import flash.utils.*;
 
+	[Injection]
 	/**
 	 * Basic IoC container.
 	 *
 	 * @example
 	 * <listing version="3.0">
-	 *     public interface ILogger
-	 *     {
-	 *     		function log(...args) : void;
-	 *     }</listing>
+	 *	 public interface ILogger
+	 *	 {
+	 *			 function log(...args) : void;
+	 *	 }</listing>
 	 *
 	 * <listing version="3.0">
-	 *     public class MyLogger implements ILogger
-	 *     {
-	 *     		private static var _instance : MyLogger;
-	 *     		
-	 *     		ioc_internal static fuction getInstance() : MyLogger
-	 *     		{
-	 *     			if(_instance == null)
-	 *     			{
-	 *     				_instance = new MyLogger();
-	 *     			}
-	 *     			return _instance;
-	 *     		}
-	 *     		
-	 *     		public fuction log(...args) : void
-	 *     		{
-	 *     			trace(args);
-	 *     		}
-	 *     }</listing>
+	 *	 public class MyLogger implements ILogger
+	 *	 {
+	 *			 private static var _instance : MyLogger;
+	 *
+	 *			 ioc_internal static fuction getInstance() : MyLogger
+	 *			 {
+	 *				 if(_instance == null)
+	 *				 {
+	 *					 _instance = new MyLogger();
+	 *				 }
+	 *				 return _instance;
+	 *			 }
+	 *
+	 *			 public fuction log(...args) : void
+	 *			 {
+	 *				 trace(args);
+	 *			 }
+	 *	 }</listing>
 	 *
 	 * <listing version="3.0">
-	 *     public class MyInjectedClass
-	 *     {
+	 *	 public class MyInjectedClass
+	 *	 {
 	 *			[Injection]
 	 *			public var logger : ILogger;
 	 *
@@ -45,8 +46,8 @@ package tl.ioc
 	 *		}</listing>
 	 *
 	 * <listing version="3.0">
-	 *     public class MyClass
-	 *     {
+	 *	 public class MyClass
+	 *	 {
 	 *			public fuction MyClass()
 	 *			{
 	 *				IoCHelper.registerType(ILogger, MyLogger);
@@ -54,9 +55,15 @@ package tl.ioc
 	 *				injectedObject.doSomething(); // Will trace "something"
 	 *			}
 	 *		}</listing>
-	 */
-	public class IoCHelper
+	 */ public class IoCHelper
 	{
+		{
+			if ( describeType( IoCHelper )..metadata.(@name == "Injection").length() == 0 )
+			{
+				throw new Error( "Please add -keep-as3-metadata+=Injection to flex compiler arguments!" )
+			}
+		}
+
 		private static const aliases : Dictionary = new Dictionary();
 
 		/**
@@ -94,14 +101,12 @@ package tl.ioc
 			try
 			{
 				resolvedInstance = instanceClass.ioc_internal::['getInstanceForInstance']( forInstance );
-			}
-			catch( e : ReferenceError )
+			} catch( e : ReferenceError )
 			{
 				try
 				{
 					resolvedInstance = instanceClass.ioc_internal::['getInstance']();
-				}
-				catch( e : ReferenceError )
+				} catch( e : ReferenceError )
 				{
 					resolvedInstance = new instanceClass();
 				}
@@ -111,7 +116,7 @@ package tl.ioc
 			{
 				var desc : XML = describeType( resolvedInstance );
 
-				desc.variable.(metadata.(@name == "Injection").length()).(
+				desc.variable.(valueOf().metadata.(@name == "Injection").length()).(
 						resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
 						);
 			}

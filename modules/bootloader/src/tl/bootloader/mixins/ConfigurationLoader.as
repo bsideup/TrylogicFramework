@@ -6,12 +6,22 @@ package tl.bootloader.mixins
 
 	import mx.core.IFlexModuleFactory;
 
-	/**
-	 * ...
-	 * @author
-	 */
 	[Mixin]
-	public class ConfigurationLoader
+	/**
+	 * Basic Configuration loader Mixin
+	 *
+	 * In PreloaderBase extender, setup <code>ConfigurationLoader.CONFIGURATIONS = [...]</code>
+	 *
+	 * @example
+	 * <listing version="3.0">
+	 *	 ConfigurationLoader.CONFIGURATIONS =
+	 *	 [
+	 *			 "http://www.mySite.com/configs/myConfig.xml",
+	 *			 "http://www.mySite.com/configs/myAnotherConfig.xml"
+	 *	 ];
+	 * </listing>
+	 *
+	 */ public class ConfigurationLoader
 	{
 		private static var configs : Array = [];
 		private static var rawConfigs : Array;
@@ -21,8 +31,19 @@ package tl.bootloader.mixins
 		private static var onCompleteHandler : Function;
 
 		private static var currentConfig : Array;
+
+		/**
+		 * List of configuration sources
+		 *
+		 */
 		public static var CONFIGURATIONS : Array = [];
 
+		/**
+		 * Application loader function
+		 * @param loader
+		 * @param onProgress
+		 * @param onComplete
+		 */
 		public static function process( loader : IFlexModuleFactory, onProgress : Function, onComplete : Function ) : void
 		{
 			rawConfigs = CONFIGURATIONS;
@@ -37,6 +58,12 @@ package tl.bootloader.mixins
 			loadConfigs();
 		}
 
+		/**
+		 * Get constant from loaded configs
+		 *
+		 * @param name	Constant identifier
+		 * @return
+		 */
 		public static function getConst( name : String ) : XML
 		{
 			var config : XML = configs[name];
@@ -44,7 +71,7 @@ package tl.bootloader.mixins
 			return config;
 		}
 
-		static private function loadConfigs( e : Event = null ) : void
+		private static function loadConfigs( e : Event = null ) : void
 		{
 			if ( rawConfigs == null || rawConfigs.length == 0 )
 			{
@@ -65,12 +92,12 @@ package tl.bootloader.mixins
 			loader.load( request );
 		}
 
-		static private function libraryLoadingProgress( e : ProgressEvent ) : void
+		private static function libraryLoadingProgress( e : ProgressEvent ) : void
 		{
 			onProgressHandler( (((1 - rawConfigs.length / configsCount) / 2)) + ((e.bytesTotal != 0) ? ((e.bytesLoaded / e.bytesTotal) * 0.1) : 0), "Loading config: " + currentConfig[1] + "(" + e.bytesLoaded + "/" + e.bytesTotal + ")" );
 		}
 
-		static private function xmlLoaded( e : Event ) : void
+		private static function xmlLoaded( e : Event ) : void
 		{
 			configs[currentConfig[0]] = XML( URLLoader( e.target ).data.replace( /\s+/g, " " ) );
 			loadConfigs();

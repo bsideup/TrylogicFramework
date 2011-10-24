@@ -47,8 +47,7 @@
 			if ( value is Class )
 			{
 				this.source = new (value as Class)();
-			}
-			else
+			} else
 			{
 				if ( numChildren )
 				{
@@ -58,16 +57,13 @@
 				if ( value is Bitmap )
 				{
 					_embeddedDisplayObject = Bitmap( value );
-				}
-				else if ( value is BitmapData )
+				} else if ( value is BitmapData )
 				{
 					_embeddedDisplayObject = new Bitmap( BitmapData( value ) );
-				}
-				else if ( value is DisplayObject )
+				} else if ( value is DisplayObject )
 				{
 					_embeddedDisplayObject = DisplayObject( value );
-				}
-				else
+				} else
 				{
 					throw new ArgumentError( value );
 				}

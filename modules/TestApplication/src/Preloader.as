@@ -1,13 +1,12 @@
 package
 {
-	import mx.core.IFlexModuleFactory;
-
+	import tl.bootloader.ApplicationLoader;
 	import tl.bootloader.PreloaderBase;
 	import tl.bootloader.mixins.LibraryLoader;
 
 	public class Preloader extends PreloaderBase
 	{
-		public function Preloader( app : IFlexModuleFactory )
+		public function Preloader( app : ApplicationLoader )
 		{
 			super( app );
 

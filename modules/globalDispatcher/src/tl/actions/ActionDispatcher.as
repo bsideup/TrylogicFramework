@@ -18,12 +18,12 @@ package tl.actions
 	 * @example
 	 * example of Action declaration:
 	 * <listing version="3.0">
-	 *     public namespace SOME_ACTION = "SOME_ACTION";</listing>
+	 *	 public namespace SOME_ACTION = "SOME_ACTION";</listing>
 	 *
 	 * example of action listener class:
 	 * <listing version="3.0">
-	 *     public class MyClass
-	 *     {
+	 *	 public class MyClass
+	 *	 {
 	 *			public fuction MyClass()
 	 *			{
 	 *				ActionDispatcher.getInstance().addHandler(this);
@@ -38,9 +38,8 @@ package tl.actions
 	 *
 	 * example of action dispatching:
 	 * <listing version="3.0">
-	 *     ActionDispatcher.getInstance().dispatch(SOME_ACTION, ["Hello, World!", 42]);</listing>
-	 */
-	public class ActionDispatcher implements IActionDispatcher
+	 *	 ActionDispatcher.getInstance().dispatch(SOME_ACTION, ["Hello, World!", 42]);</listing>
+	 */ public class ActionDispatcher implements IActionDispatcher
 	{
 		private static var instance : ActionDispatcher;
 
@@ -49,8 +48,7 @@ package tl.actions
 		[Injection]
 		/**
 		 * <code>tl.actions.IActionLogger</code> instance
-		 */
-		public var logger : IActionLogger;
+		 */ public var logger : IActionLogger;
 
 		{
 			if ( describeTypeCached( ActionDispatcher )..metadata.(@name == "Action").length() == 0 )
@@ -59,7 +57,7 @@ package tl.actions
 			}
 		}
 
-		ioc_internal static function getInstance() : IActionDispatcher
+		ioc_internal static function getInstance() : ActionDispatcher
 		{
 			if ( instance == null )
 			{
@@ -69,9 +67,9 @@ package tl.actions
 			return instance;
 		}
 
-		ioc_internal static function getInstanceForInstance( instance : * ) : IActionDispatcher
+		ioc_internal static function getInstanceForInstance( instance : * ) : ActionDispatcher
 		{
-			var actionDispatcher : IActionDispatcher = ioc_internal::getInstance();
+			var actionDispatcher : ActionDispatcher = ioc_internal::getInstance();
 
 			if ( instance != null ) actionDispatcher.addHandler( instance );
 
@@ -136,8 +134,7 @@ package tl.actions
 						f.apply( null, params );
 					} );
 					timer.start();
-				}
-				else
+				} else
 				{
 					f.apply( null, params );
 				}

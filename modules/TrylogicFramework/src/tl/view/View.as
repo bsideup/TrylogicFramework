@@ -1,40 +1,71 @@
 ﻿package tl.view
 {
-	import flash.display.DisplayObject;
-	import flash.display.MovieClip;
-
-	import tl.core.tl_internal;
+	import flash.display.*;
 
 	import tl.ioc.IoCHelper;
 	import tl.utils.getChildByNameRecursiveOnTarget;
 	import tl.viewController.IVIewController;
+	import tl.viewController.IViewControllerContainer;
 
 	[DefaultProperty("data")]
-	public class View extends MovieClip implements IView
+	/**
+	 * Basic IView implementation
+	 *
+	 * @see IViewController
+	 *
+	 */
+	public class View extends Sprite implements IView
 	{
-		private var _data : Array = [];
-
 		{
 			IoCHelper.registerType( IView, View );
 		}
 
+		private var _data : Array = [];
 		private var _controller : IVIewController;
 
-		public function getChildByNameRecursive( name : String ) : DisplayObject
+		/**
+		 * Don't call it by yourself. Called by IViewController
+		 *
+		 * @param value
+		 */
+		public final function set controller( value : IVIewController ) : void
 		{
-			return getChildByNameRecursiveOnTarget( name, this );
-		}
+			if ( _controller != null )
+			{
+				throw new Error( "You can't set controller twice!" );
+			}
 
-		public function set controller( value : IVIewController ) : void
-		{
 			_controller = value;
 		}
 
 		public final function get controller() : IVIewController
 		{
+			if ( _controller == null )
+			{
+				_controller = IoCHelper.resolve( IViewControllerContainer );
+			}
+
 			return _controller;
 		}
 
+		/**
+		 * Wrapper for <code>getChildByNameRecursiveOnTarget</code>
+		 *
+		 * @see getChildByNameRecursiveOnTarget
+		 *
+		 * @param name	Child name
+		 * @return		null, if there is no childs with this name, or first occurience of child with this name, if it's exist
+		 */
+		public function getChildByNameRecursive( name : String ) : DisplayObject
+		{
+			return getChildByNameRecursiveOnTarget( name, this );
+		}
+
+		/**
+		 * Inner childs.
+		 *
+		 * @param value
+		 */
 		public final function set data( value : Array ) : void
 		{
 			value = [].concat( value );
@@ -43,15 +74,22 @@
 
 			for each ( element in _data )
 			{
-				if ( element is DisplayObject )
+				if ( element is IVIewController && (IVIewController( element ).viewIsLoaded) )
+				{
+					viewElement = IVIewController( element ).view as DisplayObject;
+
+					if ( value.indexOf( viewElement ) == -1 )
+					{
+						IVIewController( element ).viewBeforeRemovedFromStage();
+					}
+
+				} else if ( element is DisplayObject )
 				{
 					viewElement = element as DisplayObject;
-				}
-				else if ( element is Embed )
+				} else if ( element is Embed && (element.instance is DisplayObject) )
 				{
 					viewElement = element.instance as DisplayObject;
-				}
-				else
+				} else
 				{
 					continue;
 				}
@@ -64,15 +102,21 @@
 
 			for each ( element in value )
 			{
-				if ( element is DisplayObject )
+				if ( element is IVIewController )
+				{
+					viewElement = IVIewController( element ).view as DisplayObject;
+
+					if ( _data.indexOf( viewElement ) == -1 )
+					{
+						IVIewController( element ).viewBeforeAddedToStage();
+					}
+				} else if ( element is DisplayObject )
 				{
 					viewElement = element as DisplayObject;
-				}
-				else if ( element is Embed )
+				} else if ( element is Embed )
 				{
 					viewElement = element.instance as DisplayObject;
-				}
-				else
+				} else
 				{
 					continue;
 				}
@@ -87,11 +131,42 @@
 
 			_data = value;
 		}
-		
-		public function dispose() : void
+
+		public function get data() : Array
 		{
-			_controller = null;
+			return _data;
 		}
 
+		/**
+		 * Destroy a IView.
+		 *
+		 * @see internalDispose
+		 *
+		 */
+		public final function destroy() : void
+		{
+			internalDispose();
+
+			data = null;
+
+			if ( parent )
+			{
+				parent.removeChild( this );
+			}
+
+			if ( _controller )
+			{
+				_controller = null;
+			}
+		}
+
+		/**
+		 * Do a custom dispose logic here
+		 *
+		 */
+		protected function internalDispose() : void
+		{
+
+		}
 	}
 }

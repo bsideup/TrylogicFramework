@@ -15,11 +15,6 @@
 
 		public var applicationControllerClass : Class;
 
-		public function Bootstrap()
-		{
-			super();
-		}
-
 		public function set iocMap( value : Array ) : void
 		{
 			for each( var assoc : Associate in value )
@@ -32,14 +27,12 @@
 		{
 			if ( applicationControllerClass == null )
 			{
-				throw new ArgumentError( "applicationControllerClass of Application must be non-null and implements IApplicationController" );
+				throw new ArgumentError( "applicationControllerClass of Bootstrap must be non-null and implements IApplicationController" );
 			}
 
 			IoCHelper.registerType( IApplicationController, applicationControllerClass );
 
 			var appController : IApplicationController = IoCHelper.resolve( IApplicationController, this );
-
-			appController.loadView();
 
 			appController.viewBeforeAddedToStage();
 

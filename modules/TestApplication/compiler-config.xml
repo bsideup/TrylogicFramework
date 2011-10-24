@@ -2,7 +2,7 @@
 
 	<compiler>
 
-		<debug>true</debug>
+		<debug>false</debug>
 		<verbose-stacktraces>true</verbose-stacktraces>
 
 		<incremental>false</incremental>
@@ -11,11 +11,11 @@
 			<path-element>libs</path-element>
 		</library-path>
 
-		<include-libraries>
-			<library>./src/views/testView/TestView.swc</library>
+		<include-libraries append="true">
+			<library>./src/view/testView/TestView.swc</library>
 		</include-libraries>
 
-		<keep-generated-actionscript>false</keep-generated-actionscript>
+		<keep-generated-actionscript>true</keep-generated-actionscript>
 
 		<use-resource-bundle-metadata>false</use-resource-bundle-metadata>
 

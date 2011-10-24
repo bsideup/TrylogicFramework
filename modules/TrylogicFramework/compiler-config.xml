@@ -23,7 +23,7 @@
 
 		<keep-as3-metadata append="true">
 			<name>Outlet</name>
-			<name>ApplicationController</name>
+			<name>Event</name>
 		</keep-as3-metadata>
 
 		<source-path append="true">

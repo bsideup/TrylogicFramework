@@ -18,8 +18,7 @@ package tl.utils
 			if ( child.name == name )
 			{
 				displayObject = child;
-			}
-			else if ( child is DisplayObjectContainer )
+			} else if ( child is DisplayObjectContainer )
 			{
 				displayObject = getChildByNameRecursiveOnTarget( name, child as DisplayObjectContainer );
 			}

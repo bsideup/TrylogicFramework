@@ -6,6 +6,6 @@
 -->
 <componentPackage>
 
-	<component id="Associate" class="tl.ioc.Associate"/>
+	<component id="Associate" class="tl.ioc.Associate" />
 
 </componentPackage>

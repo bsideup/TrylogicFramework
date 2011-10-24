@@ -11,7 +11,7 @@ package tl.utils
 		private var _metadata : XMLList;
 
 		/**
-		 * 
+		 *
 		 * @param uri			Namespace URI for instance member
 		 * @param methodName	Instance member name
 		 * @param metadata		Metadata XMLList for instance member

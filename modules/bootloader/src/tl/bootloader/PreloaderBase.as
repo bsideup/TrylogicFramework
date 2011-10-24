@@ -4,33 +4,52 @@ package tl.bootloader
 	import flash.events.Event;
 	import flash.system.ApplicationDomain;
 
-	import mx.core.IFlexModuleFactory;
-
-	public class PreloaderBase extends Sprite implements IPreloader
+	/**
+	 * Basic preloader
+	 *
+	 * override progress and status setter, if you need to show it
+	 */
+	public class PreloaderBase extends Sprite
 	{
-		protected var app : IFlexModuleFactory;
+		/**
+		 * Reference to ApplicationLoader
+		 */
+		protected var app : ApplicationLoader;
 
-		protected var mixins : Array;
-
+		/**
+		 * Call it when your preloader job is done
+		 */
 		protected var onCompleteHandler : Function;
 
-		public function PreloaderBase( app : IFlexModuleFactory )
+		private var mixins : Array;
+
+		public function PreloaderBase( app : ApplicationLoader )
 		{
 			this.app = app;
 
 			mixins = app.info()["mixins"];
 		}
 
+		/**
+		 * called when there is some progress
+		 *
+		 * @param value		(from 0.0 to 1.0) loading progress
+		 */
 		public function set progress( value : Number ) : void
 		{
 
 		}
 
+		/**
+		 * Text helper for progress status
+		 *
+		 * @param value		loading status
+		 */
 		public function set status( value : String ) : void
 		{
 		}
 
-		public function process( completeHandler : Function ) : void
+		internal function process( completeHandler : Function ) : void
 		{
 			this.onCompleteHandler = completeHandler;
 
@@ -38,6 +57,13 @@ package tl.bootloader
 		}
 
 
+		/**
+		 * Called each time when some [Mixin] completed. When there is no [Mixin] left, calls onCompleteHandler
+		 *
+		 * @see onCompleteHandler
+		 *
+		 * @param e
+		 */
 		protected function onMixinComplete( e : Event = null ) : void
 		{
 			if ( mixins.length == 0 )
@@ -48,6 +74,7 @@ package tl.bootloader
 
 			var mixin : String = mixins.pop();
 
+			// Cutoff Flex stuff
 			if ( mixin.indexOf( "_FlexInit" ) == -1 && mixin.indexOf( "_Styles" ) == -1 )
 			{
 				ApplicationDomain.currentDomain.getDefinition( mixin ).process( app, onMixinProgress, onMixinComplete );
@@ -57,12 +84,15 @@ package tl.bootloader
 			}
 		}
 
-		protected function onMixinProgress( value : Number, status : String = "" ) : void
+		private function onMixinProgress( progress : Number, status : String = "" ) : void
 		{
+			// We think, that 0.5 - is state, when application already loaded
 			var progressValue : Number = 0.5;
+
 			progressValue += (1 - mixins.length / (app.info()["mixins"].length - 1)) / 2;
-			progressValue += (value / (app.info()["mixins"].length - 1)) / 2;
-			progress = progressValue;
+			progressValue += (progress / (app.info()["mixins"].length - 1)) / 2;
+
+			this.progress = progressValue;
 			this.status = status;
 		}
 	}

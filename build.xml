@@ -5,6 +5,7 @@
 	<property name="sdkPath" value="${basedir}/sdk" />
 	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.5/flex_sdk_4.5.1.21328_mpl.zip" />
 	<property name="out" value="${basedir}/out" />
+	<property name="asdoc" value="${basedir}/asdoc" />
     <property name="modules" value="${basedir}/modules" />
 
     <macrodef name="compileModule">
@@ -24,6 +25,25 @@
                 </fileset>
             </copy>
 
+        </sequential>
+    </macrodef>
+
+	<macrodef name="asdocModule">
+        <attribute name="moduleName" />
+        <sequential>
+            <echo message="Compiling module @{moduleName}"/>
+
+            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="asdoc" inheritall="false">
+                <property name="FLEX_HOME" value="${sdkPath}" />
+                <property name="GLOBAL_OUT" value="${out}" />
+            </ant>
+
+            <copy todir="${asdoc}/@{moduleName}" description="Copying output files">
+                <fileset dir="${modules}/@{moduleName}/asdoc">
+                    <include name="**/**" />
+                    <exclude name="**/**.cache" />
+                </fileset>
+            </copy>
         </sequential>
     </macrodef>
 
@@ -83,12 +103,21 @@
 		<compileModule moduleName="TestApplication" />
 	</target>
 
+	<target name="asdoc" description="Generates ASDOC html files for each module">
+		<antcall target="compile" />
+
+		<asdocModule moduleName="IOCContainer" />
+		<asdocModule moduleName="Bootloader" />
+        <asdocModule moduleName="GlobalDispatcher" />
+        <asdocModule moduleName="TrylogicFramework" />
+	</target>
+
     <target name="install">
-        <antcall target="compile" />
     </target>
 
 	<target name="clean" description="clean up">
 		<delete dir="${out}" failonerror="no"/>
+		<delete dir="${asdoc}" failonerror="no" />
 
 		<cleanModule moduleName="IoCContainer" />
 		<cleanModule moduleName="Bootloader" />

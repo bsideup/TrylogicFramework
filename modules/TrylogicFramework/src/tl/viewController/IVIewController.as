@@ -1,5 +1,7 @@
 ﻿package tl.viewController
 {
+	import flash.display.DisplayObject;
+
 	import tl.view.IView;
 
 	public interface IVIewController
@@ -9,12 +11,6 @@
 		function get view() : IView;
 
 		function getViewInterface() : Class;
-
-		function loadView() : void;
-
-		function viewLoaded() : void;
-
-		function viewUnloaded() : void;
 
 		function viewBeforeAddedToStage() : void;
 

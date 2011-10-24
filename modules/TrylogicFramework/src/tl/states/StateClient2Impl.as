@@ -7,6 +7,8 @@ package tl.states
 	import mx.states.IOverride;
 	import mx.states.State;
 
+	import tl.ioc.ioc_internal;
+
 	internal class StateClient2Impl implements IStateClient2
 	{
 		private var target : *;
@@ -19,6 +21,11 @@ package tl.states
 		public function StateClient2Impl( target : * )
 		{
 			this.target = target;
+		}
+
+		ioc_internal static function getInstanceForInstance( instance : * ) : StateClient2Impl
+		{
+			return new StateClient2Impl( instance );
 		}
 
 		[Bindable]

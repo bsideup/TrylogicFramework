@@ -2,7 +2,7 @@
 
 	<property name="out" value="${basedir}/out" />
 	<property name="asdocOutput" value="${basedir}/asdoc" />
-	<property name="FLEX_HOME" value="../../sdk" />
+	<property name="FLEX_HOME" value="" />
 	<property name="GLOBAL_OUT" value="" />
 
 	<target name="install">
@@ -22,6 +22,11 @@
 			<load-config filename="${basedir}/compiler-config.xml" />
 		</compc>
 
+	</target>
+
+	<target name="asdoc">
+		<taskdef file="${FLEX_HOME}/ant/flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
+
 		<asdoc output="${asdocOutput}">
 			<sysproperty key="user.language" value="en" />
 			<sysproperty key="user.region" value="US" />
@@ -34,5 +39,6 @@
 
 	<target name="clean" description="clean up">
 		<delete dir="${out}" failonerror="no" />
+		<delete dir="asdoc" failonerror="no" />
 	</target>
 </project>

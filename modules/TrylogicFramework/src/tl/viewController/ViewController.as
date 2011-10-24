@@ -1,16 +1,30 @@
 ﻿package tl.viewController
 {
 	import flash.events.Event;
-	import flash.utils.describeType;
-
-	import mx.binding.utils.BindingUtils;
+	import flash.events.EventDispatcher;
 
 	import tl.actions.IActionDispatcher;
 	import tl.ioc.IoCHelper;
+	import tl.utils.describeTypeCached;
 	import tl.view.IView;
 
-	public class ViewController implements IVIewController
+	[Outlet]
+	public class ViewController extends EventDispatcher implements IVIewController
 	{
+		{
+			IoCHelper.registerType( IVIewController, ViewController );
+
+			if ( describeTypeCached( ViewController )..metadata.( @name == "Outlet" ).length() == 0 )
+			{
+				throw new Error( "Please add -keep-as3-metadata+=Outlet to flex compiler arguments!" )
+			}
+
+			if ( describeTypeCached( ViewController )..metadata.( @name == "Event" ).length() == 0 )
+			{
+				throw new Error( "Please add -keep-as3-metadata+=Event to flex compiler arguments!" )
+			}
+		}
+
 		[Injection]
 		public var actionDispatcher : IActionDispatcher;
 
@@ -20,12 +34,45 @@
 
 		public final function get view() : IView
 		{
+			if ( !viewIsLoaded )
+			{
+				var desc : XML;
+				if ( viewEventHandlers == null )
+				{
+					viewEventHandlers = [];
+
+					desc = describeTypeCached( this );
+
+					desc.method.( valueOf().metadata.( @name == "Event" ).length() > 0 ).(
+							viewEventHandlers[ metadata.arg.( @key == "name" ).@value.toString() ] = String( @name )
+							);
+				}
+
+				if ( viewOutlets == null )
+				{
+					viewOutlets = [];
+					if ( desc == null )
+					{
+						desc = describeTypeCached( this );
+					}
+
+					desc.variable.( valueOf().metadata.( @name == "Outlet" ).length() > 0 ).(
+							viewOutlets.push( @name )
+							);
+				}
+
+				viewInstance = IoCHelper.resolve( getViewInterface(), this );
+				viewInstance.controller = this;
+
+				viewLoaded();
+			}
+
 			return viewInstance;
 		}
 
 		public final function get viewIsLoaded() : Boolean
 		{
-			return view != null;
+			return viewInstance != null;
 		}
 
 		public function getViewInterface() : Class
@@ -33,44 +80,7 @@
 			return IView;
 		}
 
-		public final function loadView() : void
-		{
-			var desc : XML;
-			if ( viewEventHandlers == null )
-			{
-				viewEventHandlers = [];
-
-				desc = describeType( this );
-
-				desc.method.(metadata.(@name == "Event").length() > 0).(
-						viewEventHandlers[metadata.arg.(@key == "name").@value.toString()] = String( @name )
-						);
-			}
-
-			if ( viewOutlets == null )
-			{
-				viewOutlets = [];
-				if ( desc == null )
-				{
-					desc = describeType( this );
-				}
-
-				desc.variable.(metadata.(@name == "Outlet").length() > 0).(
-						viewOutlets.push( @name )
-						);
-			}
-
-			if ( !viewIsLoaded )
-			{
-				var viewInterface : Class = getViewInterface();
-				viewInstance = IoCHelper.resolve( viewInterface, this );
-				viewInstance.controller = this;
-
-				viewLoaded();
-			}
-		}
-
-		public function viewLoaded() : void
+		protected function viewLoaded() : void
 		{
 			for each( var outletName : String in viewOutlets )
 			{
@@ -83,8 +93,24 @@
 			}
 		}
 
-		public function viewUnloaded() : void
+		public function viewBeforeAddedToStage() : void
 		{
+		}
+
+		public function viewBeforeRemovedFromStage() : void
+		{
+		}
+
+		[Event(name="removedFromStage")]
+		public final function viewRemovedFromStage() : void
+		{
+			destroy();
+		}
+
+		public final function destroy() : void
+		{
+			internalDestroy();
+
 			for each( var outletName : String in viewOutlets )
 			{
 				unsetOutlet( outletName );
@@ -94,25 +120,16 @@
 			{
 				unsetHandler( eventName );
 			}
-		}
-
-		public function viewBeforeAddedToStage() : void
-		{
-		}
-
-		public function viewBeforeRemovedFromStage() : void
-		{
-		}
-
-		public final function destroy() : void
-		{
-			viewUnloaded();
-
-			viewInstance.dispose();
-			viewInstance = null;
 
 			actionDispatcher.removeHandler( this );
 			actionDispatcher = null;
+
+			viewInstance.destroy();
+			viewInstance = null;
+		}
+
+		protected function internalDestroy() : void
+		{
 		}
 
 		protected function setOutlet( name : String ) : void
@@ -120,14 +137,14 @@
 			this[name] = viewInstance[name];
 		}
 
-		protected function setHandler( eventName : String ) : void
-		{
-			viewInstance.addEventListener( eventName, viewEventHandler );
-		}
-
 		protected function unsetOutlet( name : String ) : void
 		{
 			this[name] = null;
+		}
+
+		protected function setHandler( eventName : String ) : void
+		{
+			viewInstance.addEventListener( eventName, viewEventHandler );
 		}
 
 		protected function unsetHandler( eventName : String ) : void

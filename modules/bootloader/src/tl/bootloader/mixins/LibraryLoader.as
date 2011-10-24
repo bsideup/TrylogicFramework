@@ -12,7 +12,12 @@ package tl.bootloader.mixins
 	import nochump.util.zip.*;
 
 	[Mixin]
-	public class LibraryLoader
+	/**
+	 * Basic RSL Loader Mixin.
+	 *
+	 * <a href="http://livedocs.adobe.com/flex/3/html/help.html?content=rsl_09.html">http://livedocs.adobe.com/flex/3/html/help.html?content=rsl_09.html</a>
+	 *
+	 */ public class LibraryLoader
 	{
 		static private var rsls : Array;
 		static private var rslCount : uint;
@@ -22,6 +27,12 @@ package tl.bootloader.mixins
 
 		static private var currentRSLData : RSLData;
 
+		/**
+		 * Application loader function
+		 * @param loader
+		 * @param onProgress
+		 * @param onComplete
+		 */
 		public static function process( loader : IFlexModuleFactory, onProgress : Function, onComplete : Function ) : void
 		{
 			rsls = loader.info()["cdRsls"];
@@ -38,7 +49,7 @@ package tl.bootloader.mixins
 
 		}
 
-		protected static function loadRsls( e : Event = null ) : void
+		private static function loadRsls( e : Event = null ) : void
 		{
 
 			if ( e )
@@ -102,7 +113,7 @@ package tl.bootloader.mixins
 
 		}
 
-		protected static function swfLoaded( e : Event ) : void
+		private static function swfLoaded( e : Event ) : void
 		{
 			var urlLoader : URLLoader = URLLoader( e.target );
 			if ( urlLoader == null || urlLoader.data == null || ByteArray( urlLoader.data ).bytesAvailable == 0 )
@@ -121,12 +132,12 @@ package tl.bootloader.mixins
 			libraryParser.loadBytes( urlLoader.data, context );
 		}
 
-		protected static function libraryLoadingProgress( e : ProgressEvent ) : void
+		private static function libraryLoadingProgress( e : ProgressEvent ) : void
 		{
 			onProgressHandler( (((1 - rsls.length / rslCount) / 2)) + ((e.bytesTotal != 0) ? ((e.bytesLoaded / e.bytesTotal) * 0.1) : 0), "Loading library: " + currentRSLData + "(" + e.bytesLoaded + "/" + e.bytesTotal + ")" );
 		}
 
-		protected static function libraryLoaded( e : Event ) : void
+		private static function libraryLoaded( e : Event ) : void
 		{
 			var target : IEventDispatcher = IEventDispatcher( e.target );
 			target.removeEventListener( Event.COMPLETE, libraryLoaded );
