@@ -1,9 +1,7 @@
 <project name="TrylogicFramework" default="compile" basedir=".">
 
-	<property file="build.properties" />
-	
 	<property name="sdkPath" value="${basedir}/sdk" />
-	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.5/flex_sdk_4.5.1.21328_mpl.zip" />
+	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4/flex_sdk_4.1.0.16076_mpl.zip" />
 	<property name="out" value="${basedir}/out" />
 	<property name="asdoc" value="${basedir}/asdoc" />
     <property name="modules" value="${basedir}/modules" />
@@ -55,25 +53,23 @@
         </sequential>
     </macrodef>
 
-	<target name="downloadSDK" if="${autoDownloadSDK}" description="Download Flex SDK and set properties FLEX_HOME to downloaded files">
+	<target name="downloadSDK" unless="${sdkDownloaded}" depends="checkIfDownloaded" description="Download Flex SDK and set properties FLEX_HOME to downloaded files">
 		<mkdir dir="${sdkPath}"/>
 
 		<get src="${sdkURL}" dest="${sdkPath}/Framework.zip" skipexisting="true"/>
 		<unzip src="${sdkPath}/Framework.zip" dest="${sdkPath}" overwrite="false"/>
-
-		<propertyfile file="build.properties">
-			<entry  key="autoDownloadSDK" value="no"/>
-		</propertyfile>
-
-		<property file="build.properties" />
 	</target>
 
-	<target name="compile" description="compile the source">
+	<target name="checkIfDownloaded">
+		<condition property="sdkDownloaded">
+			<available file="${sdkPath}" type="dir"/>
+		</condition>
+	</target>
+
+	<target name="compile" description="compile the source" depends="downloadSDK">
 
         <delete dir="${out}" />
         <mkdir dir="${out}" />
-
-		<antcall target="downloadSDK" />
 
 		<antcall target="IOCContainer" />
 		<antcall target="Bootloader" />

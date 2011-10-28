@@ -5,7 +5,7 @@
     <option name="CUSTOM_CONFIG_FILE" value="$MODULE_DIR$/compiler-config.xml" />
     <option name="MAIN_CLASS" value="TestApplicationBootstrap" />
     <option name="OUTPUT_FILE_NAME" value="TestApplication.swf" />
-    <option name="TARGET_PLAYER_VERSION" value="10.2.0" />
+    <option name="TARGET_PLAYER_VERSION" value="10.0.0" />
     <option name="VERSION" value="3" />
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">

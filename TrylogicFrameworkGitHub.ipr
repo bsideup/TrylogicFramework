@@ -334,7 +334,7 @@
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="4.5.1 (player 10.2)" project-jdk-type="Flex SDK Type">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="sdk (player 10.0)" project-jdk-type="Flex SDK Type">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="VcsDirectoryMappings">

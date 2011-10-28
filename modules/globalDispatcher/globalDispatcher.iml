@@ -3,7 +3,7 @@
   <component name="Flex.Build.Configuration">
     <option name="DO_BUILD" value="true" />
     <option name="OUTPUT_FILE_NAME" value="GlobalDispatcher.swf" />
-    <option name="TARGET_PLAYER_VERSION" value="10.2.0" />
+    <option name="TARGET_PLAYER_VERSION" value="10.1.0" />
     <option name="ADDITIONAL_COMPILER_OPTIONS" value="-debug=false -keep-as3-metadata+=Action" />
     <option name="VERSION" value="3" />
   </component>
@@ -13,7 +13,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="sdk (player 10.1)" jdkType="Flex SDK Type" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="IoCContainer" />
   </component>

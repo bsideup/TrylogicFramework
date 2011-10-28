@@ -2,11 +2,10 @@ package tl.bootloader
 {
 	import flash.display.*;
 	import flash.events.*;
-	import flash.system.*;
 	import flash.utils.Dictionary;
 
 	import mx.core.IFlexModuleFactory;
-	import mx.core.RSLData;
+	import mx.managers.SystemManager;
 
 	/**
 	 * Basic ApplicationLoader. Create Preloader from "preloader" property of the Main class instance
@@ -57,29 +56,25 @@ package tl.bootloader
 			addChild( create() as DisplayObject );
 		}
 
-		/* INTERFACE mx.core.IFlexModuleFactory */
-
 		public function get preloadedRSLs() : Dictionary
 		{
 			return null;
 		}
 
-		public function allowDomain( ...domains ) : void
+		public function allowDomain( ... rest ) : void
 		{
-
 		}
 
-		public function allowInsecureDomain( ...domains ) : void
+		public function allowInsecureDomain( ... rest ) : void
 		{
-
 		}
 
 		public function callInContext( fn : Function, thisArg : Object, argArray : Array, returns : Boolean = true ) : *
 		{
-
+			return null;
 		}
 
-		public function create( ...parameters ) : Object
+		public function create( ... rest ) : Object
 		{
 			return null;
 		}
@@ -95,29 +90,6 @@ package tl.bootloader
 		}
 
 		public function registerImplementation( interfaceName : String, impl : Object ) : void
-		{
-
-		}
-
-		public function get allowDomainsInNewRSLs() : Boolean
-		{
-			return false;
-		}
-
-		public function set allowDomainsInNewRSLs( value : Boolean ) : void
-		{
-		}
-
-		public function get allowInsecureDomainsInNewRSLs() : Boolean
-		{
-			return false;
-		}
-
-		public function set allowInsecureDomainsInNewRSLs( value : Boolean ) : void
-		{
-		}
-
-		public function addPreloadedRSL( loaderInfo : LoaderInfo, rsl : Vector.<RSLData> ) : void
 		{
 		}
 	}
