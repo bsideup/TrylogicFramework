@@ -8,10 +8,6 @@
 
 		<incremental>true</incremental>
 
-		<external-library-path append="true">
-			<path-element>./libs</path-element>
-		</external-library-path>
-
 		<keep-generated-actionscript>false</keep-generated-actionscript>
 
 		<namespaces>

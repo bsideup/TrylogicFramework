@@ -10,13 +10,6 @@
 
 	<target name="compile" description="compile the source" depends="install">
 
-		<copy todir="${out}" description="Copying output files">
-			<fileset dir="${basedir}/libs">
-				<include name="**/**" />
-				<exclude name="**/**.cache" />
-			</fileset>
-		</copy>
-
 		<taskdef file="${FLEX_HOME}/ant/flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
 		<compc output="${out}/${ant.project.name}.swc" dir="${basedir}" fork="true">
