@@ -1,5 +1,7 @@
 <flex-config xmlns="http://www.adobe.com/2006/flex-config">
 
+	<target-player>10.1</target-player>
+	
 	<compiler>
 
 		<debug>true</debug>

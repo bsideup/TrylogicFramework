@@ -7,7 +7,6 @@ package tl.bootloader.mixins
 	import flash.utils.ByteArray;
 
 	import mx.core.IFlexModuleFactory;
-	import mx.core.RSLData;
 
 	import nochump.util.zip.*;
 
@@ -25,7 +24,7 @@ package tl.bootloader.mixins
 		static private var onProgressHandler : Function;
 		static private var onCompleteHandler : Function;
 
-		static private var currentRSLData : RSLData;
+		static private var currentRSLData : *;
 
 		/**
 		 * Application loader function
@@ -51,7 +50,6 @@ package tl.bootloader.mixins
 
 		private static function loadRsls( e : Event = null ) : void
 		{
-
 			if ( e )
 			{
 				IEventDispatcher( e.target ).removeEventListener( e.type, arguments.callee );
@@ -59,28 +57,27 @@ package tl.bootloader.mixins
 				IEventDispatcher( e.target ).removeEventListener( ProgressEvent.PROGRESS, libraryLoadingProgress );
 			}
 
-
 			if ( rsls.length == 0 )
 			{
 				onCompleteHandler();
 				return;
 			}
 
-			currentRSLData = rsls.shift()[0];
+			currentRSLData = rsls.shift();
 
-			var urlRequest : URLRequest = new URLRequest( currentRSLData.rslURL );
+			var urlRequest : URLRequest = new URLRequest( currentRSLData.rsls[0] );
 
-			if ( currentRSLData.policyFileURL != "" )
+			if ( currentRSLData.policyFiles[0] != "" )
 			{
-				Security.loadPolicyFile( currentRSLData.policyFileURL );
+				Security.loadPolicyFile( currentRSLData.policyFiles[0] );
 			}
 
-			if ( currentRSLData.isSigned )
+			if ( currentRSLData.isSigned[0] )
 			{
-				urlRequest.digest = currentRSLData.digest;
+				urlRequest.digest = currentRSLData.digests[0];
 			}
 
-			var url : String = currentRSLData.rslURL;
+			var url : String = urlRequest.url;
 			var filename : String = url.substring( url.lastIndexOf( "/" ) + 1 );
 			filename = filename.substr( 0, filename.indexOf( "?" ) == -1 ? int.MAX_VALUE : filename.indexOf( "?" ) );
 			var fileExt : String = filename.substr( filename.lastIndexOf( "." ) + 1 );
@@ -103,7 +100,7 @@ package tl.bootloader.mixins
 			loader.addEventListener( ProgressEvent.PROGRESS, libraryLoadingProgress );
 			loader.dataFormat = URLLoaderDataFormat.BINARY;
 
-			trace( currentRSLData.rslURL );
+			trace( urlRequest.url );
 
 			loader.load( urlRequest );
 		}
@@ -127,7 +124,10 @@ package tl.bootloader.mixins
 			var context : LoaderContext = new LoaderContext();
 			context.applicationDomain = ApplicationDomain.currentDomain;
 			context.securityDomain = null;
-			context.allowCodeImport = true;
+			if ( context.hasOwnProperty( "allowCodeImport" ) )
+			{
+				context['allowCodeImport'] = true;
+			}
 
 			libraryParser.loadBytes( urlLoader.data, context );
 		}
