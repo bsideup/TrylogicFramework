@@ -5,7 +5,6 @@ package tl.bootloader
 	import flash.utils.Dictionary;
 
 	import mx.core.IFlexModuleFactory;
-	import mx.managers.SystemManager;
 
 	/**
 	 * Basic ApplicationLoader. Create Preloader from "preloader" property of the Main class instance

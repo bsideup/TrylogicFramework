@@ -5,6 +5,7 @@
 	<compiler>
 
 		<debug>true</debug>
+
 		<verbose-stacktraces>true</verbose-stacktraces>
 
 		<incremental>false</incremental>
@@ -17,7 +18,7 @@
 			<library>./src/view/testView/TestView.swc</library>
 		</include-libraries>
 
-		<keep-generated-actionscript>true</keep-generated-actionscript>
+		<keep-generated-actionscript>false</keep-generated-actionscript>
 
 		<use-resource-bundle-metadata>false</use-resource-bundle-metadata>
 
