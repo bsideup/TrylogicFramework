@@ -1,17 +1,27 @@
-package controllers
+package service
 {
 	import tl.actions.IActionLogger;
+	import tl.ioc.IoCHelper;
 	import tl.ioc.ioc_internal;
 
 	public class ActionLogger implements IActionLogger
 	{
-		private static const instance : ActionLogger = new ActionLogger();
+		private static var instance : ActionLogger;
 
 		[Injection]
 		public var logger : ILogger;
 
+		public function ActionLogger()
+		{
+			IoCHelper.injectTo( this );
+		}
+
 		ioc_internal static function getInstance() : ActionLogger
 		{
+			if(instance == null)
+			{
+				instance = new ActionLogger();
+			}
 			return instance;
 		}
 

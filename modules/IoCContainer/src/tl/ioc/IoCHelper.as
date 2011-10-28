@@ -55,7 +55,8 @@ package tl.ioc
 	 *				injectedObject.doSomething(); // Will trace "something"
 	 *			}
 	 *		}</listing>
-	 */ public class IoCHelper
+	 */
+	public class IoCHelper
 	{
 		{
 			if ( describeType( IoCHelper )..metadata.(@name == "Injection").length() == 0 )
@@ -83,45 +84,48 @@ package tl.ioc
 				throw new Error( "Nothing is registered to " + iface );
 			}
 
-			return makeInstance( clazz, instance );
-		}
-
-
-		/**
-		 * Instantiate class of instanceClass and setup injections
-		 *
-		 * @param instanceClass	Return Class type
-		 * @param forInstance	Optional instance, passed to <code>getInstanceForInstance</code> function of implementation Class
-		 * @return				instance of instanceClass
-		 */
-		public static function makeInstance( instanceClass : Class, forInstance : * = null ) : *
-		{
 			var resolvedInstance : *;
 
 			try
 			{
-				resolvedInstance = instanceClass.ioc_internal::['getInstanceForInstance']( forInstance );
+				resolvedInstance = clazz.ioc_internal::['getInstanceForInstance']( instance );
 			} catch( e : ReferenceError )
 			{
 				try
 				{
-					resolvedInstance = instanceClass.ioc_internal::['getInstance']();
+					resolvedInstance = clazz.ioc_internal::['getInstance']();
 				} catch( e : ReferenceError )
 				{
-					resolvedInstance = new instanceClass();
+					resolvedInstance = new clazz();
 				}
 			}
 
-			if ( resolvedInstance != forInstance )
-			{
-				var desc : XML = describeType( resolvedInstance );
-
-				desc.variable.(valueOf().metadata.(@name == "Injection").length()).(
-						resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
-						);
-			}
+			//injectTo( resolvedInstance, instance );
 
 			return resolvedInstance;
+		}
+
+
+		/**
+		 * Process injections on target
+		 *
+		 * @param resolvedInstance	target
+		 * @param forInstance		optional and for internal use
+		 */
+		public static function injectTo( resolvedInstance : Object, forInstance : * = null ) : void
+		{
+			if ( resolvedInstance != forInstance )
+			{
+				describeType( resolvedInstance ).variable.(valueOf().metadata.(@name == "Injection").length()).(
+						resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
+						);
+
+				/*
+				 describeType( resolvedInstance ).accessor.(@access != "readonly").(valueOf().metadata.(@name == "Injection").length()).(
+				 resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
+				 );
+				 */
+			}
 		}
 
 		/**
@@ -132,10 +136,6 @@ package tl.ioc
 		 */
 		public static function registerType( iface : Class, targetClass : Class ) : void
 		{
-			if ( !((new targetClass()) is iface) )
-			{
-				throw new ArgumentError( targetClass + " must implements " + iface );
-			}
 			aliases[iface] = targetClass;
 		}
 	}

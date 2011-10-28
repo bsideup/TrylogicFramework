@@ -25,8 +25,6 @@ package tl.bootloader
 
 		public function ApplicationLoader()
 		{
-			Security.allowDomain( "*" );
-
 			stop();
 
 			preloader = addChild( new (info()["preloader"] == null ? PreloaderBase : info()["preloader"])( this ) ) as PreloaderBase;

@@ -5,7 +5,6 @@
 	import tl.ioc.IoCHelper;
 	import tl.utils.getChildByNameRecursiveOnTarget;
 	import tl.viewController.IVIewController;
-	import tl.viewController.IViewControllerContainer;
 
 	[DefaultProperty("data")]
 	/**
@@ -16,10 +15,6 @@
 	 */
 	public class View extends Sprite implements IView
 	{
-		{
-			IoCHelper.registerType( IView, View );
-		}
-
 		private var _data : Array = [];
 		private var _controller : IVIewController;
 
@@ -40,11 +35,6 @@
 
 		public final function get controller() : IVIewController
 		{
-			if ( _controller == null )
-			{
-				_controller = IoCHelper.resolve( IViewControllerContainer );
-			}
-
 			return _controller;
 		}
 
@@ -66,30 +56,42 @@
 		 *
 		 * @param value
 		 */
-		public final function set data( value : Array ) : void
+		public function set data( value : Array ) : void
 		{
 			value = [].concat( value );
 			var element : *;
 			var viewElement : DisplayObject;
+			var viewController : IVIewController;
 
 			for each ( element in _data )
 			{
-				if ( element is IVIewController && (IVIewController( element ).viewIsLoaded) )
+				if ( element is IVIewController && IVIewController( element ).viewIsLoaded )
 				{
 					viewElement = IVIewController( element ).view as DisplayObject;
-
 					if ( value.indexOf( viewElement ) == -1 )
 					{
 						IVIewController( element ).viewBeforeRemovedFromStage();
 					}
-
-				} else if ( element is DisplayObject )
+				}
+				else if ( element is IView )
 				{
 					viewElement = element as DisplayObject;
-				} else if ( element is Embed && (element.instance is DisplayObject) )
+
+					viewController = IView( element ).controller;
+					if ( viewController && value.indexOf( viewElement ) == -1 )
+					{
+						viewController.viewBeforeRemovedFromStage();
+					}
+				}
+				else if ( element is DisplayObject )
+				{
+					viewElement = element as DisplayObject;
+				}
+				else if ( element is Embed && (element.instance is DisplayObject) )
 				{
 					viewElement = element.instance as DisplayObject;
-				} else
+				}
+				else
 				{
 					continue;
 				}
@@ -105,18 +107,30 @@
 				if ( element is IVIewController )
 				{
 					viewElement = IVIewController( element ).view as DisplayObject;
-
 					if ( _data.indexOf( viewElement ) == -1 )
 					{
 						IVIewController( element ).viewBeforeAddedToStage();
 					}
-				} else if ( element is DisplayObject )
+				}
+				else if ( element is IView )
 				{
 					viewElement = element as DisplayObject;
-				} else if ( element is Embed )
+
+					viewController = IView( element ).controller;
+					if ( viewController && _data.indexOf( viewElement ) == -1 )
+					{
+						viewController.viewBeforeAddedToStage();
+					}
+				}
+				else if ( element is DisplayObject )
+				{
+					viewElement = element as DisplayObject;
+				}
+				else if ( element is Embed )
 				{
 					viewElement = element.instance as DisplayObject;
-				} else
+				}
+				else
 				{
 					continue;
 				}
@@ -132,9 +146,9 @@
 			_data = value;
 		}
 
-		public function get data() : Array
+		public final function get data() : Array
 		{
-			return _data;
+			return _data.concat();
 		}
 
 		/**
@@ -145,7 +159,7 @@
 		 */
 		public final function destroy() : void
 		{
-			internalDispose();
+			internalDestoy();
 
 			data = null;
 
@@ -164,7 +178,7 @@
 		 * Do a custom dispose logic here
 		 *
 		 */
-		protected function internalDispose() : void
+		protected function internalDestoy() : void
 		{
 
 		}

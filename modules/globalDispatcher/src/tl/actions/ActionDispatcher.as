@@ -6,6 +6,7 @@ package tl.actions
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
 
+	import tl.ioc.IoCHelper;
 	import tl.ioc.ioc_internal;
 	import tl.utils.MemberDescription;
 	import tl.utils.describeTypeCached;
@@ -39,7 +40,8 @@ package tl.actions
 	 * example of action dispatching:
 	 * <listing version="3.0">
 	 *	 ActionDispatcher.getInstance().dispatch(SOME_ACTION, ["Hello, World!", 42]);</listing>
-	 */ public class ActionDispatcher implements IActionDispatcher
+	 */
+	public class ActionDispatcher implements IActionDispatcher
 	{
 		private static var instance : ActionDispatcher;
 
@@ -48,7 +50,8 @@ package tl.actions
 		[Injection]
 		/**
 		 * <code>tl.actions.IActionLogger</code> instance
-		 */ public var logger : IActionLogger;
+		 */
+		public var logger : IActionLogger;
 
 		{
 			if ( describeTypeCached( ActionDispatcher )..metadata.(@name == "Action").length() == 0 )
@@ -74,6 +77,11 @@ package tl.actions
 			if ( instance != null ) actionDispatcher.addHandler( instance );
 
 			return actionDispatcher;
+		}
+
+		public function ActionDispatcher()
+		{
+			IoCHelper.injectTo(this);
 		}
 
 		/**

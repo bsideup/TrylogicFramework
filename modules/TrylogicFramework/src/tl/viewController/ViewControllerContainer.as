@@ -1,40 +1,93 @@
 package tl.viewController
 {
-	import tl.ioc.IoCHelper;
-	import tl.view.IView;
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 
+	import tl.view.IViewContainer;
+
+	[DefaultProperty("controllers")]
 	public class ViewControllerContainer extends ViewController implements IViewControllerContainer
 	{
-		{
-			IoCHelper.registerType( IViewControllerContainer, ViewControllerContainer );
-		}
+		[Outlet]
+		public var container : DisplayObjectContainer;
+
+		private var _controllers : Array = [];
+
 		public final function get controllers() : Array
 		{
-			return view.data.concat();
+			return _controllers;
+		}
+
+		public function addController( value : IVIewController ) : void
+		{
+			if ( controllers.indexOf( value ) != -1 ) return;
+			controllers = controllers.concat( value );
+		}
+
+		public function removeController( value : IVIewController ) : void
+		{
+			controllers = controllers.splice( controllers.indexOf( value ), 1 );
+		}
+
+		override public function getViewInterface() : Class
+		{
+			return IViewContainer;
 		}
 
 		public function set controllers( value : Array ) : void
 		{
 			value = [].concat( value );
 
-			view.data = value;
+			var viewController : IVIewController;
+			var viewElement : DisplayObject;
+
+			for each ( viewController in controllers )
+			{
+				viewElement = viewController.view as DisplayObject;
+				if ( value.indexOf( viewElement ) == -1 && viewElement.parent )
+				{
+					viewController.viewBeforeRemovedFromStage();
+
+					viewElement.parent.removeChild( viewElement );
+
+					viewController.viewControllerContainer = null;
+				}
+			}
+
+			for each ( viewController in value )
+			{
+				viewController.viewControllerContainer = this;
+			}
+
+			_controllers = value;
+
+			fillContainer();
 		}
 
-		public function addController( value : IVIewController ) : void
+		override protected function viewLoaded() : void
 		{
-			if ( view.data.indexOf( value ) != -1 ) return;
-			controllers = view.data.concat( value );
+			super.viewLoaded();
+			fillContainer();
 		}
 
-		public function removeController( value : IVIewController ) : void
+		protected function fillContainer() : void
 		{
-			controllers = view.data.splice( view.data.indexOf( value ), 1 );
+			if ( !viewIsLoaded )
+			{
+				return;
+			}
+
+			var viewController : IVIewController;
+			var viewElement : DisplayObject;
+
+			for each ( viewController in controllers )
+			{
+				viewElement = viewController.view as DisplayObject;
+
+				container.addChild( viewElement );
+				container.setChildIndex( viewElement, container.numChildren - 1 );
+			}
 		}
 
-
-		override public final function getViewInterface() : Class
-		{
-			return IView;
-		}
 	}
 }

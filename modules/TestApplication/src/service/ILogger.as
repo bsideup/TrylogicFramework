@@ -1,4 +1,4 @@
-package controllers
+package service
 {
 	public interface ILogger
 	{

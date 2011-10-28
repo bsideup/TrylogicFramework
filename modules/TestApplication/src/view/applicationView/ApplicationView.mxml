@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<tl:ViewContainer xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/"
+		 opaqueBackground="0x00FF00">
+	<fx:Script><![CDATA[
+		override public function get container() : DisplayObjectContainer
+		{
+			return myContainer;
+		}
+		]]></fx:Script>
+
+
+	<tl:data>
+		<Sprite xmlns="flash.display.*" id="myContainer" />
+
+		<TextField xmlns="flash.text.*" text="Yo!" />
+	</tl:data>
+</tl:ViewContainer>

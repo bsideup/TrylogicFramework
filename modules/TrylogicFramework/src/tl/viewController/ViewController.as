@@ -1,7 +1,6 @@
 ﻿package tl.viewController
 {
 	import flash.events.Event;
-	import flash.events.EventDispatcher;
 
 	import tl.actions.IActionDispatcher;
 	import tl.ioc.IoCHelper;
@@ -9,11 +8,9 @@
 	import tl.view.IView;
 
 	[Outlet]
-	public class ViewController extends EventDispatcher implements IVIewController
+	public class ViewController implements IVIewController
 	{
 		{
-			IoCHelper.registerType( IVIewController, ViewController );
-
 			if ( describeTypeCached( ViewController )..metadata.( @name == "Outlet" ).length() == 0 )
 			{
 				throw new Error( "Please add -keep-as3-metadata+=Outlet to flex compiler arguments!" )
@@ -28,69 +25,65 @@
 		[Injection]
 		public var actionDispatcher : IActionDispatcher;
 
-		private var viewInstance : IView;
-		private var viewEventHandlers : Array;
-		private var viewOutlets : Array;
+		private var _viewControllerContainer : IViewControllerContainer;
+		private var _viewInstance : IView;
+		private var _viewEventHandlers : Array;
+		private var _viewOutlets : Array;
+
+		public function ViewController()
+		{
+			IoCHelper.injectTo( this );
+		}
 
 		public final function get view() : IView
 		{
 			if ( !viewIsLoaded )
 			{
-				var desc : XML;
-				if ( viewEventHandlers == null )
+				if ( _viewEventHandlers == null )
 				{
-					viewEventHandlers = [];
+					_viewEventHandlers = [];
 
-					desc = describeTypeCached( this );
-
-					desc.method.( valueOf().metadata.( @name == "Event" ).length() > 0 ).(
-							viewEventHandlers[ metadata.arg.( @key == "name" ).@value.toString() ] = String( @name )
+					describeTypeCached( this ).method.( valueOf().metadata.( @name == "Event" ).length() > 0 ).(
+							registerListener( metadata.arg.( @key == "name" ).@value.toString(), String( @name ) )
 							);
 				}
 
-				if ( viewOutlets == null )
+				if ( _viewOutlets == null )
 				{
-					viewOutlets = [];
-					if ( desc == null )
-					{
-						desc = describeTypeCached( this );
-					}
+					_viewOutlets = [];
 
-					desc.variable.( valueOf().metadata.( @name == "Outlet" ).length() > 0 ).(
-							viewOutlets.push( @name )
+					describeTypeCached( this ).variable.( valueOf().metadata.( @name == "Outlet" ).length() > 0 ).(
+							_viewOutlets.push( @name )
 							);
 				}
 
-				viewInstance = IoCHelper.resolve( getViewInterface(), this );
-				viewInstance.controller = this;
+				_viewInstance = IoCHelper.resolve( getViewInterface(), this );
+				_viewInstance.controller = this;
 
 				viewLoaded();
 			}
 
-			return viewInstance;
+			return _viewInstance;
+		}
+
+		public function get viewControllerContainer() : IViewControllerContainer
+		{
+			return _viewControllerContainer;
+		}
+
+		public function set viewControllerContainer( value : IViewControllerContainer ) : void
+		{
+			_viewControllerContainer = value;
 		}
 
 		public final function get viewIsLoaded() : Boolean
 		{
-			return viewInstance != null;
+			return _viewInstance != null;
 		}
 
 		public function getViewInterface() : Class
 		{
 			return IView;
-		}
-
-		protected function viewLoaded() : void
-		{
-			for each( var outletName : String in viewOutlets )
-			{
-				setOutlet( outletName );
-			}
-
-			for ( var eventName : String in viewEventHandlers )
-			{
-				setHandler( eventName );
-			}
 		}
 
 		public function viewBeforeAddedToStage() : void
@@ -104,28 +97,41 @@
 		[Event(name="removedFromStage")]
 		public final function viewRemovedFromStage() : void
 		{
-			destroy();
+			for each( var outletName : String in _viewOutlets )
+			{
+				unsetOutlet( outletName );
+			}
+
+			for ( var eventName : String in _viewEventHandlers )
+			{
+				unsetHandler( eventName );
+			}
+
+			_viewInstance.destroy();
+			_viewInstance = null;
+
+			_viewControllerContainer = null;
 		}
 
 		public final function destroy() : void
 		{
 			internalDestroy();
 
-			for each( var outletName : String in viewOutlets )
-			{
-				unsetOutlet( outletName );
-			}
-
-			for ( var eventName : String in viewEventHandlers )
-			{
-				unsetHandler( eventName );
-			}
-
 			actionDispatcher.removeHandler( this );
 			actionDispatcher = null;
+		}
 
-			viewInstance.destroy();
-			viewInstance = null;
+		protected function viewLoaded() : void
+		{
+			for each( var outletName : String in _viewOutlets )
+			{
+				setOutlet( outletName );
+			}
+
+			for ( var eventName : String in _viewEventHandlers )
+			{
+				setHandler( eventName );
+			}
 		}
 
 		protected function internalDestroy() : void
@@ -134,7 +140,7 @@
 
 		protected function setOutlet( name : String ) : void
 		{
-			this[name] = viewInstance[name];
+			this[name] = _viewInstance[name];
 		}
 
 		protected function unsetOutlet( name : String ) : void
@@ -144,20 +150,33 @@
 
 		protected function setHandler( eventName : String ) : void
 		{
-			viewInstance.addEventListener( eventName, viewEventHandler );
+			_viewInstance.addEventListener( eventName, viewEventHandler );
 		}
 
 		protected function unsetHandler( eventName : String ) : void
 		{
-			viewInstance.removeEventListener( eventName, viewEventHandler );
+			_viewInstance.removeEventListener( eventName, viewEventHandler );
+		}
+
+		private function registerListener( eventName : String, listener : String ) : void
+		{
+			if ( _viewEventHandlers[ eventName ] == null )
+			{
+				_viewEventHandlers[ eventName ] = [];
+			}
+
+			_viewEventHandlers[ eventName ].push( listener );
 		}
 
 		private function viewEventHandler( e : Event ) : void
 		{
-			var methodName : String = viewEventHandlers[e.type];
-			if ( methodName != null )
+			var methods : Array = _viewEventHandlers[e.type];
+			if ( methods != null )
 			{
-				this[methodName]();
+				for each( var methodName : String in methods )
+				{
+					this[methodName]();
+				}
 			}
 		}
 	}

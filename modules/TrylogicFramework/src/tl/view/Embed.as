@@ -39,7 +39,8 @@
 				throw new ArgumentError( "You can't set source twice!" );
 			}
 
-			this._instance = IoCHelper.makeInstance( value );
+			this._instance = new  value();
+			IoCHelper.injectTo(this._instance);
 		}
 
 		override flash_proxy function getProperty( name : * ) : *

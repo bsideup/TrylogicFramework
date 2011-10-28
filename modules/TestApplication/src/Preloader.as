@@ -8,9 +8,9 @@ package
 	{
 		public function Preloader( app : ApplicationLoader )
 		{
+			LibraryLoader;
+			
 			super( app );
-
-			new LibraryLoader();
 
 		}
 	}

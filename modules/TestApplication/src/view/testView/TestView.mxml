@@ -40,7 +40,6 @@
 
 	<tl:addedToStage>
 		<![CDATA[
-			testViewFromSWF.myText.text = String( yoButton );
 			IEventDispatcher( yoButton ).addEventListener( MouseEvent.MOUSE_DOWN, onYoButtonMouseDown );
 		]]>
 	</tl:addedToStage>
@@ -52,7 +51,5 @@
 		]]>
 	</tl:removedFromStage>
 
-	<tl:View id="myContainer">
 		<local:TestViewAsset id="testViewFromSWF" />
-	</tl:View>
 </tl:View>

@@ -2,7 +2,7 @@
 
 	<compiler>
 
-		<debug>false</debug>
+		<debug>true</debug>
 		<verbose-stacktraces>true</verbose-stacktraces>
 
 		<incremental>false</incremental>
