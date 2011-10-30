@@ -26,7 +26,24 @@ package tl.viewController
 
 		public function removeController( value : IVIewController ) : void
 		{
-			controllers = controllers.splice( controllers.indexOf( value ), 1 );
+			_controllers.splice( _controllers.indexOf( value ), 1 );
+
+
+			var viewElement : DisplayObject;
+
+			if(value.viewIsLoaded)
+			{
+				viewElement = value.view as DisplayObject;
+
+				value.viewBeforeRemovedFromStage();
+
+				if(viewElement.parent)
+				{
+					viewElement.parent.removeChild(viewElement);
+				}
+			}
+
+			value.viewControllerContainer = null;
 		}
 
 		override public function getViewInterface() : Class
@@ -39,19 +56,10 @@ package tl.viewController
 			value = [].concat( value );
 
 			var viewController : IVIewController;
-			var viewElement : DisplayObject;
 
 			for each ( viewController in controllers )
 			{
-				viewElement = viewController.view as DisplayObject;
-				if ( value.indexOf( viewElement ) == -1 && viewElement.parent )
-				{
-					viewController.viewBeforeRemovedFromStage();
-
-					viewElement.parent.removeChild( viewElement );
-
-					viewController.viewControllerContainer = null;
-				}
+				removeController(viewController);
 			}
 
 			for each ( viewController in value )

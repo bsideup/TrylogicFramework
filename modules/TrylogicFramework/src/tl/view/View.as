@@ -163,10 +163,13 @@
 
 			data = null;
 
+			// TODO: bug here: when REMOVED_FROM_STAGE event happens, parent NOT NULL! >.<
+			/*
 			if ( parent )
 			{
 				parent.removeChild( this );
 			}
+			*/
 
 			if ( _controller )
 			{
