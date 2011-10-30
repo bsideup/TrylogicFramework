@@ -3,4 +3,5 @@
 sdk/
 asdoc/
 out
-*.iws
+**/*.ipr
+**/*.iml
