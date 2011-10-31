@@ -1,22 +1,22 @@
 package tl.service
 {
-	import mx.core.IMXMLObject;
-
+	import tl.actions.IActionDispatcher;
 	import tl.ioc.IoCHelper;
 
-	public class Service implements IMXMLObject
+	public class Service implements IService
 	{
-		public var type : Class;
+		[Injection]
+		public var actionDispatcher : IActionDispatcher;
 
-		private var service : IService;
-		
-		public function Service()
+		public final function init() : void
 		{
+			IoCHelper.injectTo(this);
+			internalInit();
 		}
 
-		public function initialized( document : Object, id : String ) : void
+		protected function internalInit() : void
 		{
-			service = IoCHelper.resolve(type);
+			
 		}
 	}
 }

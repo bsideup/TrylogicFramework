@@ -2,16 +2,13 @@ package service
 {
 	import actions.FREEZE;
 
-	import tl.actions.IActionDispatcher;
 	import tl.ioc.IoCHelper;
 	import tl.ioc.ioc_internal;
+	import tl.service.Service;
 
-	public class FreezeService implements IFreezeService
+	public class FreezeService extends Service implements IFreezeService
 	{
 		private static var instance : FreezeService;
-
-		[Injection]
-		public var actionDispatcher : IActionDispatcher;
 
 		[Injection]
 		public var logger : ILogger;
@@ -39,7 +36,7 @@ package service
 			logger.log( text );
 		}
 
-		public function init() : void
+		override protected function internalInit() : void
 		{
 			IoCHelper.injectTo( this );
 		}
