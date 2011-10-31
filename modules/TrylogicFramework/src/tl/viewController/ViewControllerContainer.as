@@ -59,7 +59,10 @@ package tl.viewController
 
 			for each ( viewController in controllers )
 			{
-				removeController(viewController);
+				if(value.indexOf(viewController) == -1)
+				{
+					removeController(viewController);
+				}
 			}
 
 			for each ( viewController in value )
