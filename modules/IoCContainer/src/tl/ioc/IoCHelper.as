@@ -100,8 +100,6 @@ package tl.ioc
 				}
 			}
 
-			//injectTo( resolvedInstance, instance );
-
 			return resolvedInstance;
 		}
 

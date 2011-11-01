@@ -35,6 +35,9 @@
 				throw new ArgumentError( "applicationControllerClass of Bootstrap must be non-null and implements IApplicationController" );
 			}
 
+			IoCHelper.registerType(Stage, TrylogicStage);
+			IoCHelper.resolve(Stage, applicationLoader);
+			
 			IoCHelper.registerType( IApplicationController, applicationControllerClass );
 
 			for each( var assoc : Associate in iocMap )
