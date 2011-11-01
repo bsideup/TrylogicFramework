@@ -5,7 +5,7 @@ package tl.core
 	import tl.bootloader.ApplicationLoader;
 	import tl.ioc.ioc_internal;
 
-	public class TrylogicStage extends Stage
+	public class TrylogicStage
 	{
 		private static var instance : Stage;
 

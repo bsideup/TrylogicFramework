@@ -1,7 +1,5 @@
 package tl.viewController
 {
-	import flash.display.Stage;
-
 	/**
 	 * Interface for ApplicationController.
 	 *
