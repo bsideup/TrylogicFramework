@@ -8,9 +8,9 @@
 
 		function get view() : IView;
 
-		function get parentViewController() : IViewControllerContainer;
+		function get parentViewController() : IVIewController;
 
-		function set parentViewController( value : IViewControllerContainer ) : void;
+		function set parentViewController( value : IVIewController ) : void;
 
 		function getViewInterface() : Class;
 

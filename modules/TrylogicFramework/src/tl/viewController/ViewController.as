@@ -25,7 +25,7 @@
 		[Injection]
 		public var actionDispatcher : IActionDispatcher;
 
-		private var _viewControllerContainer : IViewControllerContainer;
+		private var _viewControllerContainer : IVIewController;
 		private var _viewInstance : IView;
 		private var _viewEventHandlers : Array;
 		private var _viewOutlets : Array;
@@ -66,12 +66,12 @@
 			return _viewInstance;
 		}
 
-		public function get parentViewController() : IViewControllerContainer
+		public function get parentViewController() : IVIewController
 		{
 			return _viewControllerContainer;
 		}
 
-		public function set parentViewController( value : IViewControllerContainer ) : void
+		public function set parentViewController( value : IVIewController ) : void
 		{
 			_viewControllerContainer = value;
 		}
