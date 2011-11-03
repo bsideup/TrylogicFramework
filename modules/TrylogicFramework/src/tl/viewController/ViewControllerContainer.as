@@ -92,6 +92,11 @@ package tl.viewController
 
 			for each ( viewController in controllers )
 			{
+				if(viewController.parentViewController == this)
+				{
+					continue;
+				}
+
 				viewElement = viewController.view as DisplayObject;
 
 				viewController.viewBeforeAddedToStage();
