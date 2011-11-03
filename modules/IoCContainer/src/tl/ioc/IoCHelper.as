@@ -2,6 +2,8 @@ package tl.ioc
 {
 	import flash.utils.*;
 
+	import tl.utils.describeTypeCached;
+
 	[Injection]
 	/**
 	 * Basic IoC container.
@@ -59,7 +61,7 @@ package tl.ioc
 	public class IoCHelper
 	{
 		{
-			if ( describeType( IoCHelper )..metadata.(@name == "Injection").length() == 0 )
+			if ( describeTypeCached( IoCHelper )..metadata.(@name == "Injection").length() == 0 )
 			{
 				throw new Error( "Please add -keep-as3-metadata+=Injection to flex compiler arguments!" )
 			}
@@ -114,7 +116,7 @@ package tl.ioc
 		{
 			if ( resolvedInstance != forInstance )
 			{
-				describeType( resolvedInstance ).variable.(valueOf().metadata.(@name == "Injection").length()).(
+				describeTypeCached( resolvedInstance ).variable.(valueOf().metadata.(@name == "Injection").length()).(
 						resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
 						);
 

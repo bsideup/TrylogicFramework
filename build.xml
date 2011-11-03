@@ -71,12 +71,17 @@
         <delete dir="${out}" />
         <mkdir dir="${out}" />
 
+		<antcall target="TrylogicUtils" />
 		<antcall target="IOCContainer" />
 		<antcall target="Bootloader" />
         <antcall target="GlobalDispatcher" />
         <antcall target="TrylogicFramework" />
 		<antcall target="TestApplication" />
 
+	</target>
+
+	<target name="TrylogicUtils">
+		<compileModule moduleName="TrylogicUtils" />
 	</target>
 
 	<target name="IOCContainer">
@@ -102,6 +107,7 @@
 	<target name="asdoc" description="Generates ASDOC html files for each module">
 		<antcall target="compile" />
 
+		<asdocModule moduleName="TrylogicUtils" />
 		<asdocModule moduleName="IOCContainer" />
 		<asdocModule moduleName="Bootloader" />
         <asdocModule moduleName="GlobalDispatcher" />
@@ -115,6 +121,7 @@
 		<delete dir="${out}" failonerror="no"/>
 		<delete dir="${asdoc}" failonerror="no" />
 
+		<cleanModule moduleName="TrylogicUtils" />
 		<cleanModule moduleName="IoCContainer" />
 		<cleanModule moduleName="Bootloader" />
         <cleanModule moduleName="TrylogicFramework" />
