@@ -12,11 +12,6 @@
 			return testViewFromSWF.myText;
 		}
 
-		public function get delegate() : ITestViewDelegate
-		{
-			return ITestViewDelegate( controller );
-		}
-
 		protected function get yoButton() : SimpleButton
 		{
 			if ( _yoButton == null )
@@ -28,7 +23,7 @@
 
 		private function onYoButtonMouseDown( e : MouseEvent ) : void
 		{
-			delegate.myButtonClicked();
+			ITestViewDelegate( controller ).myButtonClicked();
 		}
 
 		public function get myAnotherLabel() : TextField
@@ -40,16 +35,16 @@
 
 	<tl:addedToStage>
 		<![CDATA[
-			IEventDispatcher( yoButton ).addEventListener( MouseEvent.MOUSE_DOWN, onYoButtonMouseDown );
+			IEventDispatcher( yoButton ).addEventListener( MouseEvent.CLICK, onYoButtonMouseDown );
 		]]>
 	</tl:addedToStage>
 
 	<tl:removedFromStage>
 	<![CDATA[
 			_yoButton = null;
-			IEventDispatcher( yoButton ).removeEventListener( MouseEvent.MOUSE_DOWN, onYoButtonMouseDown );
+			IEventDispatcher( yoButton ).removeEventListener( MouseEvent.CLICK, onYoButtonMouseDown );
 		]]>
 	</tl:removedFromStage>
 
-		<local:TestViewAsset id="testViewFromSWF" />
+	<local:TestViewAsset id="testViewFromSWF" mouseChildren="{ITestViewDelegate( controller ).canClick}" />
 </tl:View>

@@ -28,7 +28,6 @@ package tl.viewController
 		{
 			_controllers.splice( _controllers.indexOf( value ), 1 );
 
-
 			var viewElement : DisplayObject;
 
 			if(value.viewIsLoaded)
@@ -43,7 +42,7 @@ package tl.viewController
 				}
 			}
 
-			value.viewControllerContainer = null;
+			value.parentViewController = null;
 		}
 
 		override public function getViewInterface() : Class
@@ -67,7 +66,7 @@ package tl.viewController
 
 			for each ( viewController in value )
 			{
-				viewController.viewControllerContainer = this;
+				viewController.parentViewController = this;
 			}
 
 			_controllers = value;

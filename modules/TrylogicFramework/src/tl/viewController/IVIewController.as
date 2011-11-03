@@ -8,9 +8,9 @@
 
 		function get view() : IView;
 
-		function get viewControllerContainer() : IViewControllerContainer;
+		function get parentViewController() : IViewControllerContainer;
 
-		function set viewControllerContainer( value : IViewControllerContainer ) : void;
+		function set parentViewController( value : IViewControllerContainer ) : void;
 
 		function getViewInterface() : Class;
 

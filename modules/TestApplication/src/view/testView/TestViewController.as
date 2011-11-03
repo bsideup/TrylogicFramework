@@ -14,6 +14,19 @@ package view.testView
 		[Outlet]
 		public var myAnotherLabel : TextField;
 
+		private var _canClick : Boolean = true;
+
+		public function get canClick() : Boolean
+		{
+			return _canClick;
+		}
+
+		[Bindable]
+		public function set canClick(value : Boolean) : void
+		{
+			_canClick = value;
+		}
+		
 		override public function getViewInterface() : Class
 		{
 			return ITestView;
@@ -30,6 +43,8 @@ package view.testView
 		{
 			trace("Yo!");
 			actionDispatcher.dispatch( FREEZE );
+
+			canClick = false;
 		}
 	}
 }

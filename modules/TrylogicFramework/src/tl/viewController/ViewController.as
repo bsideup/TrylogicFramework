@@ -66,12 +66,12 @@
 			return _viewInstance;
 		}
 
-		public function get viewControllerContainer() : IViewControllerContainer
+		public function get parentViewController() : IViewControllerContainer
 		{
 			return _viewControllerContainer;
 		}
 
-		public function set viewControllerContainer( value : IViewControllerContainer ) : void
+		public function set parentViewController( value : IViewControllerContainer ) : void
 		{
 			_viewControllerContainer = value;
 		}

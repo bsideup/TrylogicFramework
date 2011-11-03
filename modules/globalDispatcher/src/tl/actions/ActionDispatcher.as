@@ -60,7 +60,7 @@ package tl.actions
 			}
 		}
 
-		ioc_internal static function getInstance() : ActionDispatcher
+		public static function getInstance() : ActionDispatcher
 		{
 			if ( instance == null )
 			{
@@ -72,7 +72,7 @@ package tl.actions
 
 		ioc_internal static function getInstanceForInstance( instance : * ) : ActionDispatcher
 		{
-			var actionDispatcher : ActionDispatcher = ioc_internal::getInstance();
+			var actionDispatcher : ActionDispatcher = getInstance();
 
 			if ( instance != null ) actionDispatcher.addHandler( instance );
 

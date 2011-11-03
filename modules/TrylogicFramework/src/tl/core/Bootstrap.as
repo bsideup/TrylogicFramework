@@ -12,6 +12,8 @@
 	public class Bootstrap
 	{
 		{
+			IoCHelper.registerType( Stage, TrylogicStage );
+
 			IoCHelper.registerType( IViewContainer, ViewContainer );
 			IoCHelper.registerType( IView, View );
 			IoCHelper.registerType( IVIewController, ViewController );
@@ -35,9 +37,8 @@
 				throw new ArgumentError( "applicationControllerClass of Bootstrap must be non-null and implements IApplicationController" );
 			}
 
-			IoCHelper.registerType(Stage, TrylogicStage);
-			IoCHelper.resolve(Stage, applicationLoader);
-			
+			IoCHelper.resolve( Stage, applicationLoader );
+
 			IoCHelper.registerType( IApplicationController, applicationControllerClass );
 
 			for each( var assoc : Associate in iocMap )
@@ -45,7 +46,7 @@
 				IoCHelper.registerType( assoc.iface, assoc.withClass );
 			}
 
-			for each( var service : IService in services)
+			for each( var service : IService in services )
 			{
 				service.init();
 			}
