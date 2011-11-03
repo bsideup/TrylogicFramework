@@ -92,12 +92,12 @@ package tl.viewController
 
 			for each ( viewController in controllers )
 			{
-				if(viewController.parentViewController == this)
+				viewElement = viewController.view as DisplayObject;
+
+				if(viewElement.parent == container)
 				{
 					continue;
 				}
-
-				viewElement = viewController.view as DisplayObject;
 
 				viewController.viewBeforeAddedToStage();
 				
