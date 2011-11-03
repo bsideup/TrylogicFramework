@@ -3,6 +3,8 @@
 sdk/
 asdoc/
 
+out/*.swf
+
 **/*/out
 **/*/asdoc
 
