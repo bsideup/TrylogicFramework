@@ -94,6 +94,8 @@ package tl.viewController
 			{
 				viewElement = viewController.view as DisplayObject;
 
+				viewController.viewBeforeAddedToStage();
+				
 				container.addChild( viewElement );
 				container.setChildIndex( viewElement, container.numChildren - 1 );
 			}
