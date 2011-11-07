@@ -16,8 +16,11 @@
 
 			IoCHelper.registerType( IViewContainer, ViewContainer );
 			IoCHelper.registerType( IView, View );
+
 			IoCHelper.registerType( IVIewController, ViewController );
 			IoCHelper.registerType( IViewControllerContainer, ViewControllerContainer );
+			IoCHelper.registerType( ISingleViewController, SingleViewController );
+
 			IoCHelper.registerType( IService, Service );
 		}
 

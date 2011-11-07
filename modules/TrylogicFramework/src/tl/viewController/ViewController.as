@@ -90,14 +90,6 @@
 			return IView;
 		}
 
-		protected function viewBeforeAddedToStage() : void
-		{
-		}
-
-		protected function viewBeforeRemovedFromStage() : void
-		{
-		}
-
 		[Event(name="removedFromStage")]
 		public final function viewRemovedFromStage() : void
 		{
@@ -162,7 +154,7 @@
 						_viewOutlets.push( @name )
 						);
 			}
-			
+
 			for each( var outletName : String in _viewOutlets )
 			{
 				setOutlet( outletName );
@@ -218,6 +210,14 @@
 					this[methodName]();
 				}
 			}
+		}
+
+		protected function viewBeforeAddedToStage() : void
+		{
+		}
+
+		protected function viewBeforeRemovedFromStage() : void
+		{
 		}
 	}
 
