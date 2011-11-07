@@ -3,7 +3,7 @@
 sdk/
 asdoc/
 
-out/*.swf
+out/TestApplication.swf
 
 **/*/out
 **/*/asdoc
