@@ -1,5 +1,7 @@
 ﻿package tl.viewController
 {
+	import flash.display.DisplayObject;
+	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
 
 	import tl.actions.IActionDispatcher;
@@ -35,35 +37,42 @@
 			IoCHelper.injectTo( this );
 		}
 
-		public final function get view() : IView
+		public function addViewToContainer( container : DisplayObjectContainer ) : void
 		{
-			if ( !viewIsLoaded )
+			if ( DisplayObject( view ).parent == container )
 			{
-				if ( _viewEventHandlers == null )
-				{
-					_viewEventHandlers = [];
-
-					describeTypeCached( this ).method.( valueOf().metadata.( @name == "Event" ).length() > 0 ).(
-							registerListener( metadata.arg.( @key == "name" ).@value.toString(), String( @name ) )
-							);
-				}
-
-				if ( _viewOutlets == null )
-				{
-					_viewOutlets = [];
-
-					describeTypeCached( this ).variable.( valueOf().metadata.( @name == "Outlet" ).length() > 0 ).(
-							_viewOutlets.push( @name )
-							);
-				}
-
-				_viewInstance = IoCHelper.resolve( getViewInterface(), this );
-				_viewInstance.controller = this;
-
-				viewLoaded();
+				return;
 			}
 
-			return _viewInstance;
+			viewBeforeAddedToStage();
+
+			container.addChild( view as DisplayObject );
+		}
+
+		public function addViewToContainerAtIndex( container : DisplayObjectContainer, index : int ) : void
+		{
+			addViewToContainer( container );
+
+			setViewIndexInContainer( container, index );
+		}
+
+		public function setViewIndexInContainer( container : DisplayObjectContainer, index : int ) : void
+		{
+			container.setChildIndex( view as DisplayObject, index < 0 ? (container.numChildren + index) : index );
+		}
+
+		public function removeViewFromContainer( container : DisplayObjectContainer ) : void
+		{
+			viewBeforeRemovedFromStage();
+
+			if ( viewIsLoaded )
+			{
+				var viewDisplayObject : DisplayObject = view as DisplayObject;
+				if ( viewDisplayObject.parent )
+				{
+					viewDisplayObject.parent.removeChild( viewDisplayObject );
+				}
+			}
 		}
 
 		public function get parentViewController() : IVIewController
@@ -76,21 +85,16 @@
 			_viewControllerContainer = value;
 		}
 
-		public final function get viewIsLoaded() : Boolean
-		{
-			return _viewInstance != null;
-		}
-
 		public function getViewInterface() : Class
 		{
 			return IView;
 		}
 
-		public function viewBeforeAddedToStage() : void
+		protected function viewBeforeAddedToStage() : void
 		{
 		}
 
-		public function viewBeforeRemovedFromStage() : void
+		protected function viewBeforeRemovedFromStage() : void
 		{
 		}
 
@@ -121,8 +125,44 @@
 			actionDispatcher = null;
 		}
 
+		protected final function get viewIsLoaded() : Boolean
+		{
+			return _viewInstance != null;
+		}
+
+		protected final function get view() : IView
+		{
+			if ( !viewIsLoaded )
+			{
+				_viewInstance = IoCHelper.resolve( getViewInterface(), this );
+				_viewInstance.controller = this;
+
+				viewLoaded();
+			}
+
+			return _viewInstance;
+		}
+
 		protected function viewLoaded() : void
 		{
+			if ( _viewEventHandlers == null )
+			{
+				_viewEventHandlers = [];
+
+				describeTypeCached( this ).method.( valueOf().metadata.( @name == "Event" ).length() > 0 ).(
+						registerListener( metadata.arg.( @key == "name" ).@value.toString(), String( @name ) )
+						);
+			}
+
+			if ( _viewOutlets == null )
+			{
+				_viewOutlets = [];
+
+				describeTypeCached( this ).variable.( valueOf().metadata.( @name == "Outlet" ).length() > 0 ).(
+						_viewOutlets.push( @name )
+						);
+			}
+			
 			for each( var outletName : String in _viewOutlets )
 			{
 				setOutlet( outletName );

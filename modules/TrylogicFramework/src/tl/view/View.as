@@ -24,7 +24,7 @@
 		 * @param value
 		 */
 		[Bindable]
-		public final function set controller( value : IVIewController ) : void
+		public function set controller( value : IVIewController ) : void
 		{
 			if ( _controller != null )
 			{
@@ -34,7 +34,7 @@
 			_controller = value;
 		}
 
-		public final function get controller() : IVIewController
+		public function get controller() : IVIewController
 		{
 			return _controller;
 		}
@@ -66,23 +66,13 @@
 
 			for each ( element in _data )
 			{
-				if ( element is IVIewController && IVIewController( element ).viewIsLoaded )
+				if ( element is IVIewController )
 				{
-					viewElement = IVIewController( element ).view as DisplayObject;
-					if ( value.indexOf( viewElement ) == -1 )
+					if ( value.indexOf( element ) == -1 )
 					{
-						IVIewController( element ).viewBeforeRemovedFromStage();
+						IVIewController( element ).removeViewFromContainer( this );
 					}
-				}
-				else if ( element is IView )
-				{
-					viewElement = element as DisplayObject;
-
-					viewController = IView( element ).controller;
-					if ( viewController && value.indexOf( viewElement ) == -1 )
-					{
-						viewController.viewBeforeRemovedFromStage();
-					}
+					return;
 				}
 				else if ( element is DisplayObject )
 				{
@@ -97,7 +87,7 @@
 					continue;
 				}
 
-				if ( value.indexOf( viewElement ) == -1 )
+				if ( viewElement != null && value.indexOf( viewElement ) == -1 )
 				{
 					removeChild( viewElement );
 				}
@@ -107,21 +97,13 @@
 			{
 				if ( element is IVIewController )
 				{
-					viewElement = IVIewController( element ).view as DisplayObject;
-					if ( _data.indexOf( viewElement ) == -1 )
+					if ( _data.indexOf( element ) == -1 )
 					{
-						IVIewController( element ).viewBeforeAddedToStage();
+						IVIewController( element ).addViewToContainer( this );
 					}
-				}
-				else if ( element is IView )
-				{
-					viewElement = element as DisplayObject;
 
-					viewController = IView( element ).controller;
-					if ( viewController && _data.indexOf( viewElement ) == -1 )
-					{
-						viewController.viewBeforeAddedToStage();
-					}
+					IVIewController( element ).setViewIndexInContainer( this, -1 );
+					return;
 				}
 				else if ( element is DisplayObject )
 				{
@@ -132,6 +114,11 @@
 					viewElement = element.instance as DisplayObject;
 				}
 				else
+				{
+					continue;
+				}
+
+				if ( viewElement == null )
 				{
 					continue;
 				}

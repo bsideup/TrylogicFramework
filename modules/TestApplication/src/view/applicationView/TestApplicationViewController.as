@@ -20,7 +20,7 @@ package view.applicationView
 			return instance;
 		}
 
-		override public function viewBeforeAddedToStage() : void
+		override protected function viewBeforeAddedToStage() : void
 		{
 			trace( stage.frameRate );
 			addController( IoCHelper.resolve( ITestViewController ) );

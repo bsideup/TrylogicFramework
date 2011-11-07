@@ -28,19 +28,7 @@ package tl.viewController
 		{
 			_controllers.splice( _controllers.indexOf( value ), 1 );
 
-			var viewElement : DisplayObject;
-
-			if(value.viewIsLoaded)
-			{
-				viewElement = value.view as DisplayObject;
-
-				value.viewBeforeRemovedFromStage();
-
-				if(viewElement.parent)
-				{
-					viewElement.parent.removeChild(viewElement);
-				}
-			}
+			value.removeViewFromContainer( container );
 
 			value.parentViewController = null;
 		}
@@ -88,21 +76,10 @@ package tl.viewController
 			}
 
 			var viewController : IVIewController;
-			var viewElement : DisplayObject;
 
 			for each ( viewController in controllers )
 			{
-				viewElement = viewController.view as DisplayObject;
-
-				if(viewElement.parent == container)
-				{
-					continue;
-				}
-
-				viewController.viewBeforeAddedToStage();
-				
-				container.addChild( viewElement );
-				container.setChildIndex( viewElement, container.numChildren - 1 );
+				viewController.addViewToContainerAtIndex( container, -1 );
 			}
 		}
 

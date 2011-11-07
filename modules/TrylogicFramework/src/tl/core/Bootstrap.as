@@ -51,11 +51,7 @@
 				service.init();
 			}
 
-			var appController : IApplicationController = IoCHelper.resolve( IApplicationController, this );
-
-			appController.viewBeforeAddedToStage();
-
-			applicationLoader.addChild( appController.view as DisplayObject );
+			IoCHelper.resolve( IApplicationController, this ).addViewToContainer( applicationLoader );
 		}
 	}
 }
