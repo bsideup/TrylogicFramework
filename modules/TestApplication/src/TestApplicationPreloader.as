@@ -4,9 +4,9 @@ package
 	import tl.bootloader.PreloaderBase;
 	import tl.bootloader.mixins.LibraryLoader;
 
-	public class Preloader extends PreloaderBase
+	public class TestApplicationPreloader extends PreloaderBase
 	{
-		public function Preloader( app : ApplicationLoader )
+		public function TestApplicationPreloader( app : ApplicationLoader )
 		{
 			LibraryLoader;
 			

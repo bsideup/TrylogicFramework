@@ -2,6 +2,8 @@
 {
 	import flash.display.*;
 
+	import tl.factory.SingletonFactory;
+
 	import tl.ioc.*;
 	import tl.service.IService;
 	import tl.service.Service;
@@ -42,11 +44,11 @@
 
 			IoCHelper.resolve( Stage, applicationLoader );
 
-			IoCHelper.registerType( IApplicationController, applicationControllerClass );
+			IoCHelper.registerType( IApplicationController, applicationControllerClass, SingletonFactory );
 
 			for each( var assoc : Associate in iocMap )
 			{
-				IoCHelper.registerType( assoc.iface, assoc.withClass );
+				IoCHelper.registerAssociate( assoc );
 			}
 
 			for each( var service : IService in services )

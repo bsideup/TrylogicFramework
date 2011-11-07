@@ -80,25 +80,34 @@ package tl.ioc
 		 */
 		public static function resolve( iface : Class, instance : * = null ) : *
 		{
-			var clazz : Class = aliases[iface];
-			if ( clazz == null )
+			var assoc : Associate = aliases[iface];
+			var resolvedInstance : *;
+
+			if ( assoc == null )
 			{
 				throw new Error( "Nothing is registered to " + iface );
 			}
 
-			var resolvedInstance : *;
-
 			try
 			{
-				resolvedInstance = clazz.ioc_internal::['getInstanceForInstance']( instance );
-			} catch( e : ReferenceError )
+				resolvedInstance = assoc.withClass.ioc_internal::['getInstanceForInstance']( instance );
+			}
+			catch( e : ReferenceError )
 			{
 				try
 				{
-					resolvedInstance = clazz.ioc_internal::['getInstance']();
-				} catch( e : ReferenceError )
+					resolvedInstance = assoc.withClass.ioc_internal::['getInstance']();
+				}
+				catch( e : ReferenceError )
 				{
-					resolvedInstance = new clazz();
+					if ( assoc.factory != null )
+					{
+						resolvedInstance = Class( assoc.factory ).makeInstance( assoc.withClass, instance );
+					}
+					else
+					{
+						resolvedInstance = new assoc.withClass();
+					}
 				}
 			}
 
@@ -134,9 +143,19 @@ package tl.ioc
 		 * @param iface
 		 * @param targetClass
 		 */
-		public static function registerType( iface : Class, targetClass : Class ) : void
+		public static function registerType( iface : Class, targetClass : Class, factory : Class = null ) : void
 		{
-			aliases[iface] = targetClass;
+			registerAssociate( new Associate( iface, targetClass, factory ) );
+		}
+
+		public static function registerAssociate( assoc : Associate ) : void
+		{
+			if(assoc.iface == null)
+			{
+				throw new Error("Association's iface property cann't be null!");
+			}
+			
+			aliases[assoc.iface] = assoc;
 		}
 	}
 }
