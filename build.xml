@@ -2,6 +2,9 @@
 
 	<property name="sdkPath" value="${basedir}/sdk" />
 	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4/flex_sdk_4.1.0.16076_mpl.zip" />
+
+	<property name="FLEXUNIT_HOME" value="${basedir}/flexunit" />
+
 	<property name="out" value="${basedir}/out" />
 	<property name="asdoc" value="${basedir}/asdoc" />
     <property name="modules" value="${basedir}/modules" />
@@ -14,6 +17,7 @@
             <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="compile" inheritall="false">
                 <property name="FLEX_HOME" value="${sdkPath}" />
                 <property name="GLOBAL_OUT" value="${out}" />
+				<property name="FLEXUNIT_HOME" value="${FLEXUNIT_HOME}" />
             </ant>
 
             <copy todir="${out}" description="Copying output files">
@@ -26,6 +30,19 @@
         </sequential>
     </macrodef>
 
+	<macrodef name="testModule">
+        <attribute name="moduleName" />
+        <sequential>
+            <echo message="Testing module @{moduleName}"/>
+
+            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="test" inheritall="false">
+                <property name="FLEX_HOME" value="${sdkPath}" />
+                <property name="GLOBAL_OUT" value="${out}" />
+				<property name="FLEXUNIT_HOME" value="${FLEXUNIT_HOME}" />
+            </ant>
+        </sequential>
+    </macrodef>
+
 	<macrodef name="asdocModule">
         <attribute name="moduleName" />
         <sequential>
@@ -34,6 +51,7 @@
             <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="asdoc" inheritall="false">
                 <property name="FLEX_HOME" value="${sdkPath}" />
                 <property name="GLOBAL_OUT" value="${out}" />
+				<property name="FLEXUNIT_HOME" value="${FLEXUNIT_HOME}" />
             </ant>
 
             <copy todir="${asdoc}/@{moduleName}" description="Copying output files">
@@ -71,6 +89,8 @@
         <delete dir="${out}" />
         <mkdir dir="${out}" />
 
+		<copy file="${basedir}/libs/flexunit/flexunit-4.1.0-8-as3_4.1.0.16076.swc" todir="${GLOBAL_OUT}" />
+
 		<antcall target="TrylogicUtils" />
 		<antcall target="IOCContainer" />
 		<antcall target="Bootloader" />
@@ -82,6 +102,10 @@
 
 	<target name="TrylogicUtils">
 		<compileModule moduleName="TrylogicUtils" />
+	</target>
+
+	<target name="TrylogicUtilsTests">
+		<testModule moduleName="TrylogicUtils" />
 	</target>
 
 	<target name="IOCContainer">

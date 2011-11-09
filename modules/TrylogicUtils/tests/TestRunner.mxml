@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+				creationComplete="runTests();"
+				layout="absolute">
+
+	<mx:Script>
+      <![CDATA[
+		import org.flexunit.listeners.CIListener;
+		import org.flexunit.runner.FlexUnitCore;
+
+		import tl.utils.DescribeTypeCachedTest;
+
+		public function runTests() : void
+		{
+			var core : FlexUnitCore = new FlexUnitCore();
+
+			core.addListener( new CIListener() );
+
+			core.run( DescribeTypeCachedTest );
+		}
+		]]>
+   </mx:Script>
+
+</mx:Application>
