@@ -8,7 +8,7 @@
 	
 	<property name="FLEX_HOME" value="${basedir}/sdk" />
 	<property name="FLEXUNIT_HOME" value="../../flexunit" />
-	<property name="JUNITREPORTPRINTER_HOME" value="../../JUnitReportPrinter" />
+	<property name="JUNITREPORTPRINTER_HOME" value="../../junitreportprinter" />
 
 	<include file="${JUNITREPORTPRINTER_HOME}/showFailures.xml" />
 

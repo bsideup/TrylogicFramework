@@ -1,111 +1,146 @@
 <project name="TrylogicFramework" default="compile" basedir=".">
 
-	<property name="sdkPath" value="${basedir}/sdk" />
+
 	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4/flex_sdk_4.1.0.16076_mpl.zip" />
 
+	<property name="FLEX_HOME" value="${basedir}/sdk" />
 	<property name="FLEXUNIT_HOME" value="${basedir}/flexunit" />
+	<property name="JUNITREPORTPRINTER_HOME" value="${basedir}/junitreportprinter" />
 
 	<property name="out" value="${basedir}/out" />
 	<property name="asdoc" value="${basedir}/asdoc" />
-    <property name="modules" value="${basedir}/modules" />
+	<property name="flexUnitOutput" value="${out}/report" />
 
-    <macrodef name="compileModule">
-        <attribute name="moduleName" />
-        <sequential>
-            <echo message="Compiling module @{moduleName}"/>
+	<property name="modules" value="${basedir}/modules" />
 
-            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="compile" inheritall="false">
-                <property name="FLEX_HOME" value="${sdkPath}" />
-                <property name="GLOBAL_OUT" value="${out}" />
+	<taskdef resource="flexUnitTasks.tasks" classpath="${FLEXUNIT_HOME}/flexUnitTasks-4.1.0-8.jar" />
+
+	<include file="${JUNITREPORTPRINTER_HOME}/showFailures.xml" />
+
+	<macrodef name="compileModule">
+		<attribute name="moduleName" />
+		<sequential>
+			<echo message="Compiling module @{moduleName}" />
+
+			<ant dir="${modules}/@{moduleName}" antfile="build.xml" target="compile" inheritall="false">
+				<property name="FLEX_HOME" value="${FLEX_HOME}" />
+				<property name="GLOBAL_OUT" value="${out}" />
 				<property name="FLEXUNIT_HOME" value="${FLEXUNIT_HOME}" />
-            </ant>
+			</ant>
 
-            <copy todir="${out}" description="Copying output files">
-                <fileset dir="${modules}/@{moduleName}/out">
-                    <include name="**/**" />
-                    <exclude name="**/**.cache" />
-                </fileset>
-            </copy>
+			<copy todir="${out}" description="Copying output files">
+				<fileset dir="${modules}/@{moduleName}/out">
+					<include name="**/**" />
+					<exclude name="**/**.cache" />
+				</fileset>
+			</copy>
 
-        </sequential>
-    </macrodef>
+		</sequential>
+	</macrodef>
 
 	<macrodef name="testModule">
-        <attribute name="moduleName" />
-        <sequential>
-            <echo message="Testing module @{moduleName}"/>
+		<attribute name="moduleName" />
+		<sequential>
+			<echo message="Testing module @{moduleName}" />
 
-            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="test" inheritall="false">
-                <property name="FLEX_HOME" value="${sdkPath}" />
-                <property name="GLOBAL_OUT" value="${out}" />
-				<property name="FLEXUNIT_HOME" value="${FLEXUNIT_HOME}" />
-            </ant>
-        </sequential>
-    </macrodef>
+			<flexunit workingdir="${flexUnitOutput}" todir="${flexUnitOutput}" haltonfailure="false" verbose="false" failureproperty="test.failure">
+
+				<testsource dir="${basedir}/modules/@{moduleName}/tests">
+					<include name="**/*Test.as" />
+				</testsource>
+
+				<load-config filename="${basedir}/test-config.xml" />
+				<library dir="${basedir}/modules/@{moduleName}/out" />
+			</flexunit>
+
+			<junitreport tofile="./out/report/testReport.xml">
+				<fileset dir="${flexUnitOutput}">
+					<include name="TEST-*.xml" />
+				</fileset>
+			</junitreport>
+		</sequential>
+	</macrodef>
 
 	<macrodef name="asdocModule">
-        <attribute name="moduleName" />
-        <sequential>
-            <echo message="Compiling module @{moduleName}"/>
+		<attribute name="moduleName" />
+		<sequential>
+			<echo message="Compiling module @{moduleName}" />
 
-            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="asdoc" inheritall="false">
-                <property name="FLEX_HOME" value="${sdkPath}" />
-                <property name="GLOBAL_OUT" value="${out}" />
+			<ant dir="${modules}/@{moduleName}" antfile="build.xml" target="asdoc" inheritall="false">
+				<property name="FLEX_HOME" value="${FLEX_HOME}" />
+				<property name="GLOBAL_OUT" value="${out}" />
 				<property name="FLEXUNIT_HOME" value="${FLEXUNIT_HOME}" />
-            </ant>
+			</ant>
 
-            <copy todir="${asdoc}/@{moduleName}" description="Copying output files">
-                <fileset dir="${modules}/@{moduleName}/asdoc">
-                    <include name="**/**" />
-                    <exclude name="**/**.cache" />
-                </fileset>
-            </copy>
-        </sequential>
-    </macrodef>
+			<copy todir="${asdoc}/@{moduleName}" description="Copying output files">
+				<fileset dir="${modules}/@{moduleName}/asdoc">
+					<include name="**/**" />
+					<exclude name="**/**.cache" />
+				</fileset>
+			</copy>
+		</sequential>
+	</macrodef>
 
-    <macrodef name="cleanModule">
-        <attribute name="moduleName" />
-        <sequential>
-            <echo message="Cleaning module @{moduleName}"/>
-            <ant dir="${modules}/@{moduleName}" antfile="build.xml" target="clean" inheritall="false" inheritrefs="false" />
-        </sequential>
-    </macrodef>
+	<macrodef name="cleanModule">
+		<attribute name="moduleName" />
+		<sequential>
+			<echo message="Cleaning module @{moduleName}" />
+			<ant dir="${modules}/@{moduleName}" antfile="build.xml" target="clean" inheritall="false" inheritrefs="false" />
+		</sequential>
+	</macrodef>
 
 	<target name="downloadSDK" unless="${sdkDownloaded}" depends="checkIfDownloaded" description="Download Flex SDK and set properties FLEX_HOME to downloaded files">
-		<mkdir dir="${sdkPath}"/>
+		<mkdir dir="${FLEX_HOME}" />
 
-		<get src="${sdkURL}" dest="${sdkPath}/Framework.zip" skipexisting="true"/>
-		<unzip src="${sdkPath}/Framework.zip" dest="${sdkPath}" overwrite="false"/>
+		<get src="${sdkURL}" dest="${FLEX_HOME}/Framework.zip" skipexisting="true" />
+		<unzip src="${FLEX_HOME}/Framework.zip" dest="${FLEX_HOME}" overwrite="false" />
 	</target>
 
 	<target name="checkIfDownloaded">
 		<condition property="sdkDownloaded">
-			<available file="${sdkPath}" type="dir"/>
+			<available file="${FLEX_HOME}" type="dir" />
 		</condition>
 	</target>
 
 	<target name="compile" description="compile the source" depends="downloadSDK">
 
-        <delete dir="${out}" />
-        <mkdir dir="${out}" />
-
-		<copy file="${basedir}/libs/flexunit/flexunit-4.1.0-8-as3_4.1.0.16076.swc" todir="${GLOBAL_OUT}" />
+		<delete dir="${out}" />
+		<mkdir dir="${out}" />
 
 		<antcall target="TrylogicUtils" />
+		<antcall target="IOCContainer" />
+		<antcall target="Bootloader" />
+		<antcall target="GlobalDispatcher" />
+		<antcall target="TrylogicFramework" />
+		<antcall target="TestApplication" />
+
+	</target>
+
+	<target name="test" description="run tests for all modules" depends="downloadSDK">
+
+		<!--
+		<antcall target="TrylogicUtilsTests" />
 		<antcall target="IOCContainer" />
 		<antcall target="Bootloader" />
         <antcall target="GlobalDispatcher" />
         <antcall target="TrylogicFramework" />
 		<antcall target="TestApplication" />
+		-->
+
+		<delete dir="${flexUnitOutput}" failonerror="no" quiet="yes" />
+		<mkdir dir="${flexUnitOutput}" />
+
+		<testModule moduleName="TrylogicUtils" />
+		<testModule moduleName="IOCContainer" />
+
+		<showFailures xmlFile="${flexUnitOutput}/testReport.xml" />
+
+		<fail if="test.failure" />
 
 	</target>
 
 	<target name="TrylogicUtils">
 		<compileModule moduleName="TrylogicUtils" />
-	</target>
-
-	<target name="TrylogicUtilsTests">
-		<testModule moduleName="TrylogicUtils" />
 	</target>
 
 	<target name="IOCContainer">
@@ -134,22 +169,22 @@
 		<asdocModule moduleName="TrylogicUtils" />
 		<asdocModule moduleName="IOCContainer" />
 		<asdocModule moduleName="Bootloader" />
-        <asdocModule moduleName="GlobalDispatcher" />
-        <asdocModule moduleName="TrylogicFramework" />
+		<asdocModule moduleName="GlobalDispatcher" />
+		<asdocModule moduleName="TrylogicFramework" />
 	</target>
 
-    <target name="install">
-    </target>
+	<target name="install">
+	</target>
 
 	<target name="clean" description="clean up">
-		<delete dir="${out}" failonerror="no"/>
+		<delete dir="${out}" failonerror="no" />
 		<delete dir="${asdoc}" failonerror="no" />
 
 		<cleanModule moduleName="TrylogicUtils" />
 		<cleanModule moduleName="IoCContainer" />
 		<cleanModule moduleName="Bootloader" />
-        <cleanModule moduleName="TrylogicFramework" />
-        <cleanModule moduleName="GlobalDispatcher" />
+		<cleanModule moduleName="TrylogicFramework" />
+		<cleanModule moduleName="GlobalDispatcher" />
 		<cleanModule moduleName="TestApplication" />
 	</target>
 </project>
