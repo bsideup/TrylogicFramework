@@ -83,7 +83,6 @@
 				</testsource>
 
 				<load-config filename="${basedir}/test-config.xml" />
-				<library dir="${basedir}/modules/@{moduleName}/out" />
 			</flexunit>
 
 			<junitreport tofile="./out/report/testReport.xml">
@@ -152,7 +151,7 @@
 
 	</target>
 
-	<target name="test" description="run tests for all modules" depends="downloadSDK">
+	<target name="test" description="run tests for all modules" depends="downloadSDK, compile">
 
 		<delete dir="${flexUnitOutput}" failonerror="no" quiet="yes" />
 		<mkdir dir="${flexUnitOutput}" />
