@@ -14,10 +14,43 @@
 	<property name="modules" value="${basedir}/modules" />
 
 	<taskdef resource="flexUnitTasks.tasks" classpath="${FLEXUNIT_HOME}/flexUnitTasks-4.1.0-8.jar" />
+	<taskdef file="${FLEX_HOME}/ant/flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
 	<include file="${JUNITREPORTPRINTER_HOME}/showFailures.xml" />
 
-	<macrodef name="compileModule">
+	<macrodef name="compileModuleAsLibrary">
+		<attribute name="moduleName" />
+		<sequential>
+			<echo message="Compiling module @{moduleName}" />
+
+			<compc output="${modules}/@{moduleName}/out/@{moduleName}.swc" dir="${modules}/@{moduleName}" fork="true">
+				<sysproperty key="user.language" value="en" />
+				<sysproperty key="user.region" value="US" />
+				<compiler.external-library-path dir="${out}" append="true">
+					<include name="*.swc" />
+				</compiler.external-library-path>
+				<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
+				<load-config filename="${modules}/@{moduleName}/compiler-config.xml" />
+			</compc>
+
+			<copy todir="${out}" description="Copying output files">
+				<fileset dir="${modules}/@{moduleName}/out">
+					<include name="**/**" />
+					<exclude name="**/**.cache" />
+				</fileset>
+			</copy>
+
+			<copy todir="${out}" description="Copying output files" failonerror="no">
+				<fileset dir="${modules}/@{moduleName}/libs">
+					<include name="**/**" />
+					<exclude name="**/**.cache" />
+				</fileset>
+			</copy>
+
+		</sequential>
+	</macrodef>
+
+	<macrodef name="compileModuleAsApplication">
 		<attribute name="moduleName" />
 		<sequential>
 			<echo message="Compiling module @{moduleName}" />
@@ -66,11 +99,14 @@
 		<sequential>
 			<echo message="Compiling module @{moduleName}" />
 
-			<ant dir="${modules}/@{moduleName}" antfile="build.xml" target="asdoc" inheritall="false">
-				<property name="FLEX_HOME" value="${FLEX_HOME}" />
-				<property name="GLOBAL_OUT" value="${out}" />
-				<property name="FLEXUNIT_HOME" value="${FLEXUNIT_HOME}" />
-			</ant>
+			<asdoc output="${modules}/@{moduleName}/asdoc">
+				<sysproperty key="user.language" value="en" />
+				<sysproperty key="user.region" value="US" />
+				<compiler.external-library-path dir="${GLOBAL_OUT}" append="true">
+					<include name="*.swc" />
+				</compiler.external-library-path>
+				<doc-sources path-element="${modules}/@{moduleName}/src/" />
+			</asdoc>
 
 			<copy todir="${asdoc}/@{moduleName}" description="Copying output files">
 				<fileset dir="${modules}/@{moduleName}/asdoc">
@@ -118,15 +154,6 @@
 
 	<target name="test" description="run tests for all modules" depends="downloadSDK">
 
-		<!--
-		<antcall target="TrylogicUtilsTests" />
-		<antcall target="IOCContainer" />
-		<antcall target="Bootloader" />
-        <antcall target="GlobalDispatcher" />
-        <antcall target="TrylogicFramework" />
-		<antcall target="TestApplication" />
-		-->
-
 		<delete dir="${flexUnitOutput}" failonerror="no" quiet="yes" />
 		<mkdir dir="${flexUnitOutput}" />
 
@@ -140,27 +167,27 @@
 	</target>
 
 	<target name="TrylogicUtils">
-		<compileModule moduleName="TrylogicUtils" />
+		<compileModuleAsLibrary moduleName="TrylogicUtils" />
 	</target>
 
 	<target name="IOCContainer">
-		<compileModule moduleName="IOCContainer" />
+		<compileModuleAsLibrary moduleName="IOCContainer" />
 	</target>
 
 	<target name="Bootloader">
-		<compileModule moduleName="Bootloader" />
+		<compileModuleAsLibrary moduleName="Bootloader" />
 	</target>
 
 	<target name="GlobalDispatcher">
-		<compileModule moduleName="GlobalDispatcher" />
+		<compileModuleAsLibrary moduleName="GlobalDispatcher" />
 	</target>
 
 	<target name="TrylogicFramework">
-		<compileModule moduleName="TrylogicFramework" />
+		<compileModuleAsLibrary moduleName="TrylogicFramework" />
 	</target>
 
 	<target name="TestApplication">
-		<compileModule moduleName="TestApplication" />
+		<compileModuleAsApplication moduleName="TestApplication" />
 	</target>
 
 	<target name="asdoc" description="Generates ASDOC html files for each module">
