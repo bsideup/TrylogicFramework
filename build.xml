@@ -4,7 +4,7 @@
 	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4/flex_sdk_4.1.0.16076_mpl.zip" />
 
 	<property name="FLEX_HOME" value="${basedir}/sdk" />
-	<property name="FLEXUNIT_HOME" value="${basedir}/flexunit" />
+	<property name="FLEXUNIT_HOME" value="${basedir}/FlexUnit4.1" />
 	<property name="JUNITREPORTPRINTER_HOME" value="${basedir}/junitreportprinter" />
 
 	<property name="out" value="${basedir}/out" />
