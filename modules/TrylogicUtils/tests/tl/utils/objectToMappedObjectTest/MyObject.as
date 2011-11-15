@@ -1,0 +1,1 @@
+package tl.utils.objectToMappedObjectTest{	import tl.utils.objectToMappedObjectTest.somePackage.MyAnotherObject;	public class MyObject extends MyBaseObject	{		public var myAnotherObject : MyAnotherObject;		public var myString : String;		public var myNumber : Number;		public var myArray : Vector.<MyAnotherObject>;	}}

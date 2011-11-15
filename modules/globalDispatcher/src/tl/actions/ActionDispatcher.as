@@ -10,7 +10,7 @@ package tl.actions
 	import tl.ioc.ioc_internal;
 	import tl.utils.MemberDescription;
 	import tl.utils.describeTypeCached;
-	import tl.utils.getMembersInType;
+	import tl.utils.getMethodsWithMetadata;
 
 	[Action]
 	/**
@@ -81,7 +81,7 @@ package tl.actions
 
 		public function ActionDispatcher()
 		{
-			IoCHelper.injectTo(this);
+			IoCHelper.injectTo( this );
 		}
 
 		/**
@@ -93,7 +93,7 @@ package tl.actions
 		{
 			var ns : Namespace;
 			var methodName : String;
-			for each ( var memberDescription : MemberDescription in getMembersInType( object, "Action" ) )
+			for each ( var memberDescription : MemberDescription in getMethodsWithMetadata( object, "Action" ) )
 			{
 				ns = new Namespace( null, memberDescription.uri );
 				methodName = memberDescription.memberName;
@@ -110,7 +110,7 @@ package tl.actions
 		{
 			var ns : Namespace;
 			var methodName : String;
-			for each ( var memberDescription : MemberDescription in getMembersInType( object, "Action" ) )
+			for each ( var memberDescription : MemberDescription in getMethodsWithMetadata( object, "Action" ) )
 			{
 				ns = new Namespace( null, memberDescription.uri );
 				methodName = memberDescription.memberName;

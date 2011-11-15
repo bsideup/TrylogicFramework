@@ -1,0 +1,3 @@
+[submodule "junitreportprinter"]
+	path = junitreportprinter
+	url = git@github.com:bsideup/JUnitReportPrinter.git

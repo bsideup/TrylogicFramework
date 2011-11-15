@@ -8,8 +8,8 @@ package
 	{
 		public function TestApplicationPreloader( app : ApplicationLoader )
 		{
-			LibraryLoader;
-			
+			new LibraryLoader();
+
 			super( app );
 
 		}
