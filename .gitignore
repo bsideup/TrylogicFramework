@@ -11,3 +11,4 @@ out/TestApplication.swf
 **/*/*.iml
 *.ipr
 *.iws
+/out/generated
