@@ -143,7 +143,7 @@
 		<mkdir dir="${out}" />
 
 		<antcall target="TrylogicUtils" />
-		<antcall target="IOCContainer" />
+		<antcall target="IoCContainer" />
 		<antcall target="Bootloader" />
 		<antcall target="GlobalDispatcher" />
 		<antcall target="TrylogicFramework" />
@@ -169,8 +169,8 @@
 		<compileModuleAsLibrary moduleName="TrylogicUtils" />
 	</target>
 
-	<target name="IOCContainer">
-		<compileModuleAsLibrary moduleName="IOCContainer" />
+	<target name="IoCContainer">
+		<compileModuleAsLibrary moduleName="IoCContainer" />
 	</target>
 
 	<target name="Bootloader">
@@ -193,7 +193,7 @@
 		<antcall target="compile" />
 
 		<asdocModule moduleName="TrylogicUtils" />
-		<asdocModule moduleName="IOCContainer" />
+		<asdocModule moduleName="IoCContainer" />
 		<asdocModule moduleName="Bootloader" />
 		<asdocModule moduleName="GlobalDispatcher" />
 		<asdocModule moduleName="TrylogicFramework" />

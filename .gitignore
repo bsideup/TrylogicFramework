@@ -2,6 +2,7 @@
 
 sdk/
 asdoc/
+build/
 
 **/*/out
 **/*/asdoc

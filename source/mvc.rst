@@ -164,5 +164,3 @@ Each model is a simple IEventDispatcher implementation. Best practice is to anno
 
 Service
 --------------------------------------
-
-Hello World!
