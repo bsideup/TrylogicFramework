@@ -87,9 +87,9 @@
 					continue;
 				}
 
-				if ( viewElement != null && value.indexOf( viewElement ) == -1 )
+				if ( viewElement != null && value.indexOf( viewElement ) == -1 && viewElement.parent != null )
 				{
-					removeChild( viewElement );
+					viewElement.parent.removeChild( viewElement );
 				}
 			}
 

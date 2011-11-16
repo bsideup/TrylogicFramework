@@ -3,11 +3,10 @@
 sdk/
 asdoc/
 
-out
-
 **/*/out
 **/*/asdoc
 
 **/*/*.iml
 *.ipr
 *.iws
+/out/generated
