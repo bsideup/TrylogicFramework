@@ -21,7 +21,8 @@ package tl.bootloader.mixins
 	 *	 ];
 	 * </listing>
 	 *
-	 */ public class ConfigurationLoader
+	 */
+	public class ConfigurationLoader
 	{
 		private static var configs : Array = [];
 		private static var rawConfigs : Array;
