@@ -1,5 +1,1 @@
-Just run "ant" in root folder of framework to install & compile it.
-
-if you don't wont to download FlexSDK4.1, you can put it in to the "sdk" folder, and it will be used by default.
-
-Contains sample application (check modules/TestApplication)
+http://readthedocs.org/docs/trylogicframwork/en/latest/
