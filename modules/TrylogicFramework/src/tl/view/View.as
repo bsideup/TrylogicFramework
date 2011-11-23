@@ -2,7 +2,6 @@
 {
 	import flash.display.*;
 
-	import tl.ioc.IoCHelper;
 	import tl.utils.getChildByNameRecursiveOnTarget;
 	import tl.viewController.IVIewController;
 
@@ -52,6 +51,110 @@
 			return getChildByNameRecursiveOnTarget( name, this );
 		}
 
+		public function addElement( element : * ) : void
+		{
+			if ( _data.indexOf( element ) != -1 )
+			{
+				return;
+			}
+
+			var viewElement : DisplayObject;
+
+			if ( element is IVIewController )
+			{
+				IVIewController( element ).addViewToContainer( this );
+				return;
+			}
+			else if ( element is DisplayObject )
+			{
+				viewElement = element as DisplayObject;
+			}
+			else if ( element is Embed )
+			{
+				viewElement = element.instance as DisplayObject;
+			}
+			else
+			{
+				return;
+			}
+
+			if ( viewElement != null )
+			{
+				addChild( viewElement );
+			}
+		}
+
+		public function addElementAt( element : *, index : int ) : void
+		{
+			addElement( element );
+
+			setElementIndex( element, index );
+		}
+
+		public function setElementIndex( element : *, index : int ) : void
+		{
+			if ( _data.indexOf( element ) == -1 )
+			{
+				return;
+			}
+
+			var viewElement : DisplayObject;
+			if ( element is IVIewController )
+			{
+				IVIewController( element ).setViewIndexInContainer( this, -1 );
+				return;
+			}
+			else if ( element is DisplayObject )
+			{
+				viewElement = element as DisplayObject;
+			}
+			else if ( element is Embed )
+			{
+				viewElement = element.instance as DisplayObject;
+			}
+			else
+			{
+				return;
+			}
+
+			if ( viewElement != null )
+			{
+				setChildIndex( viewElement, index < 0 ? (numChildren + index) : index );
+			}
+		}
+
+		public function removeElement( element : * ) : void
+		{
+			if ( _data.indexOf( element ) == -1 )
+			{
+				return;
+			}
+
+			var viewElement : DisplayObject;
+			if ( element is IVIewController )
+			{
+				IVIewController( element ).removeViewFromContainer( this );
+				return;
+			}
+			else if ( element is DisplayObject )
+			{
+				viewElement = element as DisplayObject;
+			}
+			else if ( element is Embed && (element.instance is DisplayObject) )
+			{
+				viewElement = element.instance as DisplayObject;
+			}
+			else
+			{
+				return;
+			}
+
+			if ( viewElement != null && viewElement.parent != null )
+			{
+				viewElement.parent.removeChild( viewElement );
+			}
+		}
+
 		/**
 		 * Inner childs.
 		 *
@@ -61,74 +164,25 @@
 		{
 			value = [].concat( value );
 			var element : *;
-			var viewElement : DisplayObject;
-			var viewController : IVIewController;
 
 			for each ( element in _data )
 			{
-				if ( element is IVIewController )
+				if ( value.indexOf( element ) == -1 )
 				{
-					if ( value.indexOf( element ) == -1 )
-					{
-						IVIewController( element ).removeViewFromContainer( this );
-					}
-					return;
-				}
-				else if ( element is DisplayObject )
-				{
-					viewElement = element as DisplayObject;
-				}
-				else if ( element is Embed && (element.instance is DisplayObject) )
-				{
-					viewElement = element.instance as DisplayObject;
-				}
-				else
-				{
-					continue;
-				}
-
-				if ( viewElement != null && value.indexOf( viewElement ) == -1 && viewElement.parent != null )
-				{
-					viewElement.parent.removeChild( viewElement );
+					removeElement( element );
 				}
 			}
 
 			for each ( element in value )
 			{
-				if ( element is IVIewController )
+				if ( _data.indexOf( element ) == -1 )
 				{
-					if ( _data.indexOf( element ) == -1 )
-					{
-						IVIewController( element ).addViewToContainer( this );
-					}
-
-					IVIewController( element ).setViewIndexInContainer( this, -1 );
-					return;
-				}
-				else if ( element is DisplayObject )
-				{
-					viewElement = element as DisplayObject;
-				}
-				else if ( element is Embed )
-				{
-					viewElement = element.instance as DisplayObject;
+					addElement( element );
 				}
 				else
 				{
-					continue;
+					setElementIndex( element, -1 );
 				}
-
-				if ( viewElement == null )
-				{
-					continue;
-				}
-
-				if ( _data.indexOf( viewElement ) == -1 )
-				{
-					addChild( viewElement );
-				}
-
-				setChildIndex( viewElement, numChildren - 1 );
 			}
 
 			_data = value;

@@ -1,5 +1,6 @@
-package service
+package core
 {
+	import service.*;
 	import tl.ioc.IoCHelper;
 	import tl.ioc.ioc_internal;
 

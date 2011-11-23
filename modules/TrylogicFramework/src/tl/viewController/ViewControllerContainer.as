@@ -1,6 +1,5 @@
 package tl.viewController
 {
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
 	import tl.view.IViewContainer;
@@ -46,9 +45,9 @@ package tl.viewController
 
 			for each ( viewController in controllers )
 			{
-				if(value.indexOf(viewController) == -1)
+				if ( value.indexOf( viewController ) == -1 )
 				{
-					removeController(viewController);
+					removeController( viewController );
 				}
 			}
 
@@ -62,10 +61,8 @@ package tl.viewController
 			fillContainer();
 		}
 
-		override protected function viewLoaded() : void
+		override lifecycle function viewLoaded() : void
 		{
-			super.viewLoaded();
-			fillContainer();
 		}
 
 		protected function fillContainer() : void

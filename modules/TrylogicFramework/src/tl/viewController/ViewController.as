@@ -3,6 +3,7 @@
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 
 	import tl.actions.IActionDispatcher;
 	import tl.ioc.IoCHelper;
@@ -10,7 +11,7 @@
 	import tl.view.IView;
 
 	[Outlet]
-	public class ViewController implements IVIewController
+	public class ViewController extends EventDispatcher implements IVIewController
 	{
 		{
 			if ( describeTypeCached( ViewController )..metadata.( @name == "Outlet" ).length() == 0 )
@@ -23,6 +24,8 @@
 				throw new Error( "Please add -keep-as3-metadata+=Event to flex compiler arguments!" )
 			}
 		}
+
+		protected namespace lifecycle;
 
 		[Injection]
 		public var actionDispatcher : IActionDispatcher;
@@ -44,7 +47,7 @@
 				return;
 			}
 
-			viewBeforeAddedToStage();
+			lifecycle::viewBeforeAddedToStage();
 
 			container.addChild( view as DisplayObject );
 		}
@@ -63,7 +66,7 @@
 
 		public function removeViewFromContainer( container : DisplayObjectContainer ) : void
 		{
-			viewBeforeRemovedFromStage();
+			lifecycle::viewBeforeRemovedFromStage();
 
 			if ( viewIsLoaded )
 			{
@@ -111,10 +114,26 @@
 
 		public final function destroy() : void
 		{
-			internalDestroy();
+			lifecycle::destroy();
 
 			actionDispatcher.removeHandler( this );
 			actionDispatcher = null;
+		}
+
+		lifecycle function viewBeforeAddedToStage() : void
+		{
+		}
+
+		lifecycle function viewBeforeRemovedFromStage() : void
+		{
+		}
+
+		lifecycle function viewLoaded() : void
+		{
+		}
+
+		lifecycle function destroy() : void
+		{
 		}
 
 		protected final function get viewIsLoaded() : Boolean
@@ -129,13 +148,13 @@
 				_viewInstance = IoCHelper.resolve( getViewInterface(), this );
 				_viewInstance.controller = this;
 
-				viewLoaded();
+				this.processView();
 			}
 
 			return _viewInstance;
 		}
 
-		protected function viewLoaded() : void
+		private function processView() : void
 		{
 			if ( _viewEventHandlers == null )
 			{
@@ -164,10 +183,8 @@
 			{
 				setHandler( eventName );
 			}
-		}
 
-		protected function internalDestroy() : void
-		{
+			lifecycle::viewLoaded();
 		}
 
 		protected function setOutlet( name : String ) : void
@@ -207,17 +224,12 @@
 			{
 				for each( var methodName : String in methods )
 				{
-					this[methodName]();
+					if ( this[methodName] )
+					{
+						this[methodName]();
+					}
 				}
 			}
-		}
-
-		protected function viewBeforeAddedToStage() : void
-		{
-		}
-
-		protected function viewBeforeRemovedFromStage() : void
-		{
 		}
 	}
 

@@ -8,7 +8,7 @@ package view.applicationView
 
 	public class TestApplicationViewController extends ApplicationViewController implements IApplicationController
 	{
-		override protected function viewBeforeAddedToStage() : void
+		override lifecycle function viewBeforeAddedToStage() : void
 		{
 			addController( IoCHelper.resolve( ITestViewController ) );
 		}

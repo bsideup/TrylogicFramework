@@ -3,7 +3,6 @@
 	import flash.display.*;
 
 	import tl.factory.SingletonFactory;
-
 	import tl.ioc.*;
 	import tl.service.IService;
 	import tl.service.Service;

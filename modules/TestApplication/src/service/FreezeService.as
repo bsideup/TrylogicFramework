@@ -2,6 +2,8 @@ package service
 {
 	import actions.FREEZE;
 
+	import core.ILogger;
+
 	import tl.ioc.IoCHelper;
 	import tl.ioc.ioc_internal;
 	import tl.service.Service;

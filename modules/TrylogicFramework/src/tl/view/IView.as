@@ -1,9 +1,6 @@
 package tl.view
 {
-	import flash.display.DisplayObject;
-	import flash.display.DisplayObjectContainer;
 	import flash.events.IEventDispatcher;
-	import flash.geom.Point;
 
 	import tl.viewController.IVIewController;
 
@@ -28,6 +25,14 @@ package tl.view
 		function get data() : Array;
 
 		function set data( value : Array ) : void;
+
+		function addElement( value : * ) : void;
+
+		function addElementAt( value : *, index : int ) : void;
+
+		function setElementIndex( element : *, index : int ) : void;
+
+		function removeElement( value : * ) : void;
 
 		/**
 		 * Destroy this IView instance for future GC. After destroy this instance will not be used.
