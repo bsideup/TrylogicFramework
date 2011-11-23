@@ -17,9 +17,9 @@ package tl.view
 			return controllerContainer;
 		}
 
-		override protected function internalDestoy() : void
+		override internal function internalDestroy() : void
 		{
-			super.internalDestoy();
+			super.internalDestroy();
 			if(controllerContainer && controllerContainer.parent != null)
 			{
 				controllerContainer.parent.removeChild(controllerContainer);

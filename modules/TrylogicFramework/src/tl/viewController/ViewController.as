@@ -25,7 +25,7 @@
 			}
 		}
 
-		protected namespace lifecycle;
+		protected namespace lifecycle = "http://www.trylogic.ru/viewController/lifecycle";
 
 		[Injection]
 		public var actionDispatcher : IActionDispatcher;
@@ -146,7 +146,6 @@
 			if ( !viewIsLoaded )
 			{
 				_viewInstance = IoCHelper.resolve( getViewInterface(), this );
-				_viewInstance.controller = this;
 
 				this.processView();
 			}
@@ -183,6 +182,8 @@
 			{
 				setHandler( eventName );
 			}
+
+			_viewInstance.initWithController( this );
 
 			lifecycle::viewLoaded();
 		}

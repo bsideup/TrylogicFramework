@@ -10,14 +10,6 @@ package tl.view
 	 */
 	public interface IView extends IEventDispatcher
 	{
-		function set controller( value : IVIewController ) : void;
-
-		/**
-		 * IVIewController instance. Can be null.
-		 *
-		 */
-		function get controller() : IVIewController;
-
 		/**
 		 * IView childs
 		 *
@@ -33,6 +25,8 @@ package tl.view
 		function setElementIndex( element : *, index : int ) : void;
 
 		function removeElement( value : * ) : void;
+
+		function initWithController( controller : IVIewController ) : void;
 
 		/**
 		 * Destroy this IView instance for future GC. After destroy this instance will not be used.

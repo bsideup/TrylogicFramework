@@ -2,6 +2,9 @@
 {
 	import flash.display.*;
 
+	import mx.binding.utils.BindingUtils;
+	import mx.events.PropertyChangeEvent;
+
 	import tl.utils.getChildByNameRecursiveOnTarget;
 	import tl.viewController.IVIewController;
 
@@ -16,23 +19,11 @@
 	{
 		private var _data : Array = [];
 		private var _controller : IVIewController;
+		public var eventMaps : Vector.<EventMap>;
 
-		/**
-		 * Don't call it by yourself. Called by IViewController
-		 *
-		 * @param value
-		 */
-		[Bindable]
-		public function set controller( value : IVIewController ) : void
-		{
-			if ( _controller != null )
-			{
-				throw new Error( "You can't set controller twice!" );
-			}
+		protected namespace lifecycle = "http://www.trylogic.ru/view/lifecycle";
 
-			_controller = value;
-		}
-
+		[Bindable(event="propertyChange")]
 		public function get controller() : IVIewController
 		{
 			return _controller;
@@ -193,6 +184,22 @@
 			return _data.concat();
 		}
 
+		public function initWithController( controller : IVIewController ) : void
+		{
+			this._controller = controller;
+			dispatchEvent(PropertyChangeEvent.createUpdateEvent(this, "controller", null, _controller));
+
+			if(eventMaps)
+			{
+				for each(var eventMap : EventMap in eventMaps)
+				{
+					eventMap.bind();
+				}
+			}
+
+			lifecycle::init();
+		}
+
 		/**
 		 * Destroy a IView.
 		 *
@@ -201,7 +208,8 @@
 		 */
 		public final function destroy() : void
 		{
-			internalDestoy();
+			internalDestroy();
+			lifecycle::destroy();
 
 			data = null;
 
@@ -209,13 +217,34 @@
 			{
 				_controller = null;
 			}
+
+			if(eventMaps)
+			{
+				var eventMap : EventMap;
+				while(eventMap = eventMaps.pop())
+				{
+					eventMap.unbind();
+				}
+
+				 eventMaps = null;
+			}
+		}
+
+		internal function internalDestroy() : void
+		{
+
+		}
+
+		lifecycle function init() : void
+		{
+
 		}
 
 		/**
 		 * Do a custom dispose logic here
 		 *
 		 */
-		protected function internalDestoy() : void
+		lifecycle function destroy() : void
 		{
 
 		}
