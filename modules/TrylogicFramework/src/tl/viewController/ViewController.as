@@ -108,13 +108,12 @@
 
 			_viewInstance.destroy();
 			_viewInstance = null;
-
-			_viewControllerContainer = null;
 		}
 
 		public final function destroy() : void
 		{
 			lifecycle::destroy();
+			internalDestroy();
 
 			actionDispatcher.removeHandler( this );
 			actionDispatcher = null;
@@ -133,6 +132,14 @@
 		}
 
 		lifecycle function destroy() : void
+		{
+		}
+
+		internal function internalViewLoaded() : void
+		{
+		}
+
+		internal function internalDestroy() : void
 		{
 		}
 
@@ -185,6 +192,8 @@
 
 			_viewInstance.initWithController( this );
 
+
+			internalViewLoaded();
 			lifecycle::viewLoaded();
 		}
 

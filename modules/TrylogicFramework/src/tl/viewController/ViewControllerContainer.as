@@ -28,7 +28,6 @@ package tl.viewController
 			_controllers.splice( _controllers.indexOf( value ), 1 );
 
 			value.removeViewFromContainer( container );
-
 			value.parentViewController = null;
 		}
 
@@ -61,8 +60,10 @@ package tl.viewController
 			fillContainer();
 		}
 
-		override lifecycle function viewLoaded() : void
+		override internal function internalViewLoaded() : void
 		{
+			super.internalViewLoaded();
+			fillContainer();
 		}
 
 		protected function fillContainer() : void
