@@ -34,8 +34,8 @@
 
 		public var applicationControllerClass : Class;
 
-		public var iocMap : Array = [];
-		public var services : Array = [];
+		public var iocMap : Vector.<Associate> = new <Associate>[];
+		public var services : Vector.<IService> = new <IService>[];
 
 		internal final function init( applicationLoader : TrylogicApplicationLoader ) : void
 		{
@@ -50,6 +50,7 @@
 
 			for each( var assoc : Associate in iocMap )
 			{
+				trace( assoc );
 				IoCHelper.registerAssociate( assoc );
 			}
 

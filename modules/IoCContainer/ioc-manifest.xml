@@ -7,5 +7,6 @@
 <componentPackage>
 
 	<component id="Associate" class="tl.ioc.Associate" />
+	<component id="GroupAssociate" class="tl.ioc.GroupAssociate" />
 
 </componentPackage>

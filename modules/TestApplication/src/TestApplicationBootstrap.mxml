@@ -8,13 +8,17 @@
 		<ioc:Associate iface="tl.actions.IActionLogger" withClass="core.ActionLogger" factory="tl.factory.SingletonFactory" />
 		<ioc:Associate iface="tl.actions.IActionDispatcher" withClass="tl.actions.ActionDispatcher" />
 		<ioc:Associate iface="core.ILogger" withClass="core.Logger" />
-		<ioc:Associate iface="service.IFreezeService" withClass="service.FreezeService" factory="tl.factory.ServiceFactory" />
-
-		<ioc:Associate iface="view.testView.ITestViewController" withClass="view.testView.TestViewController" factory="tl.factory.SingletonFactory" />
 
 		<ioc:Associate iface="models.IMyModel" withClass="models.MyModel" />
 
-		<ioc:Associate iface="view.testView.ITestView" withClass="view.testView.TestView" />
+		<ioc:GroupAssociate comment="services">
+			<ioc:Associate iface="service.IFreezeService" withClass="service.FreezeService" factory="tl.factory.ServiceFactory" />
+		</ioc:GroupAssociate>
+
+		<ioc:GroupAssociate>
+			<ioc:Associate iface="view.testView.ITestViewController" withClass="view.testView.TestViewController" factory="tl.factory.SingletonFactory" />
+			<ioc:Associate iface="view.testView.ITestView" withClass="view.testView.TestView" />
+		</ioc:GroupAssociate>
 	</tl:iocMap>
 
 	<tl:services>

@@ -150,12 +150,22 @@ package tl.ioc
 
 		public static function registerAssociate( assoc : Associate ) : void
 		{
-			if(assoc.iface == null)
+			if ( assoc is GroupAssociate )
 			{
-				throw new Error("Association's iface property cann't be null!");
+				for each( var inAssoc : Associate in GroupAssociate( assoc ).data )
+				{
+					registerAssociate( inAssoc );
+				}
 			}
-			
-			aliases[assoc.iface] = assoc;
+			else
+			{
+				if ( assoc.iface == null )
+				{
+					throw new Error( "Association's iface property cann't be null!" );
+				}
+
+				aliases[assoc.iface] = assoc;
+			}
 		}
 	}
 }
