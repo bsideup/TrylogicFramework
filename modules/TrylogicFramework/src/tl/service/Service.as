@@ -8,15 +8,17 @@ package tl.service
 		[Injection]
 		public var actionDispatcher : IActionDispatcher;
 
+		protected namespace lifecycle = "http://www.trylogic.ru/service/lifecycle";
+
 		public final function init() : void
 		{
-			IoCHelper.injectTo(this);
-			internalInit();
+			IoCHelper.injectTo( this );
+			lifecycle::init();
 		}
 
-		protected function internalInit() : void
+		lifecycle function init() : void
 		{
-			
+
 		}
 	}
 }

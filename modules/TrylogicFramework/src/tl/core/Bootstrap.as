@@ -1,11 +1,14 @@
 ﻿package tl.core
 {
 	import flash.display.*;
+	import flash.system.ApplicationDomain;
 
+	import tl.factory.ServiceFactory;
 	import tl.factory.SingletonFactory;
 	import tl.ioc.*;
 	import tl.service.IService;
 	import tl.service.Service;
+	import tl.utils.describeTypeCached;
 	import tl.view.*;
 	import tl.viewController.*;
 
@@ -52,6 +55,7 @@
 
 			for each( var service : IService in services )
 			{
+				ServiceFactory.registerService( ApplicationDomain.currentDomain.getDefinition( describeTypeCached( service ).@name.toString() ) as Class, service );
 				service.init();
 			}
 
