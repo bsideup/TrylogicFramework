@@ -42,7 +42,7 @@ package tl.viewController
 
 			var viewController : IVIewController;
 
-			for each ( viewController in controllers )
+			for each ( viewController in _controllers.concat() )
 			{
 				if ( value.indexOf( viewController ) == -1 )
 				{

@@ -144,7 +144,7 @@
 				return;
 			}
 
-			//_data.splice( _data.indexOf( element ), 1 );
+			_data.splice( _data.indexOf( element ), 1 );
 
 			if ( element is IVIewController )
 			{
@@ -182,7 +182,7 @@
 			value = [].concat( value );
 			var element : *;
 
-			for each ( element in _data )
+			for each ( element in _data.concat() )
 			{
 				if ( value.indexOf( element ) == -1 )
 				{
