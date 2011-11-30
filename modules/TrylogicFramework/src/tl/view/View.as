@@ -144,7 +144,7 @@
 				return;
 			}
 
-			_data.splice( _data.indexOf( element ), 1 );
+			//_data.splice( _data.indexOf( element ), 1 );
 
 			if ( element is IVIewController )
 			{
