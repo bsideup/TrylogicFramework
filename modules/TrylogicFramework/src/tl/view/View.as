@@ -2,9 +2,9 @@
 {
 	import flash.display.*;
 
-	import mx.binding.utils.BindingUtils;
 	import mx.events.PropertyChangeEvent;
 
+	import tl.ioc.Resolve;
 	import tl.utils.getChildByNameRecursiveOnTarget;
 	import tl.viewController.IVIewController;
 
@@ -49,14 +49,23 @@
 				return;
 			}
 
-			var viewElement : DisplayObject;
+			if ( element is Resolve )
+			{
+				addElement( element.instance );
+				return;
+			}
+
+
+			_data.push( element );
 
 			if ( element is IVIewController )
 			{
 				IVIewController( element ).addViewToContainer( this );
 				return;
 			}
-			else if ( element is DisplayObject )
+
+			var viewElement : DisplayObject;
+			if ( element is DisplayObject )
 			{
 				viewElement = element as DisplayObject;
 			}
@@ -89,13 +98,21 @@
 				return;
 			}
 
-			var viewElement : DisplayObject;
+			if ( element is Resolve )
+			{
+				setElementIndex( element.instance, index );
+				return;
+			}
+
 			if ( element is IVIewController )
 			{
 				IVIewController( element ).setViewIndexInContainer( this, -1 );
 				return;
 			}
-			else if ( element is DisplayObject )
+
+			var viewElement : DisplayObject;
+
+			if ( element is DisplayObject )
 			{
 				viewElement = element as DisplayObject;
 			}
@@ -121,13 +138,22 @@
 				return;
 			}
 
-			var viewElement : DisplayObject;
+			if ( element is Resolve )
+			{
+				removeElement( element.instance );
+				return;
+			}
+
+			_data.splice( _data.indexOf( element ), 1 );
+
 			if ( element is IVIewController )
 			{
 				IVIewController( element ).removeViewFromContainer( this );
 				return;
 			}
-			else if ( element is DisplayObject )
+
+			var viewElement : DisplayObject;
+			if ( element is DisplayObject )
 			{
 				viewElement = element as DisplayObject;
 			}
@@ -187,11 +213,11 @@
 		public function initWithController( controller : IVIewController ) : void
 		{
 			this._controller = controller;
-			dispatchEvent(PropertyChangeEvent.createUpdateEvent(this, "controller", null, _controller));
+			dispatchEvent( PropertyChangeEvent.createUpdateEvent( this, "controller", null, _controller ) );
 
-			if(eventMaps)
+			if ( eventMaps )
 			{
-				for each(var eventMap : EventMap in eventMaps)
+				for each( var eventMap : EventMap in eventMaps )
 				{
 					eventMap.bind();
 				}
@@ -218,15 +244,15 @@
 				_controller = null;
 			}
 
-			if(eventMaps)
+			if ( eventMaps )
 			{
 				var eventMap : EventMap;
-				while(eventMap = eventMaps.pop())
+				while ( eventMap = eventMaps.pop() )
 				{
 					eventMap.unbind();
 				}
 
-				 eventMaps = null;
+				eventMaps = null;
 			}
 		}
 
@@ -235,13 +261,17 @@
 
 		}
 
+		/**
+		 * custom init logic here
+		 *
+		 */
 		lifecycle function init() : void
 		{
 
 		}
 
 		/**
-		 * Do a custom dispose logic here
+		 * custom dispose logic here
 		 *
 		 */
 		lifecycle function destroy() : void

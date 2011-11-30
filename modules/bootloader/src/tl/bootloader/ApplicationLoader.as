@@ -2,7 +2,6 @@ package tl.bootloader
 {
 	import flash.display.*;
 	import flash.events.*;
-	import flash.system.*;
 	import flash.utils.Dictionary;
 
 	import mx.core.IFlexModuleFactory;
@@ -41,7 +40,8 @@ package tl.bootloader
 				preloader.process( loadApplication );
 			} else
 			{
-				preloader['progress'] = (root.loaderInfo.bytesLoaded / root.loaderInfo.bytesTotal) / 2;
+				//preloader['progress'] = (root.loaderInfo.bytesLoaded / root.loaderInfo.bytesTotal) / 2;
+				preloader.setProgress( root.loaderInfo.bytesLoaded / root.loaderInfo.bytesTotal );
 			}
 		}
 

@@ -14,14 +14,16 @@ package tl.bootloader
 		/**
 		 * Reference to ApplicationLoader
 		 */
-		protected var app : ApplicationLoader;
+		private var app : ApplicationLoader;
 
 		/**
 		 * Call it when your preloader job is done
 		 */
-		protected var onCompleteHandler : Function;
+		private var onCompleteHandler : Function;
 
 		private var mixins : Array;
+
+		private var _currentStage : Class = ApplicationLoader;
 
 		public function PreloaderBase( app : ApplicationLoader )
 		{
@@ -33,20 +35,16 @@ package tl.bootloader
 		/**
 		 * called when there is some progress
 		 *
-		 * @param value		(from 0.0 to 1.0) loading progress
+		 * @param progress		(from 0.0 to 1.0) loading progress
 		 */
-		public function set progress( value : Number ) : void
+		public function setProgress( progress : Number, status : String = "" ) : void
 		{
 
 		}
 
-		/**
-		 * Text helper for progress status
-		 *
-		 * @param value		loading status
-		 */
-		public function set status( value : String ) : void
+		protected function get currentStage() : Class
 		{
+			return _currentStage;
 		}
 
 		internal function process( completeHandler : Function ) : void
@@ -64,9 +62,9 @@ package tl.bootloader
 		 *
 		 * @param e
 		 */
-		protected function onMixinComplete( e : Event = null ) : void
+		private function onMixinComplete( e : Event = null ) : void
 		{
-			if ( mixins.length == 0 )
+			if ( mixins == null || mixins.length == 0 )
 			{
 				onCompleteHandler();
 				return;
@@ -77,23 +75,12 @@ package tl.bootloader
 			// Cutoff Flex stuff
 			if ( mixin.indexOf( "_FlexInit" ) == -1 && mixin.indexOf( "_Styles" ) == -1 )
 			{
-				ApplicationDomain.currentDomain.getDefinition( mixin ).process( app, onMixinProgress, onMixinComplete );
+				_currentStage = ApplicationDomain.currentDomain.getDefinition( mixin ) as Class;
+				_currentStage['process']( app, setProgress, onMixinComplete );
 			} else
 			{
 				onMixinComplete();
 			}
-		}
-
-		private function onMixinProgress( progress : Number, status : String = "" ) : void
-		{
-			// We think, that 0.5 - is state, when application already loaded
-			var progressValue : Number = 0.5;
-
-			progressValue += (1 - mixins.length / (app.info()["mixins"].length - 1)) / 2;
-			progressValue += (progress / (app.info()["mixins"].length - 1)) / 2;
-
-			this.progress = progressValue;
-			this.status = status;
 		}
 	}
 }

@@ -50,7 +50,6 @@
 
 			for each( var assoc : Associate in iocMap )
 			{
-				trace( assoc );
 				IoCHelper.registerAssociate( assoc );
 			}
 

@@ -1,16 +1,13 @@
 package view.applicationView
 {
-	import tl.ioc.IoCHelper;
 	import tl.viewController.ApplicationViewController;
 	import tl.viewController.IApplicationController;
 
-	import view.testView.ITestViewController;
-
 	public class TestApplicationViewController extends ApplicationViewController implements IApplicationController
 	{
-		override lifecycle function viewBeforeAddedToStage() : void
+		override public function getViewInterface() : Class
 		{
-			addController( IoCHelper.resolve( ITestViewController ) );
+			return IApplicationView;
 		}
 	}
 }

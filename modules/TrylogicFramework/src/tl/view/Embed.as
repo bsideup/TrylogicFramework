@@ -2,8 +2,6 @@
 {
 	import flash.utils.*;
 
-	import tl.ioc.IoCHelper;
-
 	/**
 	 * MXML wrapper for embedded objects
 	 *
@@ -39,8 +37,7 @@
 				throw new ArgumentError( "You can't set source twice!" );
 			}
 
-			this._instance = new  value();
-			IoCHelper.injectTo(this._instance);
+			this._instance = new value();
 		}
 
 		override flash_proxy function getProperty( name : * ) : *
@@ -70,7 +67,8 @@
 			{
 				delete instance[name];
 				return true;
-			} else
+			}
+			else
 			{
 				return false;
 			}
