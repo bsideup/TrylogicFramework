@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<testsuite name="tl.utils.GetMethodsWithMetadataTest" tests="1" failures="0" errors="0" skipped="0" time="0,000" hostname="BSiDeUp" timestamp="2011-12-06T10:50:05">
+  <testcase classname="tl.utils::GetMethodsWithMetadataTest" name="test" time="0,000"/>
+</testsuite>
