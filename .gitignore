@@ -11,3 +11,6 @@ build/
 *.ipr
 *.iws
 /out/generated
+
+/out/report/TestRunner.swf
+/out/report/TestRunner.mxml
