@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<testsuite name="tl.factory.SingletonFactoryTest" tests="1" failures="0" errors="0" skipped="0" time="0,024" hostname="BSiDeUp" timestamp="2011-12-06T10:50:13">
-  <testcase classname="tl.factory::SingletonFactoryTest" name="testSingleton" time="0,024"/>
-</testsuite>

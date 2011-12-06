@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<testsuite name="tl.ioc.AssociateTest" tests="1" failures="0" errors="0" skipped="0" time="0,001" hostname="BSiDeUp" timestamp="2011-12-06T10:50:13">
-  <testcase classname="tl.ioc::AssociateTest" name="testEquals" time="0,001"/>
-</testsuite>

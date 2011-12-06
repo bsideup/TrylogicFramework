@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<testsuite name="tl.utils.DescribeTypeCachedTest" tests="2" failures="0" errors="0" skipped="0" time="0,026" hostname="BSiDeUp" timestamp="2011-12-06T10:50:05">
-  <testcase classname="tl.utils::DescribeTypeCachedTest" name="testCachedClass" time="0,026"/>
-  <testcase classname="tl.utils::DescribeTypeCachedTest" name="testCachedObject" time="0,000"/>
-</testsuite>
