@@ -1,6 +1,9 @@
 package tl.view
 {
+	import flash.display.Stage;
 	import flash.events.IEventDispatcher;
+
+	import mx.core.IStateClient2;
 
 	import tl.viewController.IVIewController;
 
@@ -8,8 +11,12 @@ package tl.view
 	 * Main interface for any View
 	 *
 	 */
-	public interface IView extends IEventDispatcher
+	public interface IView extends IEventDispatcher, IStateClient2
 	{
+		function get controller() : IVIewController;
+
+		function set controller( value : IVIewController ) : void;
+
 		/**
 		 * IView childs
 		 *
@@ -26,12 +33,12 @@ package tl.view
 
 		function removeElement( value : * ) : void;
 
-		function initWithController( controller : IVIewController ) : void;
-
 		/**
 		 * Destroy this IView instance for future GC. After destroy this instance will not be used.
 		 *
 		 */
 		function destroy() : void;
+
+		function get stage() : Stage;
 	}
 }

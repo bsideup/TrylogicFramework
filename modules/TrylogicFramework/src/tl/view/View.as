@@ -2,11 +2,13 @@
 {
 	import flash.display.*;
 
+	import mx.core.UIComponent;
 	import mx.events.PropertyChangeEvent;
 
 	import tl.ioc.Resolve;
 	import tl.utils.getChildByNameRecursiveOnTarget;
 	import tl.viewController.IVIewController;
+	import tl.viewController.ViewController;
 
 	[DefaultProperty("data")]
 	/**
@@ -15,7 +17,7 @@
 	 * @see IViewController
 	 *
 	 */
-	public class View extends Sprite implements IView
+	public class View extends UIComponent implements IView
 	{
 		private var _data : Array = [];
 		private var _controller : IVIewController;
@@ -26,7 +28,47 @@
 		[Bindable(event="propertyChange")]
 		public function get controller() : IVIewController
 		{
+			if ( _controller == null )
+			{
+				controller = new ViewController();
+			}
 			return _controller;
+		}
+
+		public function set controller( value : IVIewController ) : void
+		{
+			var eventMap : EventMap;
+			if ( _controller )
+			{
+				if ( eventMaps )
+				{
+					for each( eventMap in eventMaps )
+					{
+						eventMap.unbind();
+					}
+				}
+
+				_controller.initWithView( null );
+			}
+
+			_controller = value;
+
+			if ( _controller )
+			{
+				_controller.initWithView( this );
+
+				if ( eventMaps )
+				{
+					for each( eventMap in eventMaps )
+					{
+						eventMap.bind();
+					}
+				}
+
+				lifecycle::init();
+			}
+
+			dispatchEvent( PropertyChangeEvent.createUpdateEvent( this, "controller", null, _controller ) );
 		}
 
 		/**
@@ -57,12 +99,6 @@
 
 
 			_data.push( element );
-
-			if ( element is IVIewController )
-			{
-				IVIewController( element ).addViewToContainer( this );
-				return;
-			}
 
 			var viewElement : DisplayObject;
 			if ( element is DisplayObject )
@@ -104,12 +140,6 @@
 				return;
 			}
 
-			if ( element is IVIewController )
-			{
-				IVIewController( element ).setViewIndexInContainer( this, -1 );
-				return;
-			}
-
 			var viewElement : DisplayObject;
 
 			if ( element is DisplayObject )
@@ -145,12 +175,6 @@
 			}
 
 			_data.splice( _data.indexOf( element ), 1 );
-
-			if ( element is IVIewController )
-			{
-				IVIewController( element ).removeViewFromContainer( this );
-				return;
-			}
 
 			var viewElement : DisplayObject;
 			if ( element is DisplayObject )
@@ -210,22 +234,6 @@
 			return _data.concat();
 		}
 
-		public function initWithController( controller : IVIewController ) : void
-		{
-			this._controller = controller;
-			dispatchEvent( PropertyChangeEvent.createUpdateEvent( this, "controller", null, _controller ) );
-
-			if ( eventMaps )
-			{
-				for each( var eventMap : EventMap in eventMaps )
-				{
-					eventMap.bind();
-				}
-			}
-
-			lifecycle::init();
-		}
-
 		/**
 		 * Destroy a IView.
 		 *
@@ -238,22 +246,7 @@
 			lifecycle::destroy();
 
 			data = null;
-
-			if ( _controller )
-			{
-				_controller = null;
-			}
-
-			if ( eventMaps )
-			{
-				var eventMap : EventMap;
-				while ( eventMap = eventMaps.pop() )
-				{
-					eventMap.unbind();
-				}
-
-				eventMaps = null;
-			}
+			controller = null;
 		}
 
 		internal function internalDestroy() : void

@@ -88,26 +88,45 @@
 			_viewControllerContainer = value;
 		}
 
-		public function getViewInterface() : Class
-		{
-			return IView;
-		}
-
 		[Event(name="removedFromStage")]
 		public final function viewRemovedFromStage() : void
 		{
-			for each( var outletName : String in _viewOutlets )
-			{
-				unsetOutlet( outletName );
-			}
-
-			for ( var eventName : String in _viewEventHandlers )
-			{
-				unsetHandler( eventName );
-			}
-
 			_viewInstance.destroy();
-			_viewInstance = null;
+
+			initWithView( null );
+		}
+
+
+		public function initWithView( newView : IView ) : void
+		{
+			if ( newView == null )
+			{
+				for each( var outletName : String in _viewOutlets )
+				{
+					unsetOutlet( outletName );
+				}
+
+				for ( var eventName : String in _viewEventHandlers )
+				{
+					unsetHandler( eventName );
+				}
+
+				_viewInstance = null;
+			}
+			else
+			{
+				_viewInstance = newView;
+				processView();
+
+				internalViewLoaded();
+				lifecycle::viewLoaded();
+
+				if ( _viewInstance.stage )
+				{
+					lifecycle::viewBeforeAddedToStage();
+					viewEventHandler( new Event( Event.ADDED_TO_STAGE ) );
+				}
+			}
 		}
 
 		public final function destroy() : void
@@ -150,13 +169,6 @@
 
 		protected final function get view() : IView
 		{
-			if ( !viewIsLoaded )
-			{
-				_viewInstance = IoCHelper.resolve( getViewInterface(), this );
-
-				this.processView();
-			}
-
 			return _viewInstance;
 		}
 
@@ -189,12 +201,6 @@
 			{
 				setHandler( eventName );
 			}
-
-			_viewInstance.initWithController( this );
-
-
-			internalViewLoaded();
-			lifecycle::viewLoaded();
 		}
 
 		protected function setOutlet( name : String ) : void
@@ -207,14 +213,14 @@
 			this[name] = null;
 		}
 
-		protected function setHandler( eventName : String ) : void
+		protected function setHandler( name : String ) : void
 		{
-			_viewInstance.addEventListener( eventName, viewEventHandler );
+			_viewInstance.addEventListener( name, viewEventHandler );
 		}
 
-		protected function unsetHandler( eventName : String ) : void
+		protected function unsetHandler( name : String ) : void
 		{
-			_viewInstance.removeEventListener( eventName, viewEventHandler );
+			_viewInstance.removeEventListener( name, viewEventHandler );
 		}
 
 		private function registerListener( eventName : String, listener : String ) : void

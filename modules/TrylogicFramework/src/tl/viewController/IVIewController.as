@@ -2,6 +2,8 @@
 {
 	import flash.display.DisplayObjectContainer;
 
+	import tl.view.IView;
+
 	public interface IVIewController
 	{
 		function addViewToContainer( container : DisplayObjectContainer ) : void;
@@ -16,8 +18,8 @@
 
 		function set parentViewController( value : IVIewController ) : void;
 
-		function getViewInterface() : Class;
-
 		function destroy() : void;
+
+		function initWithView( newView : IView ) : void;
 	}
 }

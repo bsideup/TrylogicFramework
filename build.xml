@@ -143,6 +143,7 @@
 		<mkdir dir="${out}" />
 
 		<antcall target="TrylogicUtils" />
+		<antcall target="FlexFrameworkPatch" />
 		<antcall target="IoCContainer" />
 		<antcall target="Bootloader" />
 		<antcall target="GlobalDispatcher" />
@@ -163,6 +164,10 @@
 
 		<fail if="test.failure" />
 
+	</target>
+
+	<target name="FlexFrameworkPatch">
+		<compileModuleAsLibrary moduleName="FlexFrameworkPatch" />
 	</target>
 
 	<target name="TrylogicUtils">
@@ -192,6 +197,7 @@
 	<target name="asdoc" description="Generates ASDOC html files for each module">
 		<antcall target="compile" />
 
+		<asdocModule moduleName="FlexFrameworkPatch" />
 		<asdocModule moduleName="TrylogicUtils" />
 		<asdocModule moduleName="IoCContainer" />
 		<asdocModule moduleName="Bootloader" />
@@ -206,6 +212,7 @@
 		<delete dir="${out}" failonerror="no" />
 		<delete dir="${asdoc}" failonerror="no" />
 
+		<cleanModule moduleName="FlexFrameworkPatch" />
 		<cleanModule moduleName="TrylogicUtils" />
 		<cleanModule moduleName="IoCContainer" />
 		<cleanModule moduleName="Bootloader" />

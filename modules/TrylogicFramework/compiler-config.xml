@@ -25,9 +25,12 @@
 		<source-path append="true">
 			<path-element>./src</path-element>
 		</source-path>
+
 	</compiler>
 
 	<include-namespaces append="true">
 		<uri>http://www.trylogic.ru/</uri>
 	</include-namespaces>
+
+	<static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
 </flex-config>

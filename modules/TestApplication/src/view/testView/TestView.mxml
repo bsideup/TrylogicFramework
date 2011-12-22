@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<tl:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:local="*"
-		 implements="view.testView.ITestView">
+<tl:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:local="*" xmlns:states="library://ns.adobe.com/flex/spark">
 	<fx:Script>
 		<![CDATA[
 		import tl.utils.getChildByNameRecursiveOnTarget;
@@ -10,16 +9,23 @@
 			return testViewFromSWF.myText;
 		}
 
-		public function get myAnotherLabel() : TextField
+		public function get myButton() : SimpleButton
 		{
-			return testViewFromSWF.myAnotherText;
+			return getChildByNameRecursiveOnTarget( 'yoButton', testViewFromSWF ) as SimpleButton;
 		}
 		]]>
 	</fx:Script>
 
 	<tl:eventMaps>
-		<tl:EventMap source="{getChildByNameRecursiveOnTarget( 'yoButton', testViewFromSWF )}" type="{MouseEvent.CLICK}" destination="{ITestViewDelegate(controller).myButtonClicked}" />
+		<tl:EventMap source="{myButton}" type="{MouseEvent.CLICK}" destination="{new Event('myButtonClicked')}" />
 	</tl:eventMaps>
 
-	<local:TestViewAsset id="testViewFromSWF" mouseChildren="{ITestViewDelegate( controller ).canClick}" />
+	<tl:states>
+		<states:State name="state1" />
+		<states:State name="state2" />
+	</tl:states>
+
+	<local:TestViewAsset id="testViewFromSWF" alpha.state1="1" alpha.state2="0.5" />
+
+	<TextField xmlns="flash.text.*" text="State1" includeIn="state1" />
 </tl:View>

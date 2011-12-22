@@ -1,7 +1,7 @@
 <flex-config xmlns="http://www.adobe.com/2006/flex-config">
 
 	<target-player>10.2</target-player>
-	
+
 	<compiler>
 
 		<debug>true</debug>
@@ -26,9 +26,9 @@
 			<path-element>./src</path-element>
 		</source-path>
 
-		<allow-source-path-overlap>true</allow-source-path-overlap>
-
 	</compiler>
+
+	<static-link-runtime-shared-libraries>false</static-link-runtime-shared-libraries>
 
 	<output>./out/TestApplication.swf</output>
 

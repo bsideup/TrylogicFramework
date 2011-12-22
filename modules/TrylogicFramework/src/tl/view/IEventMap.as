@@ -1,1 +1,0 @@
-package tl.view{	import flash.events.IEventDispatcher;	public interface IEventMap	{		function get source () : IEventDispatcher;		function get type() : String;		function get destination() : Function;		function bind() : void;		function unbind() : void;	}}

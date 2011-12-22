@@ -2,8 +2,6 @@ package tl.viewController
 {
 	import flash.display.DisplayObjectContainer;
 
-	import tl.view.IViewContainer;
-
 	[DefaultProperty("controllers")]
 	public class ViewControllerContainer extends ViewController implements IViewControllerContainer
 	{
@@ -29,11 +27,6 @@ package tl.viewController
 
 			value.removeViewFromContainer( container );
 			value.parentViewController = null;
-		}
-
-		override public function getViewInterface() : Class
-		{
-			return IViewContainer;
 		}
 
 		public function set controllers( value : Array ) : void

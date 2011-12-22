@@ -4,62 +4,51 @@
 	import flash.system.ApplicationDomain;
 
 	import tl.factory.ServiceFactory;
-	import tl.factory.SingletonFactory;
 	import tl.ioc.*;
 	import tl.service.IService;
-	import tl.service.Service;
 	import tl.utils.describeTypeCached;
-	import tl.view.*;
-	import tl.viewController.*;
+	import tl.view.IView;
 
 	[Frame(factoryClass="tl.core.TrylogicApplicationLoader")]
 	public class Bootstrap
 	{
 		{
 			IoCHelper.registerType( Stage, TrylogicStage );
-
-			IoCHelper.registerType( IViewContainer, ViewContainer );
-			IoCHelper.registerType( IView, View );
-
-			IoCHelper.registerType( IVIewController, ViewController );
-			IoCHelper.registerType( IViewControllerContainer, ViewControllerContainer );
-			IoCHelper.registerType( ISingleViewController, SingleViewController );
-
-			IoCHelper.registerType( IService, Service );
 		}
 
 		public var backgroundColor : Number;
 		public var frameRate : Number;
 		public var preloader : Class;
 
-		public var applicationControllerClass : Class;
+		public var applicationView : IView;
 
-		public var iocMap : Vector.<Associate> = new <Associate>[];
-		public var services : Vector.<IService> = new <IService>[];
-
-		internal final function init( applicationLoader : TrylogicApplicationLoader ) : void
+		public function set iocMap( value : Vector.<Associate> ) : void
 		{
-			if ( applicationControllerClass == null )
-			{
-				throw new ArgumentError( "applicationControllerClass of Bootstrap must be non-null and implements IApplicationController" );
-			}
-
-			IoCHelper.resolve( Stage, applicationLoader );
-
-			IoCHelper.registerType( IApplicationController, applicationControllerClass, SingletonFactory );
-
-			for each( var assoc : Associate in iocMap )
+			for each( var assoc : Associate in value )
 			{
 				IoCHelper.registerAssociate( assoc );
 			}
+		}
 
-			for each( var service : IService in services )
+		public function set services( value : Vector.<IService> ) : void
+		{
+			for each( var service : IService in value )
 			{
 				ServiceFactory.registerService( ApplicationDomain.currentDomain.getDefinition( describeTypeCached( service ).@name.toString() ) as Class, service );
 				service.init();
 			}
+		}
 
-			IoCHelper.resolve( IApplicationController, this ).addViewToContainer( applicationLoader );
+		internal final function init( applicationLoader : TrylogicApplicationLoader ) : void
+		{
+			if ( applicationView == null )
+			{
+				throw new ArgumentError( "applicationView of Bootstrap cant be non-null" );
+			}
+
+			IoCHelper.resolve( Stage, applicationLoader );
+
+			applicationView.controller.addViewToContainer( applicationLoader );
 		}
 	}
 }
