@@ -19,11 +19,16 @@ package view.testView
 		[Event(name="myButtonClicked")]
 		public function myButtonClickedHandler() : void
 		{
-			trace( "Yo!" );
+
+			for ( var i : int = 0; i < view.states.length; i++ )
+			{
+				trace( view.states[i].name );
+			}
 
 			view.currentState = "state2";
 
-			view.controller = new AnotherTestViewController();
+			view.controllerClass = AnotherTestViewController;
+			view.initController();
 		}
 	}
 }

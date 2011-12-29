@@ -11,6 +11,7 @@
 	<component id="Service" class="tl.service.Service" />
 
 	<component id="Embed" class="tl.view.Embed" />
+	<component id="Outlet" class="tl.view.Outlet" />
 	<component id="Loader" class="tl.core.Loader" />
 	<component id="SWFLoader" class="tl.core.SWFLoader" />
 

@@ -5,10 +5,15 @@
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 
+	import mx.utils.object_proxy;
+
 	import tl.actions.IActionDispatcher;
 	import tl.ioc.IoCHelper;
 	import tl.utils.describeTypeCached;
 	import tl.view.IView;
+	import tl.view.Outlet;
+
+	use namespace object_proxy;
 
 	[Outlet]
 	public class ViewController extends EventDispatcher implements IVIewController
@@ -17,11 +22,6 @@
 			if ( describeTypeCached( ViewController )..metadata.( @name == "Outlet" ).length() == 0 )
 			{
 				throw new Error( "Please add -keep-as3-metadata+=Outlet to flex compiler arguments!" )
-			}
-
-			if ( describeTypeCached( ViewController )..metadata.( @name == "Event" ).length() == 0 )
-			{
-				throw new Error( "Please add -keep-as3-metadata+=Event to flex compiler arguments!" )
 			}
 		}
 
@@ -96,22 +96,23 @@
 			initWithView( null );
 		}
 
-
 		public function initWithView( newView : IView ) : void
 		{
 			if ( newView == null )
 			{
-				for each( var outletName : String in _viewOutlets )
+				if ( _viewInstance != null )
 				{
-					unsetOutlet( outletName );
-				}
+					for each( var outletName : String in _viewOutlets )
+					{
+						unsetOutlet( outletName );
+					}
+					for ( var eventName : String in _viewEventHandlers )
+					{
+						unsetHandler( eventName );
+					}
 
-				for ( var eventName : String in _viewEventHandlers )
-				{
-					unsetHandler( eventName );
+					_viewInstance = null;
 				}
-
-				_viewInstance = null;
 			}
 			else
 			{
@@ -205,7 +206,8 @@
 
 		protected function setOutlet( name : String ) : void
 		{
-			this[name] = _viewInstance[name];
+			var outlet : Object = _viewInstance[name];
+			this[name] = outlet is Outlet ? Outlet( outlet ).object_proxy::outletObject : outlet;
 		}
 
 		protected function unsetOutlet( name : String ) : void

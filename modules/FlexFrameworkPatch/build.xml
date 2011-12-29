@@ -1,72 +1,26 @@
-<project name="TrylogicUtils" default="compile" basedir=".">
-
-	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4/flex_sdk_4.1.0.16076_mpl.zip" />
+<project name="FlexFrameworkPatch" default="compile" basedir=".">
 
 	<property name="out" value="${basedir}/out" />
 	<property name="asdocOutput" value="${basedir}/asdoc" />
-	<property name="flexUnitOutput" value="${out}/report" />
-	
-	<property name="FLEX_HOME" value="${basedir}/sdk" />
-	<property name="FLEXUNIT_HOME" value="../../flexunit" />
-	<property name="JUNITREPORTPRINTER_HOME" value="../../junitreportprinter" />
-
-	<include file="${JUNITREPORTPRINTER_HOME}/showFailures.xml" />
+	<property name="FLEX_HOME" value="" />
+	<property name="GLOBAL_OUT" value="" />
 
 	<target name="install">
-		<mkdir dir="${out}" />
 	</target>
 
-	<target name="downloadSDK" unless="${sdkDownloaded}" depends="checkIfDownloaded" description="Download Flex SDK and set properties FLEX_HOME to downloaded files">
-		<mkdir dir="${FLEX_HOME}"/>
-
-		<get src="${sdkURL}" dest="${FLEX_HOME}/Framework.zip" skipexisting="true"/>
-		<unzip src="${FLEX_HOME}/Framework.zip" dest="${FLEX_HOME}" overwrite="false"/>
-	</target>
-
-	<target name="checkIfDownloaded">
-		<condition property="sdkDownloaded">
-			<available file="${FLEX_HOME}" type="dir"/>
-		</condition>
-	</target>
-
-	<target name="compile" description="compile the source" depends="downloadSDK">
+	<target name="compile" description="compile the source" depends="install">
 
 		<taskdef file="${FLEX_HOME}/ant/flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar" />
 
 		<compc output="${out}/${ant.project.name}.swc" dir="${basedir}" fork="true">
 			<sysproperty key="user.language" value="en" />
 			<sysproperty key="user.region" value="US" />
+			<compiler.external-library-path dir="${GLOBAL_OUT}" append="true">
+				<include name="*.swc" />
+			</compiler.external-library-path>
 			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
 			<load-config filename="${basedir}/compiler-config.xml" />
 		</compc>
-
-	</target>
-
-	<target name="test" depends="compile">
-		<taskdef resource="flexUnitTasks.tasks" classpath="${FLEXUNIT_HOME}/flexUnitTasks-4.1.0-8.jar" />
-
-		<delete dir="${flexUnitOutput}" failonerror="no" quiet="yes" />
-		<mkdir dir="${flexUnitOutput}" />
-
-		<flexunit workingdir="${flexUnitOutput}" todir="${flexUnitOutput}" haltonfailure="false" verbose="false" failureproperty="test.failure">
-			<testsource dir="${basedir}/tests">
-				<include name="**/*Test.as" />
-			</testsource>
-
-			<source dir="${basedir}/src" />
-
-			<library dir="${FLEXUNIT_HOME}" />
-		</flexunit>
-
-		<junitreport tofile="out/testReport.xml">
-			<fileset dir="${flexUnitOutput}">
-				<include name="TEST-*.xml" />
-			</fileset>
-		</junitreport>
-
-		<showFailures xmlFile="${out}/testReport.xml" />
-
-		<fail if="test.failure" />
 	</target>
 
 	<target name="asdoc">
@@ -75,6 +29,9 @@
 		<asdoc output="${asdocOutput}">
 			<sysproperty key="user.language" value="en" />
 			<sysproperty key="user.region" value="US" />
+			<compiler.external-library-path dir="${GLOBAL_OUT}" append="true">
+				<include name="*.swc" />
+			</compiler.external-library-path>
 			<doc-sources path-element="${basedir}/src/" />
 		</asdoc>
 	</target>

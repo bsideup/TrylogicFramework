@@ -1,8 +1,10 @@
 package tl.core
 {
 	import flash.display.DisplayObject;
+	import flash.display.Stage;
 
 	import tl.bootloader.ApplicationLoader;
+	import tl.ioc.IoCHelper;
 
 	public class TrylogicApplicationLoader extends ApplicationLoader
 	{
@@ -11,9 +13,10 @@ package tl.core
 			nextFrame();
 			removeChild( DisplayObject( preloader ) );
 
-			var bootstrap : Bootstrap = create() as Bootstrap;
+			IoCHelper.registerType( Stage, TrylogicStage );
+			IoCHelper.resolve( Stage, this );
 
-			bootstrap.init( this );
+			Bootstrap( create() ).init( this );
 		}
 	}
 }

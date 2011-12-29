@@ -2,11 +2,11 @@
 {
 	import flash.display.*;
 
+	import mx.core.IMXMLObject;
 	import mx.core.UIComponent;
 	import mx.events.PropertyChangeEvent;
 
 	import tl.ioc.Resolve;
-	import tl.utils.getChildByNameRecursiveOnTarget;
 	import tl.viewController.IVIewController;
 	import tl.viewController.ViewController;
 
@@ -17,44 +17,41 @@
 	 * @see IViewController
 	 *
 	 */
-	public class View extends UIComponent implements IView
+	public class View extends UIComponent implements IView, IMXMLObject
 	{
-		private var _data : Array = [];
-		private var _controller : IVIewController;
 		public var eventMaps : Vector.<EventMap>;
 
+		[Bindable]
+		public var controllerClass : Class;
+
 		protected namespace lifecycle = "http://www.trylogic.ru/view/lifecycle";
+
+		private var _data : Array = [];
+		private var _controller : IVIewController;
 
 		[Bindable(event="propertyChange")]
 		public function get controller() : IVIewController
 		{
 			if ( _controller == null )
 			{
-				controller = new ViewController();
+				initController();
+
+				dispatchEvent( PropertyChangeEvent.createUpdateEvent( this, "controller", null, _controller ) );
 			}
+
 			return _controller;
 		}
 
-		public function set controller( value : IVIewController ) : void
+		public function initController() : void
 		{
-			var eventMap : EventMap;
-			if ( _controller )
+			if ( controllerClass == null || !(_controller is controllerClass) )
 			{
-				if ( eventMaps )
-				{
-					for each( eventMap in eventMaps )
-					{
-						eventMap.unbind();
-					}
-				}
+				destoyController();
 
-				_controller.initWithView( null );
-			}
+				var eventMap : EventMap;
 
-			_controller = value;
+				_controller = controllerClass == null ? (new ViewController()) : (new controllerClass());
 
-			if ( _controller )
-			{
 				_controller.initWithView( this );
 
 				if ( eventMaps )
@@ -64,24 +61,14 @@
 						eventMap.bind();
 					}
 				}
-
-				lifecycle::init();
 			}
-
-			dispatchEvent( PropertyChangeEvent.createUpdateEvent( this, "controller", null, _controller ) );
 		}
 
-		/**
-		 * Wrapper for <code>getChildByNameRecursiveOnTarget</code>
-		 *
-		 * @see getChildByNameRecursiveOnTarget
-		 *
-		 * @param name	Child name
-		 * @return		null, if there is no childs with this name, or first occurience of child with this name, if it's exist
-		 */
-		public function getChildByNameRecursive( name : String ) : DisplayObject
+		public function initialized( document : Object, id : String ) : void
 		{
-			return getChildByNameRecursiveOnTarget( name, this );
+			initController();
+
+			lifecycle::init();
 		}
 
 		public function addElement( element : * ) : void
@@ -245,13 +232,31 @@
 			internalDestroy();
 			lifecycle::destroy();
 
+
+			destoyController();
 			data = null;
-			controller = null;
 		}
 
 		internal function internalDestroy() : void
 		{
 
+		}
+
+		private function destoyController() : void
+		{
+			var eventMap : EventMap;
+			if ( _controller )
+			{
+				if ( eventMaps )
+				{
+					for each( eventMap in eventMaps )
+					{
+						eventMap.unbind();
+					}
+				}
+
+				_controller.initWithView( null );
+			}
 		}
 
 		/**

@@ -1,12 +1,14 @@
 ﻿package tl.core
 {
 	import flash.display.*;
-	import flash.system.ApplicationDomain;
 
+	import mx.core.IStateClient2;
+
+	import tl.factory.ConstructorFactory;
 	import tl.factory.ServiceFactory;
 	import tl.ioc.*;
 	import tl.service.IService;
-	import tl.utils.describeTypeCached;
+	import tl.utils.StatesImpl;
 	import tl.view.IView;
 
 	[Frame(factoryClass="tl.core.TrylogicApplicationLoader")]
@@ -14,6 +16,7 @@
 	{
 		{
 			IoCHelper.registerType( Stage, TrylogicStage );
+			IoCHelper.registerType( IStateClient2, StatesImpl, ConstructorFactory );
 		}
 
 		public var backgroundColor : Number;
@@ -34,7 +37,7 @@
 		{
 			for each( var service : IService in value )
 			{
-				ServiceFactory.registerService( ApplicationDomain.currentDomain.getDefinition( describeTypeCached( service ).@name.toString() ) as Class, service );
+				ServiceFactory.registerService( service['constructor'], service );
 				service.init();
 			}
 		}
@@ -45,8 +48,6 @@
 			{
 				throw new ArgumentError( "applicationView of Bootstrap cant be non-null" );
 			}
-
-			IoCHelper.resolve( Stage, applicationLoader );
 
 			applicationView.controller.addViewToContainer( applicationLoader );
 		}

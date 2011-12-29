@@ -11,7 +11,7 @@
 			<ioc:Associate iface="service.IFreezeService" withClass="service.FreezeService" factory="tl.factory.ServiceFactory" />
 		</ioc:GroupAssociate>
 
-		<ioc:GroupAssociate>
+		<ioc:GroupAssociate comment="models">
 			<ioc:Associate iface="models.IMyModel" withClass="models.MyModel" factory="tl.factory.SingletonFactory" />
 		</ioc:GroupAssociate>
 	</tl:iocMap>
@@ -21,6 +21,6 @@
 	</tl:services>
 
 	<tl:applicationView>
-		<applicationview:ApplicationView />
+		<applicationview:ApplicationView controllerClass="view.applicationView.TestApplicationViewController" />
 	</tl:applicationView>
 </tl:Bootstrap>

@@ -21,7 +21,6 @@
 			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml" />
 			<load-config filename="${basedir}/compiler-config.xml" />
 		</compc>
-
 	</target>
 
 	<target name="asdoc">

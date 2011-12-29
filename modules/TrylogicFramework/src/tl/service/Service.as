@@ -1,5 +1,7 @@
 package tl.service
 {
+	import mx.utils.ObjectProxy;
+
 	import tl.actions.IActionDispatcher;
 	import tl.ioc.IoCHelper;
 
@@ -14,6 +16,7 @@ package tl.service
 		{
 			IoCHelper.injectTo( this );
 			lifecycle::init();
+			ObjectProxy
 		}
 
 		lifecycle function init() : void

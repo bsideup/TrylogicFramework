@@ -15,7 +15,9 @@ package tl.view
 	{
 		function get controller() : IVIewController;
 
-		function set controller( value : IVIewController ) : void;
+		function get controllerClass() : Class;
+
+		function set controllerClass( value : Class ) : void;
 
 		/**
 		 * IView childs
@@ -24,6 +26,8 @@ package tl.view
 		function get data() : Array;
 
 		function set data( value : Array ) : void;
+
+		function initController() : void;
 
 		function addElement( value : * ) : void;
 
