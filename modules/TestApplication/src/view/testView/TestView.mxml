@@ -4,11 +4,11 @@
 	<tl:eventMaps>
 		<tl:EventMap source="{myButton}" type="{MouseEvent.CLICK}" destination="{new Event('myButtonClicked')}" />
 
-<tl:EventMap source="{myButton}" type="{MouseEvent.MOUSE_DOWN}">
-	<tl:listener><![CDATA[
-			trace( event );
-		]]></tl:listener>
-</tl:EventMap>
+		<tl:EventMap source="{myButton}" type="{MouseEvent.MOUSE_DOWN}">
+			<tl:listener><![CDATA[
+					trace( event );
+				]]></tl:listener>
+		</tl:EventMap>
 	</tl:eventMaps>
 
 	<tl:states>
