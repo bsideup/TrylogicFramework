@@ -2,6 +2,7 @@ package tl.bootloader
 {
 	import flash.display.*;
 	import flash.events.*;
+	import flash.system.ApplicationDomain;
 	import flash.utils.Dictionary;
 
 	import mx.core.*;
@@ -26,7 +27,16 @@ package tl.bootloader
 		{
 			stop();
 
-			preloader = addChild( new (info()["preloader"] == null ? PreloaderBase : info()["preloader"])( this ) ) as PreloaderBase;
+			var preloaderClass : Class = info()["preloader"];
+
+			if ( preloaderClass == null ||
+					(ApplicationDomain.currentDomain.hasDefinition( "mx.preloaders::SparkDownloadProgressBar" ) && preloaderClass == ApplicationDomain.currentDomain.getDefinition( 'mx.preloaders::SparkDownloadProgressBar' ))
+					)
+			{
+				preloaderClass = PreloaderBase;
+			}
+
+			preloader = addChild( new preloaderClass( this ) ) as PreloaderBase;
 
 			addEventListener( Event.ENTER_FRAME, enterFrameHandler );
 		}

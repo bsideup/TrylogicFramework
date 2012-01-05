@@ -1,0 +1,1 @@
+package tl.ioc.mxml{	[DefaultProperty("data")]	public class GroupAssociate implements IAssociate	{		public var data : Array = [];		public var comment : String;	}}

@@ -6,7 +6,7 @@ package service
 
 	import tl.service.Service;
 
-	public class FreezeService extends Service implements IFreezeService
+	public class FreezeService extends Service
 	{
 		[Injection]
 		public var logger : ILogger;

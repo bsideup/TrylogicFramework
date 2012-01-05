@@ -32,5 +32,4 @@
 		<uri>http://www.trylogic.ru/</uri>
 	</include-namespaces>
 
-	<static-link-runtime-shared-libraries>true</static-link-runtime-shared-libraries>
 </flex-config>

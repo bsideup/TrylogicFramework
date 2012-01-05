@@ -1,1 +1,0 @@
-package tl.ioc{	[DefaultProperty("data")]	public class GroupAssociate extends Associate	{		public var data : Array = [];		public var comment : String;	}}

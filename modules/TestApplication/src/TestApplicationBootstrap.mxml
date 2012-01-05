@@ -1,20 +1,15 @@
 <?xml version="1.0"?>
-<tl:Bootstrap xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/"
-			  xmlns:ioc="http://www.trylogic.ru/ioc/" xmlns:service="service.*" xmlns:applicationview="view.applicationView.*" preloader="TestApplicationPreloader">
+<tl:Bootstrap xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:service="service.*" xmlns:applicationview="view.applicationView.*"
+			  xmlns:ioc="http://www.trylogic.ru/ioc/" xmlns:local="*">
 
 	<tl:iocMap>
 		<ioc:Associate iface="tl.actions.IActionLogger" withClass="core.ActionLogger" factory="tl.factory.SingletonFactory" />
-		<ioc:Associate iface="tl.actions.IActionDispatcher" withClass="tl.actions.ActionDispatcher" />
 		<ioc:Associate iface="core.ILogger" withClass="core.Logger" />
-
-		<ioc:GroupAssociate comment="services">
-			<ioc:Associate iface="service.IFreezeService" withClass="service.FreezeService" factory="tl.factory.ServiceFactory" />
-		</ioc:GroupAssociate>
-
-		<ioc:GroupAssociate comment="models">
-			<ioc:Associate iface="models.IMyModel" withClass="models.MyModel" factory="tl.factory.SingletonFactory" />
-		</ioc:GroupAssociate>
 	</tl:iocMap>
+
+	<tl:subModules>
+		<local:TestViewBootstrap />
+	</tl:subModules>
 
 	<tl:services>
 		<service:FreezeService text="onFreeze" />

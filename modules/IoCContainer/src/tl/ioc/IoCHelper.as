@@ -2,6 +2,9 @@ package tl.ioc
 {
 	import flash.utils.*;
 
+	import tl.ioc.mxml.Associate;
+	import tl.ioc.mxml.GroupAssociate;
+	import tl.ioc.mxml.IAssociate;
 	import tl.utils.describeTypeCached;
 
 	[Injection]
@@ -18,17 +21,6 @@ package tl.ioc
 	 * <listing version="3.0">
 	 *	 public class MyLogger implements ILogger
 	 *	 {
-	 *			 private static var _instance : MyLogger;
-	 *
-	 *			 ioc_internal static fuction getInstance() : MyLogger
-	 *			 {
-	 *				 if(_instance == null)
-	 *				 {
-	 *					 _instance = new MyLogger();
-	 *				 }
-	 *				 return _instance;
-	 *			 }
-	 *
 	 *			 public fuction log(...args) : void
 	 *			 {
 	 *				 trace(args);
@@ -41,6 +33,11 @@ package tl.ioc
 	 *			[Injection]
 	 *			public var logger : ILogger;
 	 *
+	 *			public function MyInjectedClass()
+	 *			{
+	 *				IoCHelper.injectTo(this);
+	 *			}
+	 *
 	 *			public function doSomething() : void
 	 *			{
 	 *				logger.log("something");
@@ -52,8 +49,8 @@ package tl.ioc
 	 *	 {
 	 *			public fuction MyClass()
 	 *			{
-	 *				IoCHelper.registerType(ILogger, MyLogger);
-	 *				var injectedObject : MyInjectedClass = IoCHelper.makeInstance(MyInjectedClass);
+	 *				IoCHelper.registerType(ILogger, MyLogger, SingletonFactory);
+	 *				var injectedObject : MyInjectedClass = new MyInjectedClass();
 	 *				injectedObject.doSomething(); // Will trace "something"
 	 *			}
 	 *		}</listing>
@@ -92,13 +89,13 @@ package tl.ioc
 			{
 				resolvedInstance = assoc.withClass.ioc_internal::['getInstanceForInstance']( instance );
 			}
-			catch( e : ReferenceError )
+			catch ( e : ReferenceError )
 			{
 				try
 				{
 					resolvedInstance = assoc.withClass.ioc_internal::['getInstance']();
 				}
-				catch( e : ReferenceError )
+				catch ( e : ReferenceError )
 				{
 					if ( assoc.factory != null )
 					{
@@ -129,11 +126,9 @@ package tl.ioc
 						resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
 						);
 
-				/*
-				 describeType( resolvedInstance ).accessor.(@access != "readonly").(valueOf().metadata.(@name == "Injection").length()).(
-				 resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
-				 );
-				 */
+				describeType( resolvedInstance ).accessor.(@access != "readonly").(valueOf().metadata.(@name == "Injection").length()).(
+						resolvedInstance[String( @name )] = resolve( getDefinitionByName( @type ), resolvedInstance )
+						);
 			}
 		}
 
@@ -148,23 +143,23 @@ package tl.ioc
 			registerAssociate( new Associate( iface, targetClass, factory ) );
 		}
 
-		public static function registerAssociate( assoc : Associate ) : void
+		public static function registerAssociate( assoc : IAssociate ) : void
 		{
 			if ( assoc is GroupAssociate )
 			{
-				for each( var inAssoc : Associate in GroupAssociate( assoc ).data )
+				for each( var inAssoc : IAssociate in GroupAssociate( assoc ).data )
 				{
 					registerAssociate( inAssoc );
 				}
 			}
-			else
+			else if ( assoc is Associate )
 			{
-				if ( assoc.iface == null )
+				if ( Associate( assoc ).iface == null )
 				{
 					throw new Error( "Association's iface property cann't be null!" );
 				}
 
-				aliases[assoc.iface] = assoc;
+				aliases[Associate( assoc ).iface] = assoc;
 			}
 		}
 	}

@@ -1,9 +1,9 @@
-package tl.ioc
+package tl.ioc.mxml
 {
 	/**
 	 * MXML helper for IoC associating
 	 */
-	public class Associate
+	public class Associate implements IAssociate
 	{
 		/**
 		 * Interface

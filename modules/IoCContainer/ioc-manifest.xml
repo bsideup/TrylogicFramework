@@ -6,8 +6,8 @@
 -->
 <componentPackage>
 
-	<component id="Associate" class="tl.ioc.Associate" />
-	<component id="GroupAssociate" class="tl.ioc.GroupAssociate" />
-	<component id="Resolve" class="tl.ioc.Resolve" />
+	<component id="Associate" class="tl.ioc.mxml.Associate" />
+	<component id="GroupAssociate" class="tl.ioc.mxml.GroupAssociate" />
+	<component id="Resolve" class="tl.ioc.mxml.Resolve" />
 
 </componentPackage>

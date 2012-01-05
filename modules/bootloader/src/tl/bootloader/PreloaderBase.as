@@ -4,6 +4,8 @@ package tl.bootloader
 	import flash.events.Event;
 	import flash.system.ApplicationDomain;
 
+	import tl.bootloader.mixins.LibraryLoader;
+
 	/**
 	 * Basic preloader
 	 *
@@ -27,6 +29,8 @@ package tl.bootloader
 
 		public function PreloaderBase( app : ApplicationLoader )
 		{
+			new LibraryLoader();
+
 			this.app = app;
 
 			mixins = app.info()["mixins"];

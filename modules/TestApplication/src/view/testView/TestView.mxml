@@ -3,14 +3,17 @@
 
 	<tl:eventMaps>
 		<tl:EventMap source="{myButton}" type="{MouseEvent.CLICK}" destination="{new Event('myButtonClicked')}" />
+
+<tl:EventMap source="{myButton}" type="{MouseEvent.MOUSE_DOWN}">
+	<tl:listener><![CDATA[
+			trace( event );
+		]]></tl:listener>
+</tl:EventMap>
 	</tl:eventMaps>
 
 	<tl:states>
 		<s:State name="state1" />
 		<s:State name="state2" />
-		<s:State name="state3" />
-		<s:State name="state4" />
-		<s:State name="state5" />
 	</tl:states>
 
 	<fx:Declarations>

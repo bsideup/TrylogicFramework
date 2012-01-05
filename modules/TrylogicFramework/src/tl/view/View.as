@@ -6,7 +6,7 @@
 	import mx.core.UIComponent;
 	import mx.events.PropertyChangeEvent;
 
-	import tl.ioc.Resolve;
+	import tl.ioc.mxml.Resolve;
 	import tl.viewController.IVIewController;
 	import tl.viewController.ViewController;
 
