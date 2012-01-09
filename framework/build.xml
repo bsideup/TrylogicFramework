@@ -2,7 +2,7 @@
 
 	<dirname property="TrylogicFramework.basedir" file="${ant.file.included}" />
 
-	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4/flex_sdk_4.1.0.16076_mpl.zip" />
+	<property name="sdkURL" value="http://fpdownload.adobe.com/pub/flex/sdk/builds/flex4.5/flex_sdk_4.5.1.21328_mpl.zip" />
 
 	<echo message="${TrylogicFramework.basedir}" />
 

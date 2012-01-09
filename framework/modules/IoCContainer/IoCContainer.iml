@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="Flex" version="4">
   <component name="Flex.Build.Configuration">
-    <option name="DO_BUILD" value="true" />
     <option name="OUTPUT_TYPE" value="Library" />
     <option name="OUTPUT_FILE_NAME" value="IoCContainer.swc" />
     <option name="TARGET_PLAYER_VERSION" value="10.2.0" />
@@ -24,6 +23,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="TrylogicUtils" />
+    <orderEntry type="library" name="FlexUnit" level="project" />
     <orderEntry type="library" name="FlexUnit" level="project" />
   </component>
 </module>

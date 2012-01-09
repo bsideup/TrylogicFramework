@@ -24,11 +24,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="IoCContainer" />
-    <orderEntry type="module" module-name="Bootloader" />
-    <orderEntry type="module" module-name="GlobalDispatcher" />
-    <orderEntry type="module" module-name="TrylogicUtils" />
-    <orderEntry type="module" module-name="FlexFrameworkPatch" />
+    <orderEntry type="module" module-name="IoCContainer" exported="" />
+    <orderEntry type="module" module-name="Bootloader" exported="" />
+    <orderEntry type="module" module-name="GlobalDispatcher" exported="" />
+    <orderEntry type="module" module-name="TrylogicUtils" exported="" />
+    <orderEntry type="module" module-name="FlexFrameworkPatch" exported="" />
+    <orderEntry type="library" name="FlexUnit" level="project" />
   </component>
 </module>
 

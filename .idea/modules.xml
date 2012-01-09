@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/framework/modules/Bootloader/Bootloader.iml" filepath="$PROJECT_DIR$/framework/modules/Bootloader/Bootloader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework/modules/FlexFrameworkPatch/FlexFrameworkPatch.iml" filepath="$PROJECT_DIR$/framework/modules/FlexFrameworkPatch/FlexFrameworkPatch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework/modules/globalDispatcher/GlobalDispatcher.iml" filepath="$PROJECT_DIR$/framework/modules/globalDispatcher/GlobalDispatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework/modules/IoCContainer/IoCContainer.iml" filepath="$PROJECT_DIR$/framework/modules/IoCContainer/IoCContainer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/examples/TestApplication/TestApplication.iml" filepath="$PROJECT_DIR$/examples/TestApplication/TestApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework/modules/TrylogicFramework/TrylogicFramework.iml" filepath="$PROJECT_DIR$/framework/modules/TrylogicFramework/TrylogicFramework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/framework/modules/TrylogicUtils/TrylogicUtils.iml" filepath="$PROJECT_DIR$/framework/modules/TrylogicUtils/TrylogicUtils.iml" />
+    </modules>
+  </component>
+</project>
+

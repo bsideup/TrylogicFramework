@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="FlexUnit" type="flex">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/framework/FlexUnit4.1" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/framework/FlexUnit4.1" recursive="false" />
+  </library>
+</component>
