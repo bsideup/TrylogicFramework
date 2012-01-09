@@ -7,8 +7,6 @@ build/
 **/*/out
 **/*/asdoc
 
-**/*/*.iml
-*.ipr
 *.iws
 /out/generated
 
