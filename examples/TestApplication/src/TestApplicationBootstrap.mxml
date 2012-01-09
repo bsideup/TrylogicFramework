@@ -15,7 +15,7 @@
 	</tl:services>
 
 	<tl:applicationView>
-		<ApplicationView xmlns="view.applicationView.*" controllerClass="view.applicationView.TestApplicationViewController" />
+		<TestApplicationView xmlns="view.applicationView.*" controllerClass="view.applicationView.TestApplicationViewController" />
 	</tl:applicationView>
 
 </tl:Bootstrap>

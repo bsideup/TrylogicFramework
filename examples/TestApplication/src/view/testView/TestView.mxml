@@ -4,7 +4,7 @@
 	<tl:eventMaps>
 		<tl:EventMap source="{myButton}" type="{MouseEvent.CLICK}" destination="{new Event('myButtonClicked')}" />
 
-		<tl:EventMap source="{myButton}" type="{MouseEvent.MOUSE_DOWN}">
+		<tl:EventMap source="{testViewFromSWF.myButton.yoButton}" type="{MouseEvent.MOUSE_DOWN}">
 			<tl:listener>
 				<![CDATA[
 					trace( event );
@@ -25,4 +25,5 @@
 	</fx:Declarations>
 
 	<local:TestViewAsset id="testViewFromSWF" alpha.state1="1" alpha.state2="0.5" />
+
 </tl:View>
