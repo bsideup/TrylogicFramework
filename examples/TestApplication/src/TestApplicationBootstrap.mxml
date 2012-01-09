@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<tl:Bootstrap xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:service="service.*" xmlns:applicationview="view.applicationView.*"
-			  xmlns:ioc="http://www.trylogic.ru/ioc/" xmlns:local="*">
+<tl:Bootstrap xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:ioc="http://www.trylogic.ru/ioc/">
 
 	<tl:iocMap>
 		<ioc:Associate iface="tl.actions.IActionLogger" withClass="core.ActionLogger" factory="tl.factory.SingletonFactory" />
@@ -8,14 +7,15 @@
 	</tl:iocMap>
 
 	<tl:subModules>
-		<local:TestViewBootstrap />
+		<SubmoduleBootstrap xmlns="*" />
 	</tl:subModules>
 
 	<tl:services>
-		<service:FreezeService text="onFreeze" />
+		<FreezeService xmlns="service.*" text="onFreeze" />
 	</tl:services>
 
 	<tl:applicationView>
-		<applicationview:ApplicationView controllerClass="view.applicationView.TestApplicationViewController" />
+		<ApplicationView xmlns="view.applicationView.*" controllerClass="view.applicationView.TestApplicationViewController" />
 	</tl:applicationView>
+
 </tl:Bootstrap>
