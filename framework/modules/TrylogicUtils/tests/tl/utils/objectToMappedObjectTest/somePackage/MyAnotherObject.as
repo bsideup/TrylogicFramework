@@ -1,1 +1,0 @@
-package tl.utils.objectToMappedObjectTest.somePackage{	import tl.utils.objectToMappedObjectTest.MyObject;	public class MyAnotherObject	{		public var someMyString : String;		public var someMyObject : MyObject;			}}

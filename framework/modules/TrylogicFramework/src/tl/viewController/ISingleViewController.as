@@ -1,1 +1,0 @@
-package tl.viewController{	public interface ISingleViewController extends IVIewController	{		function set currentViewController( value : IVIewController ) : void;		function get currentViewController() : IVIewController;	}}
