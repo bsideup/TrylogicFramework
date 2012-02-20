@@ -1,21 +1,1 @@
-<?xml version="1.0"?>
-<tl:Bootstrap xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:ioc="http://www.trylogic.ru/ioc/">
-
-	<tl:iocMap>
-		<ioc:Associate iface="tl.actions.IActionLogger" withClass="core.ActionLogger" factory="tl.factory.SingletonFactory" />
-		<ioc:Associate iface="core.ILogger" withClass="core.Logger" />
-	</tl:iocMap>
-
-	<tl:subModules>
-		<SubmoduleBootstrap xmlns="*" />
-	</tl:subModules>
-
-	<tl:services>
-		<FreezeService xmlns="service.*" text="onFreeze" />
-	</tl:services>
-
-	<tl:applicationView>
-		<TestApplicationView xmlns="view.applicationView.*" controllerClass="view.applicationView.TestApplicationViewController" />
-	</tl:applicationView>
-
-</tl:Bootstrap>
+<?xml version="1.0"?><tl:Bootstrap xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/" xmlns:ioc="http://www.trylogic.ru/ioc/">	<tl:iocMap>		<ioc:Associate iface="tl.actions.IActionLogger" withClass="core.ActionLogger" factory="tl.factory.SingletonFactory" />		<ioc:Associate iface="core.ILogger" withClass="core.Logger" />	</tl:iocMap>	<tl:subModules>		<SubmoduleBootstrap xmlns="*" />	</tl:subModules>	<tl:services>		<FreezeService xmlns="service.*" text="onFreeze" />	</tl:services>	<tl:applicationView>		<TestApplicationView xmlns="view.applicationView.*" controllerClass="view.applicationView.TestApplicationViewController" />	</tl:applicationView></tl:Bootstrap>

@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="AntConfiguration">
-    <defaultAnt bundledAnt="true" />
-    <buildFile url="file://$PROJECT_DIR$/examples/TestApplication/build.xml">
-      <additionalClassPath />
-      <antReference projectDefault="true" />
-      <customJdkName value="1.6" />
-      <maximumHeapSize value="128" />
-      <maximumStackSize value="2" />
-      <properties />
-    </buildFile>
-  </component>
-</project>
-
+<?xml version="1.0" encoding="UTF-8"?><project version="4">  <component name="AntConfiguration">    <defaultAnt bundledAnt="true" />    <buildFile url="file://$PROJECT_DIR$/examples/TestApplication/build.xml">      <additionalClassPath />      <antReference projectDefault="true" />      <customJdkName value="1.6" />      <maximumHeapSize value="128" />      <maximumStackSize value="2" />      <properties />    </buildFile>    <buildFile url="file://$PROJECT_DIR$/examples/GibbetGame/build.xml">      <additionalClassPath />      <antReference projectDefault="true" />      <customJdkName value="1.6" />      <maximumHeapSize value="128" />      <maximumStackSize value="2" />      <properties>        <property name="dont.install.framework" value="" />      </properties>    </buildFile>  </component></project>

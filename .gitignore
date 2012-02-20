@@ -1,15 +1,1 @@
-.DS_Store
-
-sdk/
-asdoc/
-build/
-
-**/*/out
-**/*/asdoc
-
-*.iws
-/out/generated
-
-/out/report/TestRunner.swf
-/out/report/TestRunner.mxml
-/.idea/workspace.xml
+.DS_Storesdk/asdoc/build/**/*/out**/*/asdoc*.iws/out/generated/out/report/TestRunner.swf/out/report/TestRunner.mxml/.idea/workspace.xml

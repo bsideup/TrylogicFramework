@@ -1,20 +1,1 @@
-<flex-config xmlns="http://www.adobe.com/2006/flex-config">
-
-	<include-classes>
-		<class>mx.core.UIComponent</class>
-	</include-classes>
-
-	<compiler>
-
-		<incremental>true</incremental>
-
-		<keep-generated-actionscript>false</keep-generated-actionscript>
-
-		<source-path append="true">
-			<path-element>./src</path-element>
-		</source-path>
-	</compiler>
-
-	<include-inheritance-dependencies-only>true</include-inheritance-dependencies-only>
-
-</flex-config>
+<flex-config xmlns="http://www.adobe.com/2006/flex-config">	<include-classes>		<class>mx.core.UIComponent</class>	</include-classes>	<compiler>		<incremental>true</incremental>		<keep-generated-actionscript>false</keep-generated-actionscript>		<source-path append="true">			<path-element>./src</path-element>		</source-path>	</compiler>	<include-inheritance-dependencies-only>true</include-inheritance-dependencies-only></flex-config>

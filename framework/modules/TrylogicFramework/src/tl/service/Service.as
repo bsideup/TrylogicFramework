@@ -1,24 +1,1 @@
-package tl.service
-{
-	import tl.actions.IActionDispatcher;
-	import tl.ioc.IoCHelper;
-
-	public class Service implements IService
-	{
-		[Injection]
-		public var actionDispatcher : IActionDispatcher;
-
-		protected namespace lifecycle = "http://www.trylogic.ru/service/lifecycle";
-
-		public final function init() : void
-		{
-			IoCHelper.injectTo( this );
-			lifecycle::init();
-		}
-
-		lifecycle function init() : void
-		{
-
-		}
-	}
-}
+package tl.service{	import tl.actions.IActionDispatcher;	import tl.ioc.IoCHelper;	public class Service implements IService	{		[Injection]		public var actionDispatcher:IActionDispatcher;		protected namespace lifecycle = "http://www.trylogic.ru/service/lifecycle";		protected var serviceInitialized:Boolean = false;		public final function init():void		{			IoCHelper.injectTo( this );			lifecycle::init();			serviceInitialized = true;		}		lifecycle function init():void		{		}		public function get initialized():Boolean		{			return serviceInitialized;		}	}}

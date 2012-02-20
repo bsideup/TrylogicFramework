@@ -1,0 +1,1 @@
+<?xml version="1.0"?><tl:View xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:tl="http://www.trylogic.ru/">	<tl:eventMaps>		<tl:EventMap source="{asset.wonnaPlayButton}" type="{MouseEvent.CLICK}" destination="{new Event('playButtonClicked')}" />	</tl:eventMaps>	<StartAsset id="asset" xmlns="tl.framework.examples.gibbetGame.assets.*" /></tl:View>
